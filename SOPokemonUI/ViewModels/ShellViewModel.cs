@@ -1,9 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Drawing;
+using System.Linq;
 using System.Net.Mime;
 using System.Runtime.CompilerServices;
 using System.Text;
+using System.Windows;
 using System.Windows.Media.Imaging;
 using System.Xml.Serialization;
 using Caliburn.Micro;
@@ -66,7 +68,6 @@ namespace SOPokemonUI.ViewModels
         }
 
 
-
         #endregion
 
 
@@ -80,11 +81,16 @@ namespace SOPokemonUI.ViewModels
 
         public async void LoadPokemonPage()
         {
-            NamedApiResourceList<Pokemon> firstPokemon = await pokeClient.GetNamedResourcePageAsync<Pokemon>(60,0);
+            NamedApiResourceList<Pokemon> allPokemons = await pokeClient.GetNamedResourcePageAsync<Pokemon>(808,0);
 
-            for (int i = 0; i < firstPokemon.Results.Count; i++)
+            string tempPokeName;
+            string buildNameNew;
+
+            for (int i = 0; i < allPokemons.Results.Count; i++)
             {
-                PokeList.Add(new PokemonModel{ PokeName = firstPokemon.Results[i].Name, PokeUrl = firstPokemon.Results[i].Url});
+                tempPokeName = allPokemons.Results[i].Name;
+                buildNameNew = char.ToUpper(tempPokeName[0]) + tempPokeName.Substring(1).ToLower();
+                PokeList.Add(new PokemonModel{ PokeName = buildNameNew, PokeUrl = allPokemons.Results[i].Url});
             }
         }
 
@@ -96,13 +102,21 @@ namespace SOPokemonUI.ViewModels
             }
             else
             {
-                Pokemon pokemonInfo = await pokeClient.GetResourceAsync<Pokemon>(SelectedPokemon.PokeName);
+                try
+                {
+                    Pokemon pokemonInfo = await pokeClient.GetResourceAsync<Pokemon>(SelectedPokemon.PokeName);
 
-                PokeImage = new BitmapImage(new Uri(pokemonInfo.Sprites.FrontDefault, UriKind.Absolute));
-                PokemonWeight = pokemonInfo.Weight;
+                    PokeImage = new BitmapImage(new Uri(pokemonInfo.Sprites.FrontDefault, UriKind.Absolute));
+                    PokemonWeight = pokemonInfo.Weight;
 
-                NotifyOfPropertyChange(() => PokeImage);
-                NotifyOfPropertyChange(() => PokemonWeight);
+                    NotifyOfPropertyChange(() => PokeImage);
+                    NotifyOfPropertyChange(() => PokemonWeight);
+                }
+                catch
+                {
+                    MessageBox.Show($"Leider gibt es noch kein Bild zu { SelectedPokemon.PokeName }, \nbitte probiere es ein anderes mal wieder.",
+                        "Fehler beim laden...", MessageBoxButton.OK, MessageBoxImage.Exclamation);
+                }
             }
         }
 

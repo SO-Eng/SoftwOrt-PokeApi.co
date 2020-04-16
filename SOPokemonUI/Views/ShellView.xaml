@@ -38,13 +38,16 @@
         </Menu>
 
         <!--Row 2-->
-        <ListView x:Name="PokeList" Grid.Row="2" Grid.Column="1" Width="150" MinHeight="50"
-                  SelectedItem="{Binding Path=SelectedPokemon, Mode=OneWayToSource}" DisplayMemberPath="PokeName"
-                  MaxHeight="300"></ListView>
-        <Image x:Name="PokeImage" Grid.Row="2" Grid.Column="2" Grid.ColumnSpan="3" MinWidth="200" MinHeight="200" Margin="20 0 20 0" />
+        <TextBox Grid.Row="2" Grid.Column="1" Text="Suche..." Margin="0 0 0 5"/>
 
         <!--Row 3-->
-        <TextBlock x:Name="PokemonWeight" Grid.Row="3" Grid.Column="2" />
+        <ListView x:Name="PokeList" Grid.Row="3" Grid.Column="1" Grid.RowSpan="2" Width="150" MinHeight="50"
+                  SelectedItem="{Binding Path=SelectedPokemon, Mode=OneWayToSource}" DisplayMemberPath="PokeName"
+                  MaxHeight="300"></ListView>
+        <Image x:Name="PokeImage" Grid.Row="3" Grid.Column="2" Grid.ColumnSpan="3" MinWidth="150" MinHeight="150" Margin="20 0 20 0" />
+
+        <!--Row 4-->
+        <TextBlock x:Name="PokemonWeight" Grid.Row="4" Grid.Column="2" Margin="20 5 20 0"/>
 
     </Grid>
 </Window>

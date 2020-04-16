@@ -7,6 +7,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SOPokemonUI", "SOPokemonUI\
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PokeApiNet", "..\PokeApi\PokeApiNet-master\PokeApiNet\PokeApiNet.csproj", "{A9085916-B44A-421D-BAF8-10CA616E8CDD}"
 EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PokeApiNet.Tests", "..\PokeApi\PokeApiNet-master\PokeApiNet.Tests\PokeApiNet.Tests.csproj", "{3D973BBD-3AA9-421E-9196-697AC3C4AAB0}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -21,6 +23,10 @@ Global
 		{A9085916-B44A-421D-BAF8-10CA616E8CDD}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{A9085916-B44A-421D-BAF8-10CA616E8CDD}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{A9085916-B44A-421D-BAF8-10CA616E8CDD}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3D973BBD-3AA9-421E-9196-697AC3C4AAB0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3D973BBD-3AA9-421E-9196-697AC3C4AAB0}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3D973BBD-3AA9-421E-9196-697AC3C4AAB0}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3D973BBD-3AA9-421E-9196-697AC3C4AAB0}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
