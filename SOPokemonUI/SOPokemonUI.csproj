@@ -12,7 +12,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Models\" />
+    <ProjectReference Include="..\..\PokeApi\PokeApiNet-master\PokeApiNet\PokeApiNet.csproj" />
   </ItemGroup>
 
 </Project>
