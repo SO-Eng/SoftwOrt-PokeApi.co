@@ -4,8 +4,8 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:SOPokemonUI.Views"
-        mc:Ignorable="d"
-        Title="ShellView" Height="450" Width="800">
+        mc:Ignorable="d" FontSize="18" FontFamily="Segeo UI" FontWeight="Light" 
+        Title="ShellView" Height="500" Width="800">
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto" />
@@ -41,13 +41,33 @@
         <TextBox Grid.Row="2" Grid.Column="1" Text="Suche..." Margin="0 0 0 5"/>
 
         <!--Row 3-->
-        <ListView x:Name="PokeList" Grid.Row="3" Grid.Column="1" Grid.RowSpan="2" Width="150" MinHeight="50"
-                  SelectedItem="{Binding Path=SelectedPokemon, Mode=OneWayToSource}" DisplayMemberPath="PokeName"
-                  MaxHeight="300"></ListView>
-        <Image x:Name="PokeImage" Grid.Row="3" Grid.Column="2" Grid.ColumnSpan="3" MinWidth="150" MinHeight="150" Margin="20 0 20 0" />
+        <ListView x:Name="PokeList" Grid.Row="3" Grid.Column="1" Grid.RowSpan="3" Width="200" MinHeight="360"
+                      SelectedItem="{Binding Path=SelectedPokemon, Mode=OneWayToSource}" DisplayMemberPath="PokeName"
+                      MaxHeight="300"></ListView>
+        <StackPanel Orientation="Vertical" Grid.Row="3" Grid.Column="2" Grid.RowSpan="3" Margin="20 0 20 0">
+            <TextBlock x:Name="PokemonName" FontSize="24" TextAlignment="Center" Margin="0 0 0 10" Text="PokemonName" Foreground="CadetBlue" />
+            <Image x:Name="PokeImage" MinWidth="175" MinHeight="175"  MaxWidth="175" MaxHeight="175" />
+            <StackPanel Orientation="Horizontal" >
+                <TextBlock x:Name="TypeOne" Margin="0 0 10 0" Width="45" Background="Aquamarine"></TextBlock>
+                <TextBlock x:Name="TypeThree" Margin="10 0 10 0" Width="45" Background="BlueViolet"></TextBlock>
+                <TextBlock x:Name="TypeTwo" Margin="10 0 0 0" Width="45" Background="Coral"></TextBlock>
+            </StackPanel>
+            <Label MinHeight="20"></Label>
+            <DockPanel>
+                <TextBlock Text="Gewicht:" TextAlignment="Left" />
+                <TextBlock x:Name="PokemonWeight" TextAlignment="Right"/>
+            </DockPanel>
+            <DockPanel>
+                <TextBlock Text="Größe:" TextAlignment="Left" />
+                <TextBlock x:Name="PokemonHeight" TextAlignment="Right"/>
+            </DockPanel>
+            <DockPanel>
+                <TextBlock Text="Fähigkeit:" TextAlignment="Left" />
+                <TextBlock x:Name="PokemonAbility" TextAlignment="Right"/>
+            </DockPanel>
 
+        </StackPanel>
         <!--Row 4-->
-        <TextBlock x:Name="PokemonWeight" Grid.Row="4" Grid.Column="2" Margin="20 5 20 0"/>
 
     </Grid>
 </Window>

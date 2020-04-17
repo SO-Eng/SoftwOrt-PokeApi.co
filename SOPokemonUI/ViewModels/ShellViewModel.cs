@@ -67,6 +67,18 @@ namespace SOPokemonUI.ViewModels
             }
         }
 
+        private int _pokemonHeight;
+
+        public int PokemonHeight
+        {
+            get { return _pokemonHeight; }
+            set
+            {
+                _pokemonHeight = value;
+                NotifyOfPropertyChange(() => SelectedPokemon);
+            }
+        }
+
 
         #endregion
 
@@ -82,7 +94,7 @@ namespace SOPokemonUI.ViewModels
         public async void LoadPokemonPage()
         {
             NamedApiResourceList<Pokemon> allPokemons = await pokeClient.GetNamedResourcePageAsync<Pokemon>(808,0);
-
+            
             string tempPokeName;
             string buildNameNew;
 
@@ -102,22 +114,34 @@ namespace SOPokemonUI.ViewModels
             }
             else
             {
-                try
-                {
-                    Pokemon pokemonInfo = await pokeClient.GetResourceAsync<Pokemon>(SelectedPokemon.PokeName);
+                Pokemon pokemonInfo = await pokeClient.GetResourceAsync<Pokemon>(SelectedPokemon.PokeName);
 
-                    PokeImage = new BitmapImage(new Uri(pokemonInfo.Sprites.FrontDefault, UriKind.Absolute));
-                    PokemonWeight = pokemonInfo.Weight;
+                PokeImage = LoadPokemonImage(pokemonInfo);
 
-                    NotifyOfPropertyChange(() => PokeImage);
-                    NotifyOfPropertyChange(() => PokemonWeight);
-                }
-                catch
-                {
-                    MessageBox.Show($"Leider gibt es noch kein Bild zu { SelectedPokemon.PokeName }, \nbitte probiere es ein anderes mal wieder.",
-                        "Fehler beim laden...", MessageBoxButton.OK, MessageBoxImage.Exclamation);
-                }
+                PokemonWeight = pokemonInfo.Weight;
+                PokemonHeight = pokemonInfo.Height;
+
+                NotifyOfPropertyChange(() => PokeImage);
+                NotifyOfPropertyChange(() => PokemonWeight);
+                NotifyOfPropertyChange(() => PokemonHeight);
             }
+        }
+
+        private BitmapImage LoadPokemonImage(Pokemon picture)
+        {
+            BitmapImage imageTemp;
+            try
+            {
+                imageTemp = new BitmapImage(new Uri(picture.Sprites.FrontDefault, UriKind.Absolute));
+
+            }
+            catch
+            {
+                //MessageBox.Show($"Leider gibt es noch kein Bild zu { SelectedPokemon.PokeName }, \nbitte probiere es ein anderes mal wieder.",
+                //    "Fehler beim laden...", MessageBoxButton.OK, MessageBoxImage.Exclamation);
+                imageTemp = new BitmapImage(new Uri("https://www.softwort-engineering.com/downloads/pokemon/PicNA_Pokemon.png", UriKind.Absolute));
+            }
+            return imageTemp;
         }
 
         // End Application
