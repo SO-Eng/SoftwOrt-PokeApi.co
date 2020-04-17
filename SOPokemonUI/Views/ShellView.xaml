@@ -45,12 +45,12 @@
                       SelectedItem="{Binding Path=SelectedPokemon, Mode=OneWayToSource}" DisplayMemberPath="PokeName"
                       MaxHeight="300"></ListView>
         <StackPanel Orientation="Vertical" Grid.Row="3" Grid.Column="2" Grid.RowSpan="3" Margin="20 0 20 0">
-            <TextBlock x:Name="PokemonName" FontSize="24" TextAlignment="Center" Margin="0 0 0 10" Text="PokemonName" Foreground="CadetBlue" />
-            <Image x:Name="PokeImage" MinWidth="175" MinHeight="175"  MaxWidth="175" MaxHeight="175" />
+            <TextBlock x:Name="PokemonName" FontSize="24" TextAlignment="Center" Margin="0 0 0 10" Foreground="CadetBlue" />
+            <Image x:Name="PokeImage" MinWidth="175" MinHeight="175"  MaxWidth="175" MaxHeight="175" HorizontalAlignment="Center" VerticalAlignment="Center"/>
             <StackPanel Orientation="Horizontal" >
-                <TextBlock x:Name="TypeOne" Margin="0 0 10 0" Width="45" Background="Aquamarine"></TextBlock>
-                <TextBlock x:Name="TypeThree" Margin="10 0 10 0" Width="45" Background="BlueViolet"></TextBlock>
-                <TextBlock x:Name="TypeTwo" Margin="10 0 0 0" Width="45" Background="Coral"></TextBlock>
+                <TextBlock x:Name="TypeOne" Margin="0 0 10 0" Width="54" Background="Aquamarine" Foreground="White" />
+                <TextBlock x:Name="TypeThree" Margin="10 0 10 0" Width="54" Background="BlueViolet" Foreground="White" />
+                <TextBlock x:Name="TypeTwo" Margin="10 0 0 0" Width="54" Background="Coral" Foreground="White" />
             </StackPanel>
             <Label MinHeight="20"></Label>
             <DockPanel>
@@ -62,8 +62,14 @@
                 <TextBlock x:Name="PokemonHeight" TextAlignment="Right"/>
             </DockPanel>
             <DockPanel>
-                <TextBlock Text="Fähigkeit:" TextAlignment="Left" />
-                <TextBlock x:Name="PokemonAbility" TextAlignment="Right"/>
+                <TextBlock Text="Fähigkeiten:" TextAlignment="Left" Margin="0 0 10 0" />
+                <TextBlock x:Name="PokemonAbilities" TextAlignment="Right"/>
+            </DockPanel>
+            <DockPanel>
+                <TextBlock x:Name="PokemonAbilities2" TextAlignment="Right"/>
+            </DockPanel>
+            <DockPanel>
+                <TextBlock x:Name="PokemonAbilities3" TextAlignment="Right"/>
             </DockPanel>
 
         </StackPanel>

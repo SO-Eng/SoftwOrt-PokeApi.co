@@ -55,9 +55,22 @@ namespace SOPokemonUI.ViewModels
             }
         }
 
-        private int _pokemonWeight;
+        private string _pokemonName;
 
-        public int PokemonWeight
+        public string PokemonName
+        {
+            get { return _pokemonName; }
+            set
+            {
+                _pokemonName = value;
+                NotifyOfPropertyChange(() => SelectedPokemon);
+            }
+        }
+
+
+        private string _pokemonWeight;
+
+        public string PokemonWeight
         {
             get { return _pokemonWeight; }
             set
@@ -67,14 +80,62 @@ namespace SOPokemonUI.ViewModels
             }
         }
 
-        private int _pokemonHeight;
+        private string _pokemonHeight;
 
-        public int PokemonHeight
+        public string PokemonHeight
         {
             get { return _pokemonHeight; }
             set
             {
                 _pokemonHeight = value;
+                NotifyOfPropertyChange(() => SelectedPokemon);
+            }
+        }
+
+        private List<AbilityModel> _pokemonAbilityList = new List<AbilityModel>();
+
+        public List<AbilityModel> PokemonAbilityList
+        {
+            get { return _pokemonAbilityList; }
+            set
+            {
+                _pokemonAbilityList = value;
+                NotifyOfPropertyChange(() => SelectedPokemon);
+            }
+        }
+
+        private string _pokemonAbilities;
+
+        public string PokemonAbilities
+        {
+            get { return _pokemonAbilities; }
+            set
+            {
+                _pokemonAbilities = value;
+                NotifyOfPropertyChange(() => SelectedPokemon);
+            }
+        }
+
+        private string _pokemonAbilities2;
+
+        public string PokemonAbilities2
+        {
+            get { return _pokemonAbilities2; }
+            set
+            {
+                _pokemonAbilities2 = value;
+                NotifyOfPropertyChange(() => SelectedPokemon);
+            }
+        }
+
+        private string _pokemonAbilities3;
+
+        public string PokemonAbilities3
+        {
+            get { return _pokemonAbilities3; }
+            set
+            {
+                _pokemonAbilities3 = value;
                 NotifyOfPropertyChange(() => SelectedPokemon);
             }
         }
@@ -118,12 +179,42 @@ namespace SOPokemonUI.ViewModels
 
                 PokeImage = LoadPokemonImage(pokemonInfo);
 
-                PokemonWeight = pokemonInfo.Weight;
-                PokemonHeight = pokemonInfo.Height;
+                PokemonName = SelectedPokemon.PokeName;
+                PokemonWeight = (pokemonInfo.Weight / 10).ToString("##.## 'Kg'");
+                PokemonHeight = (pokemonInfo.Height / 10).ToString("#0.### 'm'");
 
+                PokemonAbilities = "";
+                PokemonAbilities2 = "";
+                PokemonAbilities3 = "";
+
+                for (int i = 0; i < pokemonInfo.Abilities.Count; i++)
+                {
+                    string tempAbility = char.ToUpper(pokemonInfo.Abilities[i].Ability.Name[0]) +
+                                         pokemonInfo.Abilities[i].Ability.Name.Substring(1).ToLower();
+                    PokemonAbilityList.Add(new AbilityModel { Ability = tempAbility });
+                }
+
+                PokemonAbilities = PokemonAbilityList.First().Ability;
+
+                if (PokemonAbilityList.Count > 1)
+                {
+                    PokemonAbilities2 = PokemonAbilityList[1].Ability;
+                }
+
+                if (PokemonAbilityList.Count > 2)
+                {
+                    PokemonAbilities3 = PokemonAbilityList[2].Ability;
+                }
+
+                NotifyOfPropertyChange(() => PokemonName);
                 NotifyOfPropertyChange(() => PokeImage);
                 NotifyOfPropertyChange(() => PokemonWeight);
                 NotifyOfPropertyChange(() => PokemonHeight);
+                NotifyOfPropertyChange(() => PokemonAbilityList);
+                NotifyOfPropertyChange(() => PokemonAbilities);
+                NotifyOfPropertyChange(() => PokemonAbilities2);
+                NotifyOfPropertyChange(() => PokemonAbilities3);
+                PokemonAbilityList.Clear();
             }
         }
 
@@ -137,8 +228,6 @@ namespace SOPokemonUI.ViewModels
             }
             catch
             {
-                //MessageBox.Show($"Leider gibt es noch kein Bild zu { SelectedPokemon.PokeName }, \nbitte probiere es ein anderes mal wieder.",
-                //    "Fehler beim laden...", MessageBoxButton.OK, MessageBoxImage.Exclamation);
                 imageTemp = new BitmapImage(new Uri("https://www.softwort-engineering.com/downloads/pokemon/PicNA_Pokemon.png", UriKind.Absolute));
             }
             return imageTemp;
