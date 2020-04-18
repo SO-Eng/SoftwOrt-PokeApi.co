@@ -6,6 +6,7 @@ namespace SOPokemonUI.Models
 {
     public class AbilityModel
     {
-        public string Ability { get; set; }
+        public string AbilitiesUrl { get; set; } //saves the URLs from all abilities of selected Pokemon
+        public int AbilityId { get; set; } //saves the Id from all abilities of selected Pokemon
     }
 }

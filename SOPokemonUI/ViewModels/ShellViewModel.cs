@@ -140,6 +140,14 @@ namespace SOPokemonUI.ViewModels
             }
         }
 
+        private int _language = 5;
+
+        public int Language
+        {
+            get { return _language; }
+            set { _language = value; }
+        }
+
 
         #endregion
 
@@ -154,16 +162,12 @@ namespace SOPokemonUI.ViewModels
 
         public async void LoadPokemonPage()
         {
-            NamedApiResourceList<Pokemon> allPokemons = await pokeClient.GetNamedResourcePageAsync<Pokemon>(808,0);
-            
-            string tempPokeName;
-            string buildNameNew;
+            NamedApiResourceList<Pokemon> allPokemons = await pokeClient.GetNamedResourcePageAsync<Pokemon>(80,0);
 
             for (int i = 0; i < allPokemons.Results.Count; i++)
             {
-                tempPokeName = allPokemons.Results[i].Name;
-                buildNameNew = char.ToUpper(tempPokeName[0]) + tempPokeName.Substring(1).ToLower();
-                PokeList.Add(new PokemonModel{ PokeName = buildNameNew, PokeUrl = allPokemons.Results[i].Url});
+                PokemonSpecies pokemonNameLang = await pokeClient.GetResourceAsync<PokemonSpecies>(allPokemons.Results[i].Name);
+                PokeList.Add(new PokemonModel { Id = i + 1, PokeNameOriginal = allPokemons.Results[i].Name, PokeName = pokemonNameLang.Names[Language].Name, PokeUrl = allPokemons.Results[i].Url});
             }
         }
 
@@ -175,39 +179,63 @@ namespace SOPokemonUI.ViewModels
             }
             else
             {
-                Pokemon pokemonInfo = await pokeClient.GetResourceAsync<Pokemon>(SelectedPokemon.PokeName);
+                PokemonSpecies pokemonNameLang = await pokeClient.GetResourceAsync<PokemonSpecies>(SelectedPokemon.PokeNameOriginal);
+                Pokemon pokemonInfo = await pokeClient.GetResourceAsync<Pokemon>(SelectedPokemon.PokeNameOriginal);
+                Ability ability = await pokeClient.GetResourceAsync<Ability>(SelectedPokemon.Id);
 
-                PokeImage = LoadPokemonImage(pokemonInfo);
+                //PokeImage = LoadPokemonImage(pokemonInfo);
+                LoadPokemonImage(pokemonInfo);
 
-                PokemonName = SelectedPokemon.PokeName;
+                //PokemonName = SelectedPokemon.PokeName;
+                PokemonName = pokemonNameLang.Names[Language].Name;
                 PokemonWeight = (pokemonInfo.Weight / 10).ToString("##.## 'Kg'");
                 PokemonHeight = (pokemonInfo.Height / 10).ToString("#0.### 'm'");
 
-                PokemonAbilities = "";
                 PokemonAbilities2 = "";
                 PokemonAbilities3 = "";
 
                 for (int i = 0; i < pokemonInfo.Abilities.Count; i++)
                 {
-                    string tempAbility = char.ToUpper(pokemonInfo.Abilities[i].Ability.Name[0]) +
-                                         pokemonInfo.Abilities[i].Ability.Name.Substring(1).ToLower();
-                    PokemonAbilityList.Add(new AbilityModel { Ability = tempAbility });
+                    PokemonAbilityList.Add(new AbilityModel { AbilitiesUrl = pokemonInfo.Abilities[i].Ability.Url, 
+                        AbilityId = Int32.Parse(pokemonInfo.Abilities[i].Ability.Url.Where(Char.IsDigit).ToArray()) });
+                    if (PokemonAbilityList[i].AbilityId < 30)
+                    {
+                        PokemonAbilityList[i].AbilityId -= 20;
+                    }
+                    else if (PokemonAbilityList[i].AbilityId < 999)
+                    {
+                        PokemonAbilityList[i].AbilityId -= 200;
+                    }
+                    else
+                    {
+                        PokemonAbilityList[i].AbilityId -= 2000;
+                    }
                 }
 
-                PokemonAbilities = PokemonAbilityList.First().Ability;
-
-                if (PokemonAbilityList.Count > 1)
+                try
                 {
-                    PokemonAbilities2 = PokemonAbilityList[1].Ability;
+                    ability = await pokeClient.GetResourceAsync<Ability>(PokemonAbilityList[0].AbilityId);
+                    PokemonAbilities = ability.Names[Language].Name;
+
+                    if (PokemonAbilityList.Count > 1)
+                    {
+                        ability = await pokeClient.GetResourceAsync<Ability>(PokemonAbilityList[1].AbilityId);
+                        PokemonAbilities2 = ability.Names[Language].Name;
+                    }
+
+                    if (PokemonAbilityList.Count > 2)
+                    {
+                        ability = await pokeClient.GetResourceAsync<Ability>(PokemonAbilityList[2].AbilityId);
+                        PokemonAbilities3 = ability.Names[Language].Name;
+                    }
                 }
-
-                if (PokemonAbilityList.Count > 2)
+                catch
                 {
-                    PokemonAbilities3 = PokemonAbilityList[2].Ability;
+                    //Console.WriteLine("Page not found: 404");
                 }
 
                 NotifyOfPropertyChange(() => PokemonName);
-                NotifyOfPropertyChange(() => PokeImage);
+                //NotifyOfPropertyChange(() => PokeImage);
                 NotifyOfPropertyChange(() => PokemonWeight);
                 NotifyOfPropertyChange(() => PokemonHeight);
                 NotifyOfPropertyChange(() => PokemonAbilityList);
@@ -218,7 +246,7 @@ namespace SOPokemonUI.ViewModels
             }
         }
 
-        private BitmapImage LoadPokemonImage(Pokemon picture)
+        private void LoadPokemonImage(Pokemon picture)
         {
             BitmapImage imageTemp;
             try
@@ -230,7 +258,11 @@ namespace SOPokemonUI.ViewModels
             {
                 imageTemp = new BitmapImage(new Uri("https://www.softwort-engineering.com/downloads/pokemon/PicNA_Pokemon.png", UriKind.Absolute));
             }
-            return imageTemp;
+
+            PokeImage = imageTemp;
+            NotifyOfPropertyChange(() => PokeImage);
+
+            //return imageTemp;
         }
 
         // End Application
