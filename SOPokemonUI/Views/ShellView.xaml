@@ -4,6 +4,7 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:SOPokemonUI.Views"
+        xmlns:cm="http://caliburnmicro.com"
         mc:Ignorable="d" FontSize="18" FontFamily="Segeo UI" FontWeight="Light" 
         Title="ShellView" Height="500" Width="800">
     <Grid>
@@ -44,36 +45,7 @@
         <ListView x:Name="PokeList" Grid.Row="3" Grid.Column="1" Grid.RowSpan="3" Width="200" MinHeight="360"
                       SelectedItem="{Binding Path=SelectedPokemon, Mode=OneWayToSource}" DisplayMemberPath="PokeName"
                       MaxHeight="300"></ListView>
-        <StackPanel Orientation="Vertical" Grid.Row="3" Grid.Column="2" Grid.RowSpan="3" Margin="20 0 20 0">
-            <TextBlock x:Name="PokemonName" FontSize="24" TextAlignment="Center" Margin="0 0 0 10" Foreground="CadetBlue" />
-            <Image x:Name="PokeImage" MinWidth="175" MinHeight="175"  MaxWidth="175" MaxHeight="175" HorizontalAlignment="Center" VerticalAlignment="Center"/>
-            <StackPanel Orientation="Horizontal" >
-                <TextBlock x:Name="TypeOne" Margin="0 0 10 0" Width="54" Background="Aquamarine" Foreground="White" />
-                <TextBlock x:Name="TypeThree" Margin="10 0 10 0" Width="54" Background="BlueViolet" Foreground="White" />
-                <TextBlock x:Name="TypeTwo" Margin="10 0 0 0" Width="54" Background="Coral" Foreground="White" />
-            </StackPanel>
-            <Label MinHeight="20"></Label>
-            <DockPanel>
-                <TextBlock Text="Gewicht:" TextAlignment="Left" />
-                <TextBlock x:Name="PokemonWeight" TextAlignment="Right"/>
-            </DockPanel>
-            <DockPanel>
-                <TextBlock Text="Größe:" TextAlignment="Left" />
-                <TextBlock x:Name="PokemonHeight" TextAlignment="Right"/>
-            </DockPanel>
-            <DockPanel>
-                <TextBlock Text="Fähigkeiten:" TextAlignment="Left" Margin="0 0 10 0" />
-                <TextBlock x:Name="PokemonAbilities" TextAlignment="Right"/>
-            </DockPanel>
-            <DockPanel>
-                <TextBlock x:Name="PokemonAbilities2" TextAlignment="Right"/>
-            </DockPanel>
-            <DockPanel>
-                <TextBlock x:Name="PokemonAbilities3" TextAlignment="Right"/>
-            </DockPanel>
-
-        </StackPanel>
-        <!--Row 4-->
-
+        <ContentControl x:Name="PokemonInfoView" Grid.Row="3" Grid.Column="3" Grid.RowSpan="3" Margin="20 0 20 0"></ContentControl>
+        <ContentControl x:Name="PokemonDescrView" Grid.Row="3" Grid.Column="4" Grid.RowSpan="3" Margin="0 0 20 0"></ContentControl>
     </Grid>
 </Window>

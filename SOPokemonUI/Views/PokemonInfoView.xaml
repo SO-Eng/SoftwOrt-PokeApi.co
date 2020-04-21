@@ -1,0 +1,41 @@
+﻿<UserControl x:Class="SOPokemonUI.Views.PokemonInfoView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:SOPokemonUI.Views"
+             mc:Ignorable="d" FontSize="18" FontFamily="Segeo UI" FontWeight="Light"
+             d:DesignHeight="364" d:DesignWidth="242">
+    <Grid>
+
+        <StackPanel Orientation="Vertical" >
+            <TextBlock x:Name="PokemonName" FontSize="24" TextAlignment="Center" Margin="0 0 0 10" Foreground="CadetBlue" />
+            <Image x:Name="PokeImage" MinWidth="175" MinHeight="175"  MaxWidth="175" MaxHeight="175" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+            <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
+                <TextBlock x:Name="TypeOne" Margin="0 0 10 0" Width="54" Background="Aquamarine" Foreground="White" />
+                <TextBlock x:Name="TypeThree" Margin="10 0 10 0" Width="54" Background="BlueViolet" Foreground="White" />
+                <TextBlock x:Name="TypeTwo" Margin="10 0 0 0" Width="54" Background="Coral" Foreground="White" />
+            </StackPanel>
+            <Label MinHeight="20"></Label>
+            <DockPanel>
+                <TextBlock Text="Gewicht:" TextAlignment="Left" />
+                <TextBlock x:Name="PokemonWeight" TextAlignment="Right"/>
+            </DockPanel>
+            <DockPanel>
+                <TextBlock Text="Größe:" TextAlignment="Left" />
+                <TextBlock x:Name="PokemonHeight" TextAlignment="Right"/>
+            </DockPanel>
+            <DockPanel>
+                <TextBlock Text="Fähigkeiten:" TextAlignment="Left" Margin="0 0 10 0" />
+                <TextBlock x:Name="PokemonAbilities" TextAlignment="Right"/>
+            </DockPanel>
+            <DockPanel>
+                <TextBlock x:Name="PokemonAbilities2" TextAlignment="Right"/>
+            </DockPanel>
+            <DockPanel>
+                <TextBlock x:Name="PokemonAbilities3" TextAlignment="Right"/>
+            </DockPanel>
+        </StackPanel>
+
+    </Grid>
+</UserControl>
