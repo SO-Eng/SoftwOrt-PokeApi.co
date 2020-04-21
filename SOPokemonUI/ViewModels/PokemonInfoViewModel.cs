@@ -17,31 +17,23 @@ namespace SOPokemonUI.ViewModels
         private int q = 0;
 
         // Initiate client
-        PokeApiClient pokeClient = new PokeApiClient();
+        readonly PokeApiClient pokeClient = new PokeApiClient();
 
         private readonly int _language;
+
         private PokemonModel _selectedPokemon;
 
         public PokemonModel SelectedPokemon
         {
             get { return _selectedPokemon; }
-            set
-            {
-                _selectedPokemon = value;
-                NotifyOfPropertyChange(() => SelectedPokemon);
-                LoadPokemonInfo();
-            }
+            set { _selectedPokemon = value; }
         }
 
         private BitmapImage _pokeImage;
         public BitmapImage PokeImage
         {
             get { return _pokeImage; }
-            set
-            {
-                _pokeImage = value;
-                //NotifyOfPropertyChange(() => SelectedPokemon);
-            }
+            set { _pokeImage = value; }
         }
 
         private string _pokemonName;
@@ -49,11 +41,7 @@ namespace SOPokemonUI.ViewModels
         public string PokemonName
         {
             get { return _pokemonName; }
-            set
-            {
-                _pokemonName = value;
-                //NotifyOfPropertyChange(() => SelectedPokemon);
-            }
+            set { _pokemonName = value; }
         }
 
 
@@ -62,11 +50,7 @@ namespace SOPokemonUI.ViewModels
         public string PokemonWeight
         {
             get { return _pokemonWeight; }
-            set
-            {
-                _pokemonWeight = value;
-                //NotifyOfPropertyChange(() => SelectedPokemon);
-            }
+            set { _pokemonWeight = value; }
         }
 
         private string _pokemonHeight;
@@ -74,11 +58,7 @@ namespace SOPokemonUI.ViewModels
         public string PokemonHeight
         {
             get { return _pokemonHeight; }
-            set
-            {
-                _pokemonHeight = value;
-                //NotifyOfPropertyChange(() => SelectedPokemon);
-            }
+            set { _pokemonHeight = value; }
         }
 
         private List<TypeModel> _pokemonTypeList = new List<TypeModel>();
@@ -119,11 +99,7 @@ namespace SOPokemonUI.ViewModels
         public List<AbilityModel> PokemonAbilityList
         {
             get { return _pokemonAbilityList; }
-            set
-            {
-                _pokemonAbilityList = value;
-                //NotifyOfPropertyChange(() => SelectedPokemon);
-            }
+            set { _pokemonAbilityList = value; }
         }
 
         private string _pokemonAbilities;
@@ -131,11 +107,7 @@ namespace SOPokemonUI.ViewModels
         public string PokemonAbilities
         {
             get { return _pokemonAbilities; }
-            set
-            {
-                _pokemonAbilities = value;
-                //NotifyOfPropertyChange(() => SelectedPokemon);
-            }
+            set { _pokemonAbilities = value; }
         }
 
         private string _pokemonAbilities2;
@@ -143,11 +115,7 @@ namespace SOPokemonUI.ViewModels
         public string PokemonAbilities2
         {
             get { return _pokemonAbilities2; }
-            set
-            {
-                _pokemonAbilities2 = value;
-                //NotifyOfPropertyChange(() => SelectedPokemon);
-            }
+            set { _pokemonAbilities2 = value; }
         }
 
         private string _pokemonAbilities3;
@@ -155,11 +123,7 @@ namespace SOPokemonUI.ViewModels
         public string PokemonAbilities3
         {
             get { return _pokemonAbilities3; }
-            set
-            {
-                _pokemonAbilities3 = value;
-                //NotifyOfPropertyChange(() => SelectedPokemon);
-            }
+            set { _pokemonAbilities3 = value; }
         }
 
         #endregion
@@ -186,86 +150,36 @@ namespace SOPokemonUI.ViewModels
         {
             PokemonSpecies pokemonNameLang = await pokeClient.GetResourceAsync<PokemonSpecies>(SelectedPokemon.PokeNameOriginal);
             Pokemon pokemonInfo = await pokeClient.GetResourceAsync<Pokemon>(SelectedPokemon.PokeNameOriginal);
-            Ability ability;
-
-            LoadPokemonImage(pokemonInfo);
-
-            LoadPokemonType(pokemonInfo); 
 
             PokemonName = pokemonNameLang.Names[_language].Name;
             PokemonWeight = (pokemonInfo.Weight / 10).ToString("##.## 'Kg'");
             PokemonHeight = (pokemonInfo.Height / 10).ToString("#0.### 'm'");
 
-            PokemonAbilities2 = "";
-            PokemonAbilities3 = "";
+            LoadPokemonImage(pokemonInfo);
 
+            LoadPokemonType(pokemonInfo);
 
-            for (int i = 0; i < pokemonInfo.Abilities.Count; i++)
-            {
-                if (p > 0)
-                {
-                    break;
-                }
-
-                PokemonAbilityList.Add(new AbilityModel
-                {
-                    AbilitiesUrl = pokemonInfo.Abilities[i].Ability.Url,
-                    AbilityId = Int32.Parse(pokemonInfo.Abilities[i].Ability.Url.Where(Char.IsDigit).ToArray())
-                });
-                if (PokemonAbilityList[i].AbilityId < 30 && PokemonAbilityList[i].AbilityId > 0)
-                {
-                    PokemonAbilityList[i].AbilityId -= 20;
-                }
-                else if (PokemonAbilityList[i].AbilityId < 999 && PokemonAbilityList[i].AbilityId > 30)
-                {
-                    PokemonAbilityList[i].AbilityId -= 200;
-                }
-                else
-                {
-                    PokemonAbilityList[i].AbilityId -= 2000;
-                }
-            }
-
-            p += 1;
-
-            try
-            {
-                ability = await pokeClient.GetResourceAsync<Ability>(PokemonAbilityList[0].AbilityId);
-                PokemonAbilities = ability.Names[_language].Name;
-
-                if (PokemonAbilityList.Count > 1)
-                {
-                    ability = await pokeClient.GetResourceAsync<Ability>(PokemonAbilityList[1].AbilityId);
-                    PokemonAbilities2 = ability.Names[_language].Name;
-                }
-
-                if (PokemonAbilityList.Count > 2)
-                {
-                    ability = await pokeClient.GetResourceAsync<Ability>(PokemonAbilityList[2].AbilityId);
-                    PokemonAbilities3 = ability.Names[_language].Name;
-                }
-            }
-            catch 
-            {
-                //
-            }
+            LoadPokemonAbility(pokemonInfo);
 
             NotifyOfPropertyChange(() => PokemonName);
             NotifyOfPropertyChange(() => PokemonWeight);
             NotifyOfPropertyChange(() => PokemonHeight);
-            NotifyOfPropertyChange(() => PokemonAbilities);
-            NotifyOfPropertyChange(() => PokemonAbilities2);
-            NotifyOfPropertyChange(() => PokemonAbilities3);
-            PokemonAbilityList.Clear();
-            p = 0;
+
+            NotifyOfPropertyChange(() => PokeImage);
+
+            if (SelectedPokemon != null)
+            {
+                pokeClient.ClearResourceCache();
+                pokeClient.ClearCache();
+            }
         }
 
-        private void LoadPokemonImage(Pokemon pokemonPic)
+        private void LoadPokemonImage(Pokemon pokemonInfo)
         {
             BitmapImage imageTemp;
             try
             {
-                imageTemp = new BitmapImage(new Uri(pokemonPic.Sprites.FrontDefault, UriKind.Absolute));
+                imageTemp = new BitmapImage(new Uri(pokemonInfo.Sprites.FrontDefault, UriKind.Absolute));
 
             }
             catch
@@ -274,12 +188,11 @@ namespace SOPokemonUI.ViewModels
             }
 
             PokeImage = imageTemp;
-            NotifyOfPropertyChange(() => PokeImage);
         }
 
         private async void LoadPokemonType(Pokemon pokemonInfo)
         {
-            Type type = await pokeClient.GetResourceAsync<Type>(SelectedPokemon.Id);
+            Type type;
 
             TypeOne = "";
             TypeTwo = "";
@@ -287,7 +200,7 @@ namespace SOPokemonUI.ViewModels
 
             for (int i = 0; i < pokemonInfo.Types.Count; i++)
             {
-                if (q > 0)
+                if (p > 0)
                 {
                     break;
                 }
@@ -310,7 +223,7 @@ namespace SOPokemonUI.ViewModels
                 }
             }
 
-            q = 1;
+            p = 1;
 
             try
             {
@@ -334,11 +247,75 @@ namespace SOPokemonUI.ViewModels
                 //Console.WriteLine("Page not found: 404");
             }
 
-            //NotifyOfPropertyChange(() => PokemonAbilityList);
             NotifyOfPropertyChange(() => TypeOne);
             NotifyOfPropertyChange(() => TypeTwo);
             NotifyOfPropertyChange(() => TypeThree);
             PokemonTypeList.Clear();
+            p = 0;
+        }
+
+        private async void LoadPokemonAbility(Pokemon pokemonInfo)
+        {
+            Ability ability;
+
+            PokemonAbilities2 = "";
+            PokemonAbilities3 = "";
+
+
+            for (int i = 0; i < pokemonInfo.Abilities.Count; i++)
+            {
+                if (q > 0)
+                {
+                    break;
+                }
+
+                PokemonAbilityList.Add(new AbilityModel
+                {
+                    AbilitiesUrl = pokemonInfo.Abilities[i].Ability.Url,
+                    AbilityId = Int32.Parse(pokemonInfo.Abilities[i].Ability.Url.Where(Char.IsDigit).ToArray())
+                });
+                if (PokemonAbilityList[i].AbilityId < 30 && PokemonAbilityList[i].AbilityId > 0)
+                {
+                    PokemonAbilityList[i].AbilityId -= 20;
+                }
+                else if (PokemonAbilityList[i].AbilityId < 999 && PokemonAbilityList[i].AbilityId > 30)
+                {
+                    PokemonAbilityList[i].AbilityId -= 200;
+                }
+                else
+                {
+                    PokemonAbilityList[i].AbilityId -= 2000;
+                }
+            }
+
+            q += 1;
+
+            try
+            {
+                ability = await pokeClient.GetResourceAsync<Ability>(PokemonAbilityList[0].AbilityId);
+                PokemonAbilities = ability.Names[_language].Name;
+
+                if (PokemonAbilityList.Count > 1)
+                {
+                    ability = await pokeClient.GetResourceAsync<Ability>(PokemonAbilityList[1].AbilityId);
+                    PokemonAbilities2 = ability.Names[_language].Name;
+                }
+
+                if (PokemonAbilityList.Count > 2)
+                {
+                    ability = await pokeClient.GetResourceAsync<Ability>(PokemonAbilityList[2].AbilityId);
+                    PokemonAbilities3 = ability.Names[_language].Name;
+                }
+            }
+            catch
+            {
+                //
+            }
+
+            NotifyOfPropertyChange(() => PokemonAbilities);
+            NotifyOfPropertyChange(() => PokemonAbilities2);
+            NotifyOfPropertyChange(() => PokemonAbilities3);
+            PokemonAbilityList.Clear();
             q = 0;
         }
 

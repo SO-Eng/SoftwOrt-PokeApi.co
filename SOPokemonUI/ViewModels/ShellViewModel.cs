@@ -40,7 +40,6 @@ namespace SOPokemonUI.ViewModels
                 _selectedPokemon = value;
                 PokemonInfo();
                 PokemonDescription();
-                NotifyOfPropertyChange(() => SelectedPokemon);
             }
         }
 
@@ -102,7 +101,7 @@ namespace SOPokemonUI.ViewModels
             if (SelectedPokemon != null)
             {
                 PokemonInfoView = new PokemonInfoViewModel(Language, SelectedPokemon);
-                Items.Add(new PokemonInfoViewModel(Language, SelectedPokemon));
+                Items.Add(PokemonInfoView);
             }
         }
 
@@ -111,7 +110,7 @@ namespace SOPokemonUI.ViewModels
             if (SelectedPokemon != null)
             {
                 PokemonDescrView = new PokemonDescrViewModel();
-                Items.Add(new PokemonDescrViewModel());
+                Items.Add(PokemonDescrView);
             }
         }
 
