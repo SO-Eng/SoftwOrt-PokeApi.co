@@ -9,6 +9,13 @@
     <Grid>
 
         <StackPanel Orientation="Vertical" Margin="3 0 3 0" MinWidth="220">
+            <StackPanel.Background>
+                <RadialGradientBrush>
+                    <GradientStop Color="White"/>
+                    <GradientStop Color="LightCoral" Offset="1"/>
+                    <GradientStop Color="#FFE0BABA" Offset="0.702"/>
+                </RadialGradientBrush>
+            </StackPanel.Background>
             <TextBlock x:Name="PokemonName" FontSize="24" TextAlignment="Center" Margin="0 0 0 10" Foreground="CadetBlue" />
             <Image x:Name="PokeImage" MinWidth="175" MinHeight="175"  MaxWidth="175" MaxHeight="175" HorizontalAlignment="Center" VerticalAlignment="Center"/>
             <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">

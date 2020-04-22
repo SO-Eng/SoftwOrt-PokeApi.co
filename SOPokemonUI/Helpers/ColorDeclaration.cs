@@ -21,7 +21,7 @@ namespace SOPokemonUI.Helpers
                     tempColor = Brushes.SaddleBrown;
                     break;
                 case 2: //Flying
-                    tempColor = Brushes.Blue;
+                    tempColor = Brushes.DeepSkyBlue;
                     break;
                 case 3: //Poison
                     tempColor = Brushes.Purple;
@@ -45,7 +45,7 @@ namespace SOPokemonUI.Helpers
                     tempColor = Brushes.Coral;
                     break;
                 case 10: //Water
-                    tempColor = Brushes.CornflowerBlue;
+                    tempColor = Brushes.Blue;
                     break;
                 case 11: //Grass
                     tempColor = Brushes.Green;
@@ -57,16 +57,16 @@ namespace SOPokemonUI.Helpers
                     tempColor = Brushes.CornflowerBlue;
                     break;
                 case 14: //Ice
-                    tempColor = Brushes.DeepSkyBlue;
+                    tempColor = Brushes.LightSkyBlue;
                     break;
                 case 15: //Dragon
                     tempColor = Brushes.BlueViolet;
                     break;
                 case 16: //Dark
-                    tempColor = Brushes.CornflowerBlue;
+                    tempColor = Brushes.DarkGray;
                     break;
                 case 17: //Fairy
-                    tempColor = Brushes.DeepSkyBlue;
+                    tempColor = Brushes.MediumVioletRed;
                     break;
                 case 18: //Unknown
                     tempColor = Brushes.Sienna;

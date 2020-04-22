@@ -180,26 +180,20 @@ namespace SOPokemonUI.ViewModels
 
         #region Methods
 
-        public PokemonInfoViewModel()
-        {
-            
-        }
-
         public PokemonInfoViewModel(int language,PokemonModel selectedPokemon)
         {
             _language = language;
             SelectedPokemon = selectedPokemon;
-            //_pokeClient = pokeClient;
             LoadPokemonInfo();
         }
 
         public async void LoadPokemonInfo()
         {
-            PokemonSpecies pokemonNameLang = await pokeClient.GetResourceAsync<PokemonSpecies>(SelectedPokemon.PokeNameOriginal);
+            PokemonSpecies pokemonNameLang = await pokeClient.GetResourceAsync<PokemonSpecies>(SelectedPokemon.Id);
             Pokemon pokemonInfo = await pokeClient.GetResourceAsync<Pokemon>(SelectedPokemon.PokeNameOriginal);
 
             PokemonName = pokemonNameLang.Names[_language].Name;
-            PokemonWeight = (pokemonInfo.Weight / 10).ToString("##.## 'Kg'");
+            PokemonWeight = (pokemonInfo.Weight / 10).ToString("#0.## 'Kg'");
             PokemonHeight = (pokemonInfo.Height / 10).ToString("#0.### 'm'");
 
             PokeImage = LoadPokemonImage(pokemonInfo);
@@ -241,7 +235,7 @@ namespace SOPokemonUI.ViewModels
             return imageTemp;
         }
 
-        private async void LoadPokemonType(Pokemon pokemonInfo)
+        private void LoadPokemonType(Pokemon pokemonInfo)
         {
             Type type = new Type();
 

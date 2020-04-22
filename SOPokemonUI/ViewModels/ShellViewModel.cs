@@ -87,12 +87,12 @@ namespace SOPokemonUI.ViewModels
 
         public async void LoadPokemonList()
         {
-            NamedApiResourceList<Pokemon> allPokemons = await pokeClient.GetNamedResourcePageAsync<Pokemon>(30,0);
+            NamedApiResourceList<Pokemon> allPokemons = await pokeClient.GetNamedResourcePageAsync<Pokemon>(30,0); // MAX limit: 807
 
-            for (int i = 0; i < allPokemons.Results.Count; i++)
+            for (int i = 1; i <= allPokemons.Results.Count; i++)
             {
-                PokemonSpecies pokemonNameLang = await pokeClient.GetResourceAsync<PokemonSpecies>(allPokemons.Results[i].Name);
-                PokeList.Add(new PokemonModel { Id = i + 1, PokeNameOriginal = allPokemons.Results[i].Name, PokeName = pokemonNameLang.Names[Language].Name, PokeUrl = allPokemons.Results[i].Url});
+                PokemonSpecies pokemonNameLang = await pokeClient.GetResourceAsync<PokemonSpecies>(i);
+                PokeList.Add(new PokemonModel { Id = i, PokeNameOriginal = allPokemons.Results[i - 1].Name, PokeName = pokemonNameLang.Names[Language].Name, PokeUrl = allPokemons.Results[i - 1].Url});
             }
         }
 
@@ -109,7 +109,7 @@ namespace SOPokemonUI.ViewModels
         {
             if (SelectedPokemon != null)
             {
-                PokemonDescrView = new PokemonDescrViewModel();
+                PokemonDescrView = new PokemonDescrViewModel(Language, SelectedPokemon);
                 Items.Add(PokemonDescrView);
             }
         }
