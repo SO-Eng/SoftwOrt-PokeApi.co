@@ -2,11 +2,14 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Windows.Controls;
+using System.Windows.Forms.VisualStyles;
+using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using Caliburn.Micro;
 using PokeApiNet;
 using SOPokemonUI.Models;
-using Type = PokeApiNet.Type;
+//using Type = PokeApiNet.Type;
 
 namespace SOPokemonUI.ViewModels
 {
@@ -76,6 +79,14 @@ namespace SOPokemonUI.ViewModels
             get { return _typeOne; }
             set { _typeOne = value; }
         }
+        private Brush _typeOneBgBrush;
+
+        public Brush TypeOneBgBrush
+        {
+            get { return _typeOneBgBrush; }
+            set { _typeOneBgBrush = value; }
+        }
+
 
         private string _typeTwo;
 
@@ -155,17 +166,17 @@ namespace SOPokemonUI.ViewModels
             PokemonWeight = (pokemonInfo.Weight / 10).ToString("##.## 'Kg'");
             PokemonHeight = (pokemonInfo.Height / 10).ToString("#0.### 'm'");
 
-            LoadPokemonImage(pokemonInfo);
+            PokeImage = LoadPokemonImage(pokemonInfo);
 
             LoadPokemonType(pokemonInfo);
 
             LoadPokemonAbility(pokemonInfo);
 
+            NotifyOfPropertyChange(() => PokeImage);
+
             NotifyOfPropertyChange(() => PokemonName);
             NotifyOfPropertyChange(() => PokemonWeight);
             NotifyOfPropertyChange(() => PokemonHeight);
-
-            NotifyOfPropertyChange(() => PokeImage);
 
             if (SelectedPokemon != null)
             {
@@ -174,27 +185,32 @@ namespace SOPokemonUI.ViewModels
             }
         }
 
-        private void LoadPokemonImage(Pokemon pokemonInfo)
+        private BitmapImage LoadPokemonImage(Pokemon pokemonInfo)
         {
-            BitmapImage imageTemp;
+
+            BitmapImage imageTemp = new BitmapImage();
             try
             {
-                imageTemp = new BitmapImage(new Uri(pokemonInfo.Sprites.FrontDefault, UriKind.Absolute));
-
+                Uri source = new Uri(pokemonInfo.Sprites.FrontDefault, UriKind.Absolute);
+                imageTemp.BeginInit();
+                imageTemp.CacheOption = BitmapCacheOption.None;
+                imageTemp.UriSource = source;
+                imageTemp.EndInit();
             }
             catch
             {
                 imageTemp = new BitmapImage(new Uri("https://www.softwort-engineering.com/downloads/pokemon/PicNA_Pokemon.png", UriKind.Absolute));
             }
 
-            PokeImage = imageTemp;
+            return imageTemp;
         }
 
         private async void LoadPokemonType(Pokemon pokemonInfo)
         {
-            Type type;
+            PokeApiNet.Type type;
 
             TypeOne = "";
+            TypeOneBgBrush = Brushes.White;
             TypeTwo = "";
             TypeThree = "";
 
@@ -227,18 +243,19 @@ namespace SOPokemonUI.ViewModels
 
             try
             {
-                type = await pokeClient.GetResourceAsync<Type>(PokemonTypeList[0].TypeId);
+                type = await pokeClient.GetResourceAsync<PokeApiNet.Type>(PokemonTypeList[0].TypeId);
                 TypeOne = type.Names[3].Name;
+                TypeOneBgBrush = Brushes.DarkRed;
 
                 if (PokemonTypeList.Count > 1)
                 {
-                    type = await pokeClient.GetResourceAsync<Type>(PokemonTypeList[1].TypeId);
+                    type = await pokeClient.GetResourceAsync<PokeApiNet.Type>(PokemonTypeList[1].TypeId);
                     TypeTwo = type.Names[3].Name;
                 }
 
                 if (PokemonTypeList.Count > 2)
                 {
-                    type = await pokeClient.GetResourceAsync<Type>(PokemonTypeList[2].TypeId);
+                    type = await pokeClient.GetResourceAsync<PokeApiNet.Type>(PokemonTypeList[2].TypeId);
                     TypeThree = type.Names[3].Name;
                 }
             }
@@ -248,6 +265,7 @@ namespace SOPokemonUI.ViewModels
             }
 
             NotifyOfPropertyChange(() => TypeOne);
+            NotifyOfPropertyChange(() => TypeOneBgBrush);
             NotifyOfPropertyChange(() => TypeTwo);
             NotifyOfPropertyChange(() => TypeThree);
             PokemonTypeList.Clear();

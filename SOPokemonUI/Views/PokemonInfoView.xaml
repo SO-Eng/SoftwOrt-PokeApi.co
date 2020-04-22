@@ -12,9 +12,9 @@
             <TextBlock x:Name="PokemonName" FontSize="24" TextAlignment="Center" Margin="0 0 0 10" Foreground="CadetBlue" />
             <Image x:Name="PokeImage" MinWidth="175" MinHeight="175"  MaxWidth="175" MaxHeight="175" HorizontalAlignment="Center" VerticalAlignment="Center"/>
             <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
-                <TextBlock x:Name="TypeOne" Margin="0 0 10 0" Width="54" Background="Aquamarine" Foreground="White" />
-                <TextBlock x:Name="TypeThree" Margin="10 0 10 0" Width="54" Background="BlueViolet" Foreground="White" />
-                <TextBlock x:Name="TypeTwo" Margin="10 0 0 0" Width="54" Background="Coral" Foreground="White" />
+                <TextBlock x:Name="TypeOne" Margin="0 0 10 0" Width="54" Background="{Binding Path=TypeOneBgBrush}" FontSize="16" TextAlignment="Center" VerticalAlignment="Center" />
+                <TextBlock x:Name="TypeThree" Margin="10 0 10 0" Width="54" Background="BlueViolet" FontSize="16" TextAlignment="Center" VerticalAlignment="Center" />
+                <TextBlock x:Name="TypeTwo" Margin="10 0 0 0" Width="54" Background="Coral" FontSize="16" TextAlignment="Center" VerticalAlignment="Center" />
             </StackPanel>
             <Label MinHeight="20"></Label>
             <DockPanel>
