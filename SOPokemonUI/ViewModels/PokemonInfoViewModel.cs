@@ -8,7 +8,10 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using Caliburn.Micro;
 using PokeApiNet;
+using SOPokemonUI.Helpers;
 using SOPokemonUI.Models;
+using Type = PokeApiNet.Type;
+
 //using Type = PokeApiNet.Type;
 
 namespace SOPokemonUI.ViewModels
@@ -72,6 +75,21 @@ namespace SOPokemonUI.ViewModels
             set { _pokemonTypeList = value; }
         }
 
+        public bool IsTypeDeclared
+        {
+            get
+            {
+                bool output = true;
+
+                if (TypeOne?.Length > 0)
+                {
+                    output = false;
+                }
+
+                return output;
+            }
+        }
+
         private string _typeOne;
 
         public string TypeOne
@@ -87,7 +105,6 @@ namespace SOPokemonUI.ViewModels
             set { _typeOneBgBrush = value; }
         }
 
-
         private string _typeTwo;
 
         public string TypeTwo
@@ -96,14 +113,33 @@ namespace SOPokemonUI.ViewModels
             set { _typeTwo = value; }
         }
 
+        private Brush _typeTwoBrBrush;
+
+        public Brush TypeTwoBgBrush
+        {
+            get { return _typeTwoBrBrush; }
+            set { _typeTwoBrBrush = value; }
+        }
+
         private string _typeThree;
 
         public string TypeThree
         {
             get { return _typeThree; }
-            set { _typeThree = value; }
+            set
+            {
+                _typeThree = value;
+
+            }
         }
 
+        private Brush _typeThreeBgBrush;
+
+        public Brush TypeThreeBgBrush
+        {
+            get { return _typeThreeBgBrush; }
+            set { _typeThreeBgBrush = value; }
+        }
 
         private List<AbilityModel> _pokemonAbilityList = new List<AbilityModel>();
 
@@ -207,10 +243,9 @@ namespace SOPokemonUI.ViewModels
 
         private async void LoadPokemonType(Pokemon pokemonInfo)
         {
-            PokeApiNet.Type type;
+            Type type = new Type();
 
             TypeOne = "";
-            TypeOneBgBrush = Brushes.White;
             TypeTwo = "";
             TypeThree = "";
 
@@ -241,35 +276,76 @@ namespace SOPokemonUI.ViewModels
 
             p = 1;
 
-            try
+            switch (PokemonTypeList.Count)
             {
-                type = await pokeClient.GetResourceAsync<PokeApiNet.Type>(PokemonTypeList[0].TypeId);
-                TypeOne = type.Names[3].Name;
-                TypeOneBgBrush = Brushes.DarkRed;
-
-                if (PokemonTypeList.Count > 1)
-                {
-                    type = await pokeClient.GetResourceAsync<PokeApiNet.Type>(PokemonTypeList[1].TypeId);
-                    TypeTwo = type.Names[3].Name;
-                }
-
-                if (PokemonTypeList.Count > 2)
-                {
-                    type = await pokeClient.GetResourceAsync<PokeApiNet.Type>(PokemonTypeList[2].TypeId);
-                    TypeThree = type.Names[3].Name;
-                }
-            }
-            catch
-            {
-                //Console.WriteLine("Page not found: 404");
+                case 1:
+                    TypeTextboxOne(type);
+                    break;
+                case 2:
+                    TypeTextboxTwo(type);
+                    break;
+                default:
+                    TypeTextboxThree(type);
+                    break;
             }
 
+            p = 0;
+        }
+
+        private async void TypeTextboxOne(Type type)
+        {
+            type = await pokeClient.GetResourceAsync<Type>(PokemonTypeList[0].TypeId);
+            TypeThree = type.Names[3].Name;
+            TypeThreeBgBrush = SetTypeColor(type);
+
+            NotifyOfPropertyChange(() => IsTypeDeclared);
+            NotifyOfPropertyChange(() => TypeThree);
+            NotifyOfPropertyChange(() => TypeThreeBgBrush);
+            PokemonTypeList.Clear();
+        }
+
+        private async void TypeTextboxTwo(Type type)
+        {
+            type = await pokeClient.GetResourceAsync<Type>(PokemonTypeList[0].TypeId);
+            TypeOne = type.Names[3].Name;
+            TypeOneBgBrush = SetTypeColor(type);
+            type = await pokeClient.GetResourceAsync<Type>(PokemonTypeList[1].TypeId);
+            TypeTwo = type.Names[3].Name;
+            TypeTwoBgBrush = SetTypeColor(type);
+
+            NotifyOfPropertyChange(() => IsTypeDeclared);
             NotifyOfPropertyChange(() => TypeOne);
             NotifyOfPropertyChange(() => TypeOneBgBrush);
             NotifyOfPropertyChange(() => TypeTwo);
-            NotifyOfPropertyChange(() => TypeThree);
+            NotifyOfPropertyChange(() => TypeTwoBgBrush);
             PokemonTypeList.Clear();
-            p = 0;
+        }
+
+        private async void TypeTextboxThree(Type type)
+        {
+            type = await pokeClient.GetResourceAsync<Type>(PokemonTypeList[0].TypeId);
+            TypeOne = type.Names[3].Name;
+            TypeOneBgBrush = SetTypeColor(type);
+            type = await pokeClient.GetResourceAsync<Type>(PokemonTypeList[1].TypeId);
+            TypeTwo = type.Names[3].Name;
+            TypeTwoBgBrush = SetTypeColor(type);
+            type = await pokeClient.GetResourceAsync<Type>(PokemonTypeList[2].TypeId);
+            TypeThree = type.Names[3].Name;
+            TypeThreeBgBrush = SetTypeColor(type);
+
+            NotifyOfPropertyChange(() => IsTypeDeclared);
+            NotifyOfPropertyChange(() => TypeOne);
+            NotifyOfPropertyChange(() => TypeOneBgBrush);
+            NotifyOfPropertyChange(() => TypeTwo);
+            NotifyOfPropertyChange(() => TypeTwoBgBrush);
+            NotifyOfPropertyChange(() => TypeThree);
+            NotifyOfPropertyChange(() => TypeThreeBgBrush);
+            PokemonTypeList.Clear();
+        }
+
+        private Brush SetTypeColor(Type type)
+        {
+            return ColorDeclaration.FillTypeColorTextBoxes(type.Id);
         }
 
         private async void LoadPokemonAbility(Pokemon pokemonInfo)

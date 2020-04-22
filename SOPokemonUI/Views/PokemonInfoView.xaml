@@ -5,16 +5,18 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:SOPokemonUI.Views"
              mc:Ignorable="d" FontSize="18" FontFamily="Segeo UI" FontWeight="Light"
-             d:DesignHeight="364" d:DesignWidth="242">
+             d:DesignHeight="354" d:DesignWidth="242" BorderBrush="#A0A0A0" BorderThickness="1">
     <Grid>
 
-        <StackPanel Orientation="Vertical" >
+        <StackPanel Orientation="Vertical" Margin="3 0 3 0" MinWidth="220">
             <TextBlock x:Name="PokemonName" FontSize="24" TextAlignment="Center" Margin="0 0 0 10" Foreground="CadetBlue" />
             <Image x:Name="PokeImage" MinWidth="175" MinHeight="175"  MaxWidth="175" MaxHeight="175" HorizontalAlignment="Center" VerticalAlignment="Center"/>
             <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
                 <TextBlock x:Name="TypeOne" Margin="0 0 10 0" Width="54" Background="{Binding Path=TypeOneBgBrush}" FontSize="16" TextAlignment="Center" VerticalAlignment="Center" />
-                <TextBlock x:Name="TypeThree" Margin="10 0 10 0" Width="54" Background="BlueViolet" FontSize="16" TextAlignment="Center" VerticalAlignment="Center" />
-                <TextBlock x:Name="TypeTwo" Margin="10 0 0 0" Width="54" Background="Coral" FontSize="16" TextAlignment="Center" VerticalAlignment="Center" />
+                <TextBlock x:Name="TypeThree" Margin="10 0 10 0" Width="54" Background="{Binding Path=TypeThreeBgBrush}" 
+                           Visibility="{Binding IsTypeDeclared, Converter={StaticResource BooleanToVisibilityConverter}, FallbackValue=Collapsed}" 
+                           FontSize="16" TextAlignment="Center" VerticalAlignment="Center" />
+                <TextBlock x:Name="TypeTwo" Margin="10 0 0 0" Width="54" Background="{Binding Path=TypeTwoBgBrush}" FontSize="16" TextAlignment="Center" VerticalAlignment="Center" />
             </StackPanel>
             <Label MinHeight="20"></Label>
             <DockPanel>

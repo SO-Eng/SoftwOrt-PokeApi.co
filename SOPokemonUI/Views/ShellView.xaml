@@ -44,7 +44,7 @@
         <!--Row 3-->
         <ListView x:Name="PokeList" Grid.Row="3" Grid.Column="1" Grid.RowSpan="3" Width="200" MinHeight="360"
                       SelectedItem="{Binding Path=SelectedPokemon, Mode=OneWayToSource}" DisplayMemberPath="PokeName"
-                      MaxHeight="300"></ListView>
+                      MaxHeight="360"></ListView>
         <ContentControl x:Name="PokemonInfoView" Grid.Row="3" Grid.Column="3" Grid.RowSpan="3" Margin="20 0 20 0"></ContentControl>
         <ContentControl x:Name="PokemonDescrView" Grid.Row="3" Grid.Column="4" Grid.RowSpan="3" Margin="0 0 20 0"></ContentControl>
     </Grid>
