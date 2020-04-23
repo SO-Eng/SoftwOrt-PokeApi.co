@@ -26,23 +26,23 @@
                 <TextBlock x:Name="TypeTwo" Margin="10 0 0 0" Width="54" Background="{Binding Path=TypeTwoBgBrush}" FontSize="16" TextAlignment="Center" VerticalAlignment="Center" />
             </StackPanel>
             <Label MinHeight="20"></Label>
-            <DockPanel>
-                <TextBlock Text="Gewicht:" TextAlignment="Left" />
+            <DockPanel Margin="0 0 0 3">
+                <TextBlock x:Name="PokemonWeightLanguage" TextAlignment="Left" />
                 <TextBlock x:Name="PokemonWeight" TextAlignment="Right"/>
             </DockPanel>
-            <DockPanel>
-                <TextBlock Text="Größe:" TextAlignment="Left" />
+            <DockPanel Margin="0 0 0 3">
+                <TextBlock x:Name="PokemonHeightLanguage" TextAlignment="Left" />
                 <TextBlock x:Name="PokemonHeight" TextAlignment="Right"/>
             </DockPanel>
             <DockPanel>
-                <TextBlock Text="Fähigkeiten:" TextAlignment="Left" Margin="0 0 10 0" />
-                <TextBlock x:Name="PokemonAbilities" TextAlignment="Right"/>
+                <TextBlock x:Name="PokemonAbilityLanguage" TextAlignment="Left" Margin="0 0 10 0" />
+                <TextBlock x:Name="PokemonAbilities" TextAlignment="Right" Foreground="Blue" Margin="0 0 0 3"/>
             </DockPanel>
             <DockPanel>
-                <TextBlock x:Name="PokemonAbilities2" TextAlignment="Right"/>
+                <TextBlock x:Name="PokemonAbilities2" TextAlignment="Right" Foreground="Green" Margin="0 0 0 3"/>
             </DockPanel>
             <DockPanel>
-                <TextBlock x:Name="PokemonAbilities3" TextAlignment="Right"/>
+                <TextBlock x:Name="PokemonAbilities3" TextAlignment="Right" Foreground="DarkRed" />
             </DockPanel>
         </StackPanel>
 

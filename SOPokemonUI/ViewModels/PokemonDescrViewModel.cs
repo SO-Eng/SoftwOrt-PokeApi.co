@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
+using System.Text.RegularExpressions;
 using Caliburn.Micro;
 using PokeApiNet;
 using SOPokemonUI.Models;
@@ -9,9 +11,10 @@ namespace SOPokemonUI.ViewModels
 {
     public class PokemonDescrViewModel : Screen
     {
-        private readonly int _language;
 
         #region Fields
+        private readonly string _language;
+        private int q = 0;
 
         // Initiate client
         PokeApiClient pokeClient = new PokeApiClient();
@@ -130,13 +133,37 @@ namespace SOPokemonUI.ViewModels
             set { _pokemonDescription = value; }
         }
 
+        private string _abilityFlavorOne;
 
-        private List<DescriptionModel> _pokemonDescrList = new List<DescriptionModel>();
-
-        public List<DescriptionModel> PokemonDescrList
+        public string AbilityFlavorOne
         {
-            get { return _pokemonDescrList; }
-            set { _pokemonDescrList = value; }
+            get { return _abilityFlavorOne; }
+            set { _abilityFlavorOne = value; }
+        }
+
+        private string _abilityFlavorTwo;
+
+        public string AbilityFlavorTwo
+        {
+            get { return _abilityFlavorTwo; }
+            set { _abilityFlavorTwo = value; }
+        }
+
+        private string _abilityFlavorThree;
+
+        public string AbilityFlavorThree
+        {
+            get { return _abilityFlavorThree; }
+            set { _abilityFlavorThree = value; }
+        }
+
+
+        private List<AbilityModel> _pokemonAbilityList = new List<AbilityModel>();
+
+        public List<AbilityModel> PokemonAbilityList
+        {
+            get { return _pokemonAbilityList; }
+            set { _pokemonAbilityList = value; }
         }
 
         #endregion
@@ -145,7 +172,7 @@ namespace SOPokemonUI.ViewModels
 
         #region Methods
 
-        public PokemonDescrViewModel(int language, PokemonModel selectedPokemon)
+        public PokemonDescrViewModel(string language, PokemonModel selectedPokemon)
         {
             _language = language;
             SelectedPokemon = selectedPokemon;
@@ -162,20 +189,117 @@ namespace SOPokemonUI.ViewModels
 
             LoadStatValues(pokemonInfo);
 
+            LoadAbilityFlavorText(pokemonInfo);
+        }
 
+        private async void LoadAbilityFlavorText(Pokemon pokemonInfo)
+        {
+            Ability abilityFlavorText;
+
+            for (int i = 0; i < pokemonInfo.Abilities.Count; i++)
+            {
+                if (q > 0)
+                {
+                    break;
+                }
+
+                PokemonAbilityList.Add(new AbilityModel
+                {
+                    AbilitiesUrl = pokemonInfo.Abilities[i].Ability.Url,
+                    AbilityId = Int32.Parse(pokemonInfo.Abilities[i].Ability.Url.Where(Char.IsDigit).ToArray())
+                });
+                if (PokemonAbilityList[i].AbilityId < 30 && PokemonAbilityList[i].AbilityId > 0)
+                {
+                    PokemonAbilityList[i].AbilityId -= 20;
+                }
+                else if (PokemonAbilityList[i].AbilityId < 999 && PokemonAbilityList[i].AbilityId > 30)
+                {
+                    PokemonAbilityList[i].AbilityId -= 200;
+                }
+                else
+                {
+                    PokemonAbilityList[i].AbilityId -= 2000;
+                }
+            }
+
+            q += 1;
+
+            try
+            {
+                for (int i = 0; i < PokemonAbilityList.Count; i++)
+                {
+                    abilityFlavorText = await pokeClient.GetResourceAsync<Ability>(PokemonAbilityList[i].AbilityId);
+                    if (AbilityFlavorOne == null)
+                    {
+                        for (int j = 0; i < abilityFlavorText.FlavorTextEntries.Count; j++)
+                        {
+                            if (abilityFlavorText.FlavorTextEntries[j].Language.Name == _language)
+                            {
+                                AbilityFlavorOne = abilityFlavorText.FlavorTextEntries[j].FlavorText;
+                                AbilityFlavorOne = String.Join("", AbilityFlavorOne.Where(c => c != '\n' && c != '\r' && c != '\t'));
+                                break;
+                            }
+                        }
+                    }
+
+                    if (AbilityFlavorTwo == null && i == 1)
+                    {
+                        for (int k = 0; k < abilityFlavorText.FlavorTextEntries.Count; k++)
+                        {
+                            if (abilityFlavorText.FlavorTextEntries[k].Language.Name == _language)
+                            {
+                                AbilityFlavorTwo = abilityFlavorText.FlavorTextEntries[k].FlavorText;
+                                AbilityFlavorTwo = String.Join("", AbilityFlavorTwo.Where(c => c != '\n' && c != '\r' && c != '\t'));
+                                break;
+                            }
+                        }
+                    }
+
+                    if (AbilityFlavorThree == null && i == 2)
+                    {
+                        for (int l = 0; l < abilityFlavorText.FlavorTextEntries.Count; l++)
+                        {
+                            if (abilityFlavorText.FlavorTextEntries[l].Language.Name == _language)
+                            {
+                                AbilityFlavorThree = abilityFlavorText.FlavorTextEntries[l].FlavorText;
+                                AbilityFlavorThree = String.Join("", AbilityFlavorThree.Where(c => c != '\n' && c != '\r' && c != '\t'));
+                                break;
+                            }
+                        }
+                    }
+                }
+            }
+            catch
+            {
+                //
+            }
+
+            NotifyOfPropertyChange(() => AbilityFlavorOne);
+            NotifyOfPropertyChange(() => AbilityFlavorTwo);
+            NotifyOfPropertyChange(() => AbilityFlavorThree);
+            PokemonAbilityList.Clear();
+            q = 0;
         }
 
         private async void LoadPokemonFlavorText(Pokemon pokemonInfo)
         {
             PokemonSpecies flavorText = await pokeClient.GetResourceAsync<PokemonSpecies>(SelectedPokemon.Id);
 
-            for (int i = 0; i < flavorText.FlavorTextEntries.Count; i++)
+            try
             {
-                if (flavorText.FlavorTextEntries[i].Language.Name == "de")
+                for (int i = 0; i < flavorText.FlavorTextEntries.Count; i++)
                 {
-                    PokemonDescription = flavorText.FlavorTextEntries[i].FlavorText;
-                    break;
+                    if (flavorText.FlavorTextEntries[i].Language.Name == _language)
+                    {
+                        PokemonDescription = flavorText.FlavorTextEntries[i].FlavorText;
+                        PokemonDescription = String.Join("", PokemonDescription.Where(c => c != '\n' && c != '\r' && c != '\t'));
+                        break;
+                    }
                 }
+            }
+            catch
+            {
+                //
             }
             
             NotifyOfPropertyChange(() => PokemonDescription);
@@ -185,64 +309,77 @@ namespace SOPokemonUI.ViewModels
         {
             Stat stat;
 
-            stat = await pokeClient.GetResourceAsync<Stat>(1);
-            for (int i = 0; i < stat.Names.Count; i++)
+            try
             {
-                if (stat.Names[i].Language.Name == "de")
+                stat = await pokeClient.GetResourceAsync<Stat>(1);
+                for (int i = 0; i < stat.Names.Count; i++)
                 {
-                    HpLanguage = stat.Names[i].Name;
-                    break;
+                    if (stat.Names[i].Language.Name == _language)
+                    {
+                        HpLanguage = stat.Names[i].Name;
+                        break;
+                    }
+                    HpLanguage = stat.Names[5].Name;
+                }
+
+                stat = await pokeClient.GetResourceAsync<Stat>(2);
+                for (int i = 0; i < stat.Names.Count; i++)
+                {
+                    if (stat.Names[i].Language.Name == _language)
+                    {
+                        ApLanguage = stat.Names[i].Name;
+                        break;
+                    }
+                    ApLanguage = stat.Names[5].Name;
+                }
+
+                stat = await pokeClient.GetResourceAsync<Stat>(3);
+                for (int i = 0; i < stat.Names.Count; i++)
+                {
+                    if (stat.Names[i].Language.Name == _language)
+                    {
+                        DefenseLanguage = stat.Names[i].Name;
+                        break;
+                    }
+                    DefenseLanguage = stat.Names[5].Name;
+                }
+
+                stat = await pokeClient.GetResourceAsync<Stat>(4);
+                for (int i = 0; i < stat.Names.Count; i++)
+                {
+                    if (stat.Names[i].Language.Name == _language)
+                    {
+                        ApSpecialLanguage = stat.Names[i].Name;
+                        break;
+                    }
+                    ApSpecialLanguage = stat.Names[5].Name;
+                }
+
+                stat = await pokeClient.GetResourceAsync<Stat>(5);
+                for (int i = 0; i < stat.Names.Count; i++)
+                {
+                    if (stat.Names[i].Language.Name == _language)
+                    {
+                        DefenseSpecialLanguage = stat.Names[i].Name;
+                        break;
+                    }
+                    DefenseSpecialLanguage = stat.Names[5].Name;
+                }
+
+                stat = await pokeClient.GetResourceAsync<Stat>(6);
+                for (int i = 0; i < stat.Names.Count; i++)
+                {
+                    if (stat.Names[i].Language.Name == _language)
+                    {
+                        SpeedLanguage = stat.Names[i].Name;
+                        break;
+                    }
+                    SpeedLanguage = stat.Names[5].Name;
                 }
             }
-
-            stat = await pokeClient.GetResourceAsync<Stat>(2);
-            for (int i = 0; i < stat.Names.Count; i++)
+            catch
             {
-                if (stat.Names[i].Language.Name == "de")
-                {
-                    ApLanguage = stat.Names[2].Name;
-                    break;
-                }
-            }
-
-            stat = await pokeClient.GetResourceAsync<Stat>(3);
-            for (int i = 0; i < stat.Names.Count; i++)
-            {
-                if (stat.Names[i].Language.Name == "de")
-                {
-                    DefenseLanguage = stat.Names[2].Name;
-                    break;
-                }
-            }
-
-            stat = await pokeClient.GetResourceAsync<Stat>(4);
-            for (int i = 0; i < stat.Names.Count; i++)
-            {
-                if (stat.Names[i].Language.Name == "de")
-                {
-                    ApSpecialLanguage = stat.Names[2].Name;
-                    break;
-                }
-            }
-
-            stat = await pokeClient.GetResourceAsync<Stat>(5);
-            for (int i = 0; i < stat.Names.Count; i++)
-            {
-                if (stat.Names[i].Language.Name == "de")
-                {
-                    DefenseSpecialLanguage = stat.Names[2].Name;
-                    break;
-                }
-            }
-
-            stat = await pokeClient.GetResourceAsync<Stat>(6);
-            for (int i = 0; i < stat.Names.Count; i++)
-            {
-                if (stat.Names[i].Language.Name == "de")
-                {
-                    SpeedLanguage = stat.Names[2].Name;
-                    break;
-                }
+                //
             }
 
             NotifyOfPropertyChange(() => HpLanguage);
@@ -255,12 +392,19 @@ namespace SOPokemonUI.ViewModels
 
         private void LoadStatValues(Pokemon pokemonInfo)
         {
-            HpValue = pokemonInfo.Stats[5].BaseStat;
-            ApValue = pokemonInfo.Stats[4].BaseStat;
-            DefenseValue = pokemonInfo.Stats[3].BaseStat;
-            ApSpecialValue = pokemonInfo.Stats[2].BaseStat;
-            DefenseSpecialValue = pokemonInfo.Stats[1].BaseStat;
-            SpeedValue = pokemonInfo.Stats[0].BaseStat;
+            try
+            {
+                HpValue = pokemonInfo.Stats[5].BaseStat;
+                ApValue = pokemonInfo.Stats[4].BaseStat;
+                DefenseValue = pokemonInfo.Stats[3].BaseStat;
+                ApSpecialValue = pokemonInfo.Stats[2].BaseStat;
+                DefenseSpecialValue = pokemonInfo.Stats[1].BaseStat;
+                SpeedValue = pokemonInfo.Stats[0].BaseStat;
+            }
+            catch
+            {
+                //
+            }
 
             NotifyOfPropertyChange(() => HpValue);
             NotifyOfPropertyChange(() => ApValue);

@@ -44,9 +44,9 @@ namespace SOPokemonUI.ViewModels
         }
 
 
-        private int _language = 5;
+        private string _language = "de";
 
-        public int Language
+        public string Language
         {
             get { return _language; }
             set { _language = value; }
@@ -84,7 +84,7 @@ namespace SOPokemonUI.ViewModels
             LoadPokemonList();
         }
 
-
+        // Fill ListView with all Pokemons in selected language and save them in PokemonModel
         public async void LoadPokemonList()
         {
             NamedApiResourceList<Pokemon> allPokemons = await pokeClient.GetNamedResourcePageAsync<Pokemon>(30,0); // MAX limit: 807
@@ -92,10 +92,17 @@ namespace SOPokemonUI.ViewModels
             for (int i = 1; i <= allPokemons.Results.Count; i++)
             {
                 PokemonSpecies pokemonNameLang = await pokeClient.GetResourceAsync<PokemonSpecies>(i);
-                PokeList.Add(new PokemonModel { Id = i, PokeNameOriginal = allPokemons.Results[i - 1].Name, PokeName = pokemonNameLang.Names[Language].Name, PokeUrl = allPokemons.Results[i - 1].Url});
+                for (int j = 0; j < pokemonNameLang.Names.Count; j++)
+                {
+                    if (pokemonNameLang.Names[j].Language.Name == _language)
+                    {
+                        PokeList.Add(new PokemonModel { Id = i, PokeNameOriginal = allPokemons.Results[i - 1].Name, PokeName = pokemonNameLang.Names[j].Name, PokeUrl = allPokemons.Results[i - 1].Url });
+                    }
+                }
             }
         }
 
+        // Load PokemonInfoView to ShellView
         public void PokemonInfo()
         {
             if (SelectedPokemon != null)
@@ -105,6 +112,7 @@ namespace SOPokemonUI.ViewModels
             }
         }
 
+        // Load PokemonDescrView to ShellView
         public void PokemonDescription()
         {
             if (SelectedPokemon != null)
