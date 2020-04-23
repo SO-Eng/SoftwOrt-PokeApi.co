@@ -57,7 +57,7 @@ namespace SOPokemonUI.ViewModels
 
         private string _defenseLanguage;
 
-        public string DefensLanguage
+        public string DefenseLanguage
         {
             get { return _defenseLanguage; }
             set { _defenseLanguage = value; }
@@ -121,6 +121,16 @@ namespace SOPokemonUI.ViewModels
             set { _speedValue = value; }
         }
 
+
+        private string _pokemonDescription;
+        
+        public string PokemonDescription
+        {
+            get { return _pokemonDescription; }
+            set { _pokemonDescription = value; }
+        }
+
+
         private List<DescriptionModel> _pokemonDescrList = new List<DescriptionModel>();
 
         public List<DescriptionModel> PokemonDescrList
@@ -146,29 +156,101 @@ namespace SOPokemonUI.ViewModels
         {
             Pokemon pokemonInfo = await pokeClient.GetResourceAsync<Pokemon>(SelectedPokemon.PokeNameOriginal);
 
-            LoadStatValues(pokemonInfo);
+            LoadPokemonFlavorText(pokemonInfo);
 
             LoadStatLanguages(pokemonInfo);
+
+            LoadStatValues(pokemonInfo);
+
+
+        }
+
+        private async void LoadPokemonFlavorText(Pokemon pokemonInfo)
+        {
+            PokemonSpecies flavorText = await pokeClient.GetResourceAsync<PokemonSpecies>(SelectedPokemon.Id);
+
+            for (int i = 0; i < flavorText.FlavorTextEntries.Count; i++)
+            {
+                if (flavorText.FlavorTextEntries[i].Language.Name == "de")
+                {
+                    PokemonDescription = flavorText.FlavorTextEntries[i].FlavorText;
+                    break;
+                }
+            }
+            
+            NotifyOfPropertyChange(() => PokemonDescription);
         }
 
         private async void LoadStatLanguages(Pokemon pokemonInfo)
         {
-            for (int i = 0; i < pokemonInfo.Stats.Count; i++)
+            Stat stat;
+
+            stat = await pokeClient.GetResourceAsync<Stat>(1);
+            for (int i = 0; i < stat.Names.Count; i++)
             {
-                PokemonDescrList.Add(new DescriptionModel { StatId = i + 1 } );
+                if (stat.Names[i].Language.Name == "de")
+                {
+                    HpLanguage = stat.Names[i].Name;
+                    break;
+                }
             }
 
-            for (int i = pokemonInfo.Stats.Count; i < 0; i--)
+            stat = await pokeClient.GetResourceAsync<Stat>(2);
+            for (int i = 0; i < stat.Names.Count; i++)
             {
-                PokemonDescrList.Add(new DescriptionModel{ StatUrl = pokemonInfo.Stats[i].Stat.Url });
+                if (stat.Names[i].Language.Name == "de")
+                {
+                    ApLanguage = stat.Names[2].Name;
+                    break;
+                }
             }
 
-            Stat stat = await pokeClient.GetResourceAsync<Stat>(1);
+            stat = await pokeClient.GetResourceAsync<Stat>(3);
+            for (int i = 0; i < stat.Names.Count; i++)
+            {
+                if (stat.Names[i].Language.Name == "de")
+                {
+                    DefenseLanguage = stat.Names[2].Name;
+                    break;
+                }
+            }
 
-            HpLanguage = stat.Names[2].Name;
+            stat = await pokeClient.GetResourceAsync<Stat>(4);
+            for (int i = 0; i < stat.Names.Count; i++)
+            {
+                if (stat.Names[i].Language.Name == "de")
+                {
+                    ApSpecialLanguage = stat.Names[2].Name;
+                    break;
+                }
+            }
+
+            stat = await pokeClient.GetResourceAsync<Stat>(5);
+            for (int i = 0; i < stat.Names.Count; i++)
+            {
+                if (stat.Names[i].Language.Name == "de")
+                {
+                    DefenseSpecialLanguage = stat.Names[2].Name;
+                    break;
+                }
+            }
+
+            stat = await pokeClient.GetResourceAsync<Stat>(6);
+            for (int i = 0; i < stat.Names.Count; i++)
+            {
+                if (stat.Names[i].Language.Name == "de")
+                {
+                    SpeedLanguage = stat.Names[2].Name;
+                    break;
+                }
+            }
 
             NotifyOfPropertyChange(() => HpLanguage);
-            PokemonDescrList.Clear();
+            NotifyOfPropertyChange(() => ApLanguage);
+            NotifyOfPropertyChange(() => DefenseLanguage);
+            NotifyOfPropertyChange(() => ApSpecialLanguage);
+            NotifyOfPropertyChange(() => DefenseSpecialLanguage);
+            NotifyOfPropertyChange(() => SpeedLanguage);
         }
 
         private void LoadStatValues(Pokemon pokemonInfo)

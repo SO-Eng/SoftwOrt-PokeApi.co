@@ -5,34 +5,44 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:SOPokemonUI.Views"
              mc:Ignorable="d" FontSize="18" FontFamily="Segeo UI" FontWeight="Light"
-             d:DesignHeight="354" d:DesignWidth="300" BorderBrush="#A0A0A0" BorderThickness="1"
+             d:DesignHeight="400" d:DesignWidth="300" 
              Background="White">
-    <Grid MinHeight="50" MinWidth="250">
-        <StackPanel Orientation="Vertical" Margin="5 0 5 0">
-        <DockPanel Margin="0 0 0 5">
-            <TextBlock x:Name="HpLanguage" Text="Energiepunkte:" TextAlignment="Left"/>
-            <TextBlock x:Name="HpValue" TextAlignment="Right" />
-        </DockPanel>
-        <DockPanel Margin="0 0 0 5">
-            <TextBlock x:Name="ApLanguage" Text="Angriffskraft:" TextAlignment="Left" Background="WhiteSmoke"/>
-            <TextBlock x:Name="ApValue" TextAlignment="Right" Background="WhiteSmoke"/>
-        </DockPanel>
-        <DockPanel Margin="0 0 0 5">
-            <TextBlock x:Name="DefenseLanguage" Text="Verteidigungswert:" TextAlignment="Left"/>
-            <TextBlock x:Name="DefenseValue" TextAlignment="Right" />
-        </DockPanel>
-        <DockPanel Margin="0 0 0 5">
-            <TextBlock x:Name="ApSpecialLanguage" Text="Spezialangriff:" TextAlignment="Left" Background="WhiteSmoke"/>
-            <TextBlock x:Name="ApSpecialValue" TextAlignment="Right" Background="WhiteSmoke" />
-        </DockPanel>
-        <DockPanel Margin="0 0 0 5">
-            <TextBlock x:Name="DefenseSpecialLanguage" Text="Spezialverteidigung:" TextAlignment="Left"/>
-            <TextBlock x:Name="DefenseSpecialValue" TextAlignment="Right" />
-        </DockPanel>
-        <DockPanel Margin="0 0 0 5">
-            <TextBlock x:Name="SpeedLanguage" Text="Initiative:" TextAlignment="Left" Background="WhiteSmoke"/>
-            <TextBlock x:Name="SpeedValue" TextAlignment="Right"  Background="WhiteSmoke"/>
-        </DockPanel>
+    <Grid MinHeight="50" MinWidth="300" MaxWidth="300">
+        <StackPanel Orientation="Vertical">
+            <StackPanel Orientation="Vertical">
+                <!--MinHeight ggf. erhoehen!!-->
+                <TextBlock x:Name="PokemonDescription" TextWrapping="Wrap" TextAlignment="Center" MinHeight="42" Margin="5 3 5 5" FontSize="14" ></TextBlock>
+                <Label MinHeight="14" Background="LightCoral" />
+            </StackPanel>
+            <StackPanel Orientation="Vertical" Margin="5 0 5 0">
+                <DockPanel Margin="0 0 0 5">
+                    <TextBlock x:Name="HpLanguage" TextAlignment="Left"/>
+                    <TextBlock x:Name="HpValue" TextAlignment="Right" />
+                </DockPanel>
+                <DockPanel Margin="0 0 0 5">
+                    <TextBlock x:Name="ApLanguage" TextAlignment="Left" Background="WhiteSmoke"/>
+                    <TextBlock x:Name="ApValue" TextAlignment="Right" Background="WhiteSmoke"/>
+                </DockPanel>
+                <DockPanel Margin="0 0 0 5">
+                    <TextBlock x:Name="DefenseLanguage" TextAlignment="Left"/>
+                    <TextBlock x:Name="DefenseValue" TextAlignment="Right" />
+                </DockPanel>
+                <DockPanel Margin="0 0 0 5">
+                    <TextBlock x:Name="ApSpecialLanguage" TextAlignment="Left" Background="WhiteSmoke"/>
+                    <TextBlock x:Name="ApSpecialValue" TextAlignment="Right" Background="WhiteSmoke" />
+                </DockPanel>
+                <DockPanel Margin="0 0 0 5">
+                    <TextBlock x:Name="DefenseSpecialLanguage" TextAlignment="Left"/>
+                    <TextBlock x:Name="DefenseSpecialValue" TextAlignment="Right" />
+                </DockPanel>
+                <DockPanel Margin="0 0 0 5">
+                    <TextBlock x:Name="SpeedLanguage" TextAlignment="Left" Background="WhiteSmoke"/>
+                    <TextBlock x:Name="SpeedValue" TextAlignment="Right"  Background="WhiteSmoke"/>
+                </DockPanel>
+                </StackPanel>
+            <StackPanel>
+                <Label MinHeight="14" Background="LightCoral"></Label>
+            </StackPanel>
         </StackPanel>
     </Grid>
 </UserControl>

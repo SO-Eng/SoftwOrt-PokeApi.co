@@ -6,7 +6,7 @@
         xmlns:local="clr-namespace:SOPokemonUI.Views"
         xmlns:cm="http://caliburnmicro.com"
         mc:Ignorable="d" FontSize="18" FontFamily="Segeo UI" FontWeight="Light" 
-        Title="SoftwOrt-PokeDex" Height="500" Width="825" MinWidth="825" Background="LightCoral">
+        Title="SoftwOrt-PokeDex" Height="525" MinHeight="525" Width="830" MinWidth="880" Background="LightCoral">
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto" />
@@ -59,7 +59,7 @@
         <TextBox Grid.Row="2" Grid.Column="1" Text="Suche..." Margin="0 0 0 5"/>
 
         <!--Row 3-->
-        <ListView x:Name="PokeList" Grid.Row="3" Grid.Column="1" Grid.RowSpan="3" Width="200" MinHeight="360"
+        <ListView x:Name="PokeList" Grid.Row="3" Grid.Column="1" Grid.RowSpan="3" Width="200" MinHeight="400"
                       SelectedItem="{Binding Path=SelectedPokemon, Mode=OneWayToSource}" DisplayMemberPath="PokeName"
                       MaxHeight="360"></ListView>
         <ContentControl x:Name="PokemonInfoView" Grid.Row="3" Grid.Column="3" Grid.RowSpan="3" Margin="20 0 20 0"></ContentControl>
