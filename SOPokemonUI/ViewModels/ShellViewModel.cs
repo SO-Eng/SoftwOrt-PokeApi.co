@@ -1,15 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Drawing;
-using System.Linq;
-using System.Net.Mime;
-using System.Runtime.CompilerServices;
-using System.Text;
-using System.Threading;
-using System.Windows;
-using System.Windows.Media.Imaging;
-using System.Xml.Serialization;
-using Caliburn.Micro;
+﻿using Caliburn.Micro;
 using PokeApiNet;
 using SOPokemonUI.Models;
 

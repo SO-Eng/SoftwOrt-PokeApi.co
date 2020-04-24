@@ -3,11 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Net.Http;
-using System.Reflection.Metadata;
-using System.Text;
 using System.Threading.Tasks;
-using System.Windows.Controls;
-using System.Windows.Forms.VisualStyles;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using Caliburn.Micro;
@@ -16,7 +12,6 @@ using SOPokemonUI.Helpers;
 using SOPokemonUI.Models;
 using Type = PokeApiNet.Type;
 
-//using Type = PokeApiNet.Type;
 
 namespace SOPokemonUI.ViewModels
 {
@@ -230,7 +225,7 @@ namespace SOPokemonUI.ViewModels
                 }
             }
 
-            LoadPokemonImage(pokemonInfo);
+            await LoadPokemonImage(pokemonInfo);
 
             LoadPokemonType(pokemonInfo);
 
@@ -266,7 +261,7 @@ namespace SOPokemonUI.ViewModels
         private async Task LoadPokemonImage(Pokemon pokemonInfo)
         {
 
-            BitmapImage imageTemp = null;
+            BitmapImage imageTemp;
             var httpClient = new HttpClient();
 
             using (var response = await httpClient.GetAsync(pokemonInfo.Sprites.FrontDefault))
@@ -298,8 +293,6 @@ namespace SOPokemonUI.ViewModels
 
         private void LoadPokemonType(Pokemon pokemonInfo)
         {
-            Type type = new Type();
-
             for (int i = 0; i < pokemonInfo.Types.Count; i++)
             {
                 if (p > 0)
@@ -330,21 +323,22 @@ namespace SOPokemonUI.ViewModels
             switch (PokemonTypeList.Count)
             {
                 case 1:
-                    TypeTextboxOne(type);
+                    TypeTextboxOne();
                     break;
                 case 2:
-                    TypeTextboxTwo(type);
+                    TypeTextboxTwo();
                     break;
                 default:
-                    TypeTextboxThree(type);
+                    TypeTextboxThree();
                     break;
             }
 
             p = 0;
         }
 
-        private async void TypeTextboxOne(Type type)
+        private async void TypeTextboxOne()
         {
+            Type type;
             try
             {
                 for (int i = 0; i < PokemonTypeList.Count; i++)
@@ -375,8 +369,10 @@ namespace SOPokemonUI.ViewModels
             PokemonTypeList.Clear();
         }
 
-        private async void TypeTextboxTwo(Type type)
+        private async void TypeTextboxTwo()
         {
+            Type type;
+
             try
             {
                 for (int i = 0; i < PokemonTypeList.Count; i++)
@@ -421,8 +417,10 @@ namespace SOPokemonUI.ViewModels
             PokemonTypeList.Clear();
         }
 
-        private async void TypeTextboxThree(Type type)
+        private async void TypeTextboxThree()
         {
+            Type type;
+
             try
             {
                 for (int i = 0; i < PokemonTypeList.Count; i++)

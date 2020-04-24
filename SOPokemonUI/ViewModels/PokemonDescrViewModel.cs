@@ -1,8 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Text.RegularExpressions;
 using Caliburn.Micro;
 using PokeApiNet;
 using SOPokemonUI.Models;
@@ -183,9 +181,9 @@ namespace SOPokemonUI.ViewModels
         {
             Pokemon pokemonInfo = await pokeClient.GetResourceAsync<Pokemon>(SelectedPokemon.PokeNameOriginal);
 
-            LoadPokemonFlavorText(pokemonInfo);
+            LoadPokemonFlavorText();
 
-            LoadStatLanguages(pokemonInfo);
+            LoadStatLanguages();
 
             LoadStatValues(pokemonInfo);
 
@@ -281,7 +279,7 @@ namespace SOPokemonUI.ViewModels
             q = 0;
         }
 
-        private async void LoadPokemonFlavorText(Pokemon pokemonInfo)
+        private async void LoadPokemonFlavorText()
         {
             PokemonSpecies flavorText = await pokeClient.GetResourceAsync<PokemonSpecies>(SelectedPokemon.Id);
 
@@ -305,7 +303,7 @@ namespace SOPokemonUI.ViewModels
             NotifyOfPropertyChange(() => PokemonDescription);
         }
 
-        private async void LoadStatLanguages(Pokemon pokemonInfo)
+        private async void LoadStatLanguages()
         {
             Stat stat;
 
