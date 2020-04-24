@@ -24,6 +24,7 @@ namespace SOPokemonUI.ViewModels
         // Initiate client
         readonly PokeApiClient pokeClient = new PokeApiClient();
 
+        private LoadPokemonPic getPokemonPic;
         private readonly string _language;
 
         private PokemonModel _selectedPokemon;
@@ -260,34 +261,10 @@ namespace SOPokemonUI.ViewModels
         // Method to load image of selected pokemon
         private async Task LoadPokemonImage(Pokemon pokemonInfo)
         {
+            getPokemonPic = new LoadPokemonPic(pokemonInfo.Sprites.FrontDefault);
+            PokemonImageModel pIM = await getPokemonPic.LoadPokemonImage();
+            PokeImage = pIM.PokemonImage;
 
-            BitmapImage imageTemp;
-            var httpClient = new HttpClient();
-
-            using (var response = await httpClient.GetAsync(pokemonInfo.Sprites.FrontDefault))
-            {
-                if (response.IsSuccessStatusCode)
-                {
-                    using (var uri = new MemoryStream())
-                    {
-                        await response.Content.CopyToAsync(uri);
-                        uri.Seek(0, SeekOrigin.Begin);
-
-                        imageTemp = new BitmapImage();
-                        imageTemp.BeginInit();
-                        imageTemp.CacheOption = BitmapCacheOption.OnLoad;
-                        imageTemp.StreamSource = uri;
-                        imageTemp.EndInit();
-                        imageTemp.Freeze();
-                    }
-                }
-                else
-                {
-                    imageTemp = new BitmapImage(new Uri("https://www.softwort-engineering.com/downloads/pokemon/PicNA_Pokemon.png", UriKind.Absolute));
-                }
-            }
-
-            PokeImage = imageTemp;
             NotifyOfPropertyChange(() => PokeImage);
         }
 
@@ -568,6 +545,7 @@ namespace SOPokemonUI.ViewModels
             PokemonAbilityList.Clear();
             q = 0;
         }
+
 
         #endregion
     }

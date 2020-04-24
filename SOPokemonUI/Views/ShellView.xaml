@@ -6,11 +6,13 @@
         xmlns:local="clr-namespace:SOPokemonUI.Views"
         xmlns:cm="http://caliburnmicro.com"
         mc:Ignorable="d" FontSize="18" FontFamily="Segeo UI" FontWeight="Light" 
-        Title="SoftwOrt-PokeDex" Height="525" MinHeight="525" Width="830" MinWidth="880" Background="LightCoral">
+        Title="SoftwOrt-PokeDex" Height="715" MinHeight="715" Width="830" MinWidth="880" Background="LightCoral">
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto" />
             <RowDefinition Height="20" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
             <RowDefinition Height="Auto" />
             <RowDefinition Height="Auto" />
             <RowDefinition Height="Auto" />
@@ -64,5 +66,8 @@
                       MaxHeight="360"></ListView>
         <ContentControl x:Name="PokemonInfoView" Grid.Row="3" Grid.Column="3" Grid.RowSpan="3" Margin="20 0 20 0"></ContentControl>
         <ContentControl x:Name="PokemonDescrView" Grid.Row="3" Grid.Column="4" Grid.RowSpan="3" Margin="0 0 20 0"></ContentControl>
+
+        <!--Row 4-->
+        <ContentControl x:Name="PokemonEvoView" Grid.Row="6" Grid.Column="3" Grid.ColumnSpan="3" Margin="20 20 25 0" HorizontalAlignment="Stretch"></ContentControl>
     </Grid>
 </Window>

@@ -29,6 +29,7 @@ namespace SOPokemonUI.ViewModels
                 _selectedPokemon = value;
                 PokemonInfo();
                 PokemonDescription();
+                PokemonEvolutions();
             }
         }
 
@@ -63,6 +64,18 @@ namespace SOPokemonUI.ViewModels
             }
         }
 
+        private Screen _pokemonEvoView;
+
+        public Screen PokemonEvoView
+        {
+            get { return _pokemonEvoView; }
+            set
+            {
+                _pokemonEvoView = value;
+                NotifyOfPropertyChange(() => PokemonEvoView);
+            }
+        }
+
         #endregion
 
 
@@ -76,7 +89,7 @@ namespace SOPokemonUI.ViewModels
         // Fill ListView with all Pokemons in selected language and save them in PokemonModel
         public async void LoadPokemonList()
         {
-            NamedApiResourceList<Pokemon> allPokemons = await pokeClient.GetNamedResourcePageAsync<Pokemon>(30,0); // MAX limit: 807
+            NamedApiResourceList<Pokemon> allPokemons = await pokeClient.GetNamedResourcePageAsync<Pokemon>(31,0); // MAX limit: 807
 
             for (int i = 1; i <= allPokemons.Results.Count; i++)
             {
@@ -110,6 +123,16 @@ namespace SOPokemonUI.ViewModels
                 Items.Add(PokemonDescrView);
             }
         }
+
+        private void PokemonEvolutions()
+        {
+            if (SelectedPokemon != null)
+            {
+                PokemonEvoView = new PokemonEvoViewModel(Language, SelectedPokemon, PokeList);
+                Items.Add(PokemonEvoView);
+            }
+        }
+
 
         // End Application
         public void Exit()

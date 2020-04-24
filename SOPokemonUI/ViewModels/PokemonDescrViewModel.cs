@@ -188,6 +188,7 @@ namespace SOPokemonUI.ViewModels
             LoadStatValues(pokemonInfo);
 
             LoadAbilityFlavorText(pokemonInfo);
+
         }
 
         private async void LoadAbilityFlavorText(Pokemon pokemonInfo)
