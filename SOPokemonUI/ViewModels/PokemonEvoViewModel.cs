@@ -12,7 +12,6 @@ using Caliburn.Micro;
 using PokeApiNet;
 using SOPokemonUI.Helpers;
 using SOPokemonUI.Models;
-using Brush = System.Drawing.Brush;
 
 namespace SOPokemonUI.ViewModels
 {
@@ -214,6 +213,10 @@ namespace SOPokemonUI.ViewModels
             Pokemon pokemonInfo;
             EvolutionChain evoChain = await pokeClient.GetResourceAsync<EvolutionChain>(evoId);
 
+            PokeImageBasis = null;
+            PokeImageEvoOne = null;
+            PokeImageEvoTwo = null;
+
             try
             {
                 PokemonSpecies pokemonBasis = await pokeClient.GetResourceAsync<PokemonSpecies>(evoChain.Chain.Species.Name);
@@ -274,6 +277,9 @@ namespace SOPokemonUI.ViewModels
 
         private void CompareSelectedPokemon()
         {
+            StackPanelEvoOneBg = null;
+            StackPanelEvoTwoBg = null;
+            StackPanelEvoThreeBg = null;
 
             if (SelectedPokemon.PokeName == PokemonBasisName)
             {
@@ -309,6 +315,28 @@ namespace SOPokemonUI.ViewModels
             selectedStackPanel.Freeze();
 
             return selectedStackPanel;
+        }
+
+        public void SelectBasisPokemon()
+        {
+            int idSelection = _pokeList.First(x => x.PokeName == PokemonBasisName).Id;
+
+            
+
+            SelectedPokemon.Id = 1;
+            SelectedPokemon.PokeNameOriginal = "bulbasaur";
+            SelectedPokemon.PokeName = "Bulbasaur";
+            SelectedPokemon.PokeUrl = "https://pokeapi.co/api/v2/pokemon/1/";
+            
+            ShellViewModel sVM = new ShellViewModel();
+            //sVM.SelectedPokemon = SelectedPokemon;
+            sVM.PokeList.Select(PokemonModel => 1);
+            sVM.PokemonInfo();
+
+            //LoadPokemonEvolutions();
+            //SelectedPokemon.PokeName = PokemonBasisName;
+            //MessageBox.Show($"Das ist {PokemonBasisName} oder {PokeImageBasis.StreamSource}");
+            //NotifyOfPropertyChange(() => SelectedPokemon);
         }
 
         #endregion

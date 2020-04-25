@@ -34,7 +34,7 @@ namespace SOPokemonUI.ViewModels
         }
 
 
-        private string _language = "de";
+        private string _language = "en";
 
         public string Language
         {
@@ -89,7 +89,7 @@ namespace SOPokemonUI.ViewModels
         // Fill ListView with all Pokemons in selected language and save them in PokemonModel
         public async void LoadPokemonList()
         {
-            NamedApiResourceList<Pokemon> allPokemons = await pokeClient.GetNamedResourcePageAsync<Pokemon>(31,0); // MAX limit: 807
+            NamedApiResourceList<Pokemon> allPokemons = await pokeClient.GetNamedResourcePageAsync<Pokemon>(34,0); // MAX limit: 807
 
             for (int i = 1; i <= allPokemons.Results.Count; i++)
             {

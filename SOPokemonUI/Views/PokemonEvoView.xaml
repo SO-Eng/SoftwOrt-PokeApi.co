@@ -4,6 +4,7 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:SOPokemonUI.Views"
+             xmlns:cm="http://caliburnmicro.com"
              mc:Ignorable="d" FontSize="18" FontFamily="Segeo UI" FontWeight="Light"
              d:DesignHeight="170" d:DesignWidth="500" BorderBrush="#A0A0A0" BorderThickness="1">
     <Grid>
@@ -12,8 +13,10 @@
             <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
                 <StackPanel x:Name="EvoStackPanelOne" Orientation="Vertical" Background="{Binding Path=StackPanelEvoOneBg}" >
                     <TextBlock x:Name="BasisHeader" Text="Basis Pokemon" MinWidth="150" TextAlignment="Center"/>
-                    <Image x:Name="PokeImageBasis" MinWidth="75" MinHeight="75"  MaxWidth="75" MaxHeight="75" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="0 10"></Image>
-                    <TextBlock x:Name="PokemonBasisName" Text="PokemonName" TextAlignment="Center" Margin="0 0 0 5" Foreground="CadetBlue"></TextBlock>
+                    <Image x:Name="PokeImageBasis" MinWidth="75" MinHeight="75"  MaxWidth="75" MaxHeight="75" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="0 10"
+                           cm:Message.Attach="[Event MouseLeftButtonUp] = [Action SelectBasisPokemon()]" ></Image>
+                    <TextBlock x:Name="PokemonBasisName" Text="PokemonName" TextAlignment="Center" Margin="0 0 0 5" Foreground="CadetBlue"
+                               cm:Message.Attach="[Event MouseLeftButtonUp] = [Action SelectBasisPokemon()]"  ></TextBlock>
                 </StackPanel>
                 <StackPanel x:Name="EvoStackPanelTwo" Orientation="Vertical" Margin="20 0" Background="{Binding Path=StackPanelEvoTwoBg}" >
                     <TextBlock x:Name="EvoOneHeader" Text="1. Evulotion" MinWidth="150" TextAlignment="Center"/>
