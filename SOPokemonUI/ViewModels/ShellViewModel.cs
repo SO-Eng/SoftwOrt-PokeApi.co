@@ -13,7 +13,7 @@ namespace SOPokemonUI.ViewModels
 
         private readonly IEventAggregator _events;
 
-        private string _language = "de";
+        private string _language;
 
         public string Language
         {
@@ -34,12 +34,14 @@ namespace SOPokemonUI.ViewModels
             _events.SubscribeOnUIThread(this);
 
             // Startup Screen
-            ActivateItemAsync(IoC.Get<PokemonListViewModel>(), new CancellationToken());
+            ActivateItemAsync(IoC.Get<LogOnViewModel>(), new CancellationToken());
         }
 
-        public Task HandleAsync(LogOnEvents message, CancellationToken cancellationToken)
+        public async Task HandleAsync(LogOnEvents message, CancellationToken cancellationToken)
         {
-            throw new System.NotImplementedException();
+            Language = message.Language;
+
+            await ActivateItemAsync(IoC.Get<PokemonListViewModel>(), cancellationToken);
         }
 
         // End Application
