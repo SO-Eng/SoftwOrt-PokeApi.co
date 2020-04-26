@@ -1,10 +1,15 @@
-﻿using Caliburn.Micro;
+﻿using System.Linq;
+using System.Runtime.CompilerServices;
+using System.Threading;
+using System.Threading.Tasks;
+using Caliburn.Micro;
 using PokeApiNet;
+using SOPokemonUI.Helpers;
 using SOPokemonUI.Models;
 
 namespace SOPokemonUI.ViewModels
 {
-    public class ShellViewModel : Conductor<Screen>.Collection.AllActive
+    public class ShellViewModel : Conductor<IScreen>.Collection.OneActive
     {
         #region Fields
 
@@ -18,7 +23,7 @@ namespace SOPokemonUI.ViewModels
             get { return _pokeList; }
             set { _pokeList = value; }
         }
-
+        
         private PokemonModel _selectedPokemon;
 
         public PokemonModel SelectedPokemon
@@ -42,8 +47,8 @@ namespace SOPokemonUI.ViewModels
             set { _language = value; }
         }
 
-        private Screen _pokemonInfoView;
-        public Screen PokemonInfoView
+        private IScreen _pokemonInfoView;
+        public IScreen PokemonInfoView
         {
             get { return _pokemonInfoView; }
             private set
@@ -53,8 +58,8 @@ namespace SOPokemonUI.ViewModels
             }
         }
 
-        private Screen _pokemonDescrView;
-        public Screen PokemonDescrView
+        private IScreen _pokemonDescrView;
+        public IScreen PokemonDescrView
         {
             get { return _pokemonDescrView; }
             private set
@@ -64,9 +69,9 @@ namespace SOPokemonUI.ViewModels
             }
         }
 
-        private Screen _pokemonEvoView;
+        private IScreen _pokemonEvoView;
 
-        public Screen PokemonEvoView
+        public IScreen PokemonEvoView
         {
             get { return _pokemonEvoView; }
             set
@@ -107,32 +112,48 @@ namespace SOPokemonUI.ViewModels
         // Load PokemonInfoView to ShellView
         public void PokemonInfo()
         {
+            PokemonInfoView = null;
             if (SelectedPokemon != null)
             {
                 PokemonInfoView = new PokemonInfoViewModel(Language, SelectedPokemon);
-                Items.Add(PokemonInfoView);
+                ActivateItemAsync(PokemonInfoView, CancellationToken.None);
             }
         }
 
         // Load PokemonDescrView to ShellView
         public void PokemonDescription()
         {
+            PokemonDescrView = null;
             if (SelectedPokemon != null)
             {
                 PokemonDescrView = new PokemonDescrViewModel(Language, SelectedPokemon);
-                Items.Add(PokemonDescrView);
+                ActivateItemAsync(PokemonDescrView, CancellationToken.None);
             }
         }
 
-        private void PokemonEvolutions()
+        public void PokemonEvolutions()
         {
+            PokemonEvoView = null;
             if (SelectedPokemon != null)
             {
                 PokemonEvoView = new PokemonEvoViewModel(Language, SelectedPokemon, PokeList);
-                Items.Add(PokemonEvoView);
+                ActivateItemAsync(PokemonDescrView, CancellationToken.None);
             }
         }
 
+        public void SelectNewPokemon(int pokeId)
+        {
+            for (int i = 1; i <= PokeList.Count; i++)
+            {
+                if (PokeList[i].Id == pokeId)
+                {
+                    SelectedPokemon = PokeList[i];
+                    break;
+                }
+            }
+
+            NotifyOfPropertyChange(() => SelectedPokemon);
+        }
 
         // End Application
         public void Exit()

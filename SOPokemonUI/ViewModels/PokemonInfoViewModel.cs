@@ -205,7 +205,7 @@ namespace SOPokemonUI.ViewModels
 
         #region Methods
 
-        public PokemonInfoViewModel(string language,PokemonModel selectedPokemon)
+        public PokemonInfoViewModel(string language, PokemonModel selectedPokemon)
         {
             _language = language;
             SelectedPokemon = selectedPokemon;

@@ -1,8 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Net.Cache;
-using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
@@ -17,6 +16,7 @@ namespace SOPokemonUI.ViewModels
 {
     public class PokemonEvoViewModel : Screen
     {
+
         #region Fields
 
         // Initiate client
@@ -24,16 +24,11 @@ namespace SOPokemonUI.ViewModels
 
         private LoadPokemonPic getPokemonPic;
         private readonly string _language;
-        private readonly BindableCollection<PokemonModel> _pokeList;
+        private BindableCollection<PokemonModel> _pokeList;
         private int evoId = 1;
 
-        private PokemonModel _selectedPokemon;
 
-        public PokemonModel SelectedPokemon
-        {
-            get { return _selectedPokemon; }
-            set { _selectedPokemon = value; }
-        }
+        public PokemonModel SelectedPokemon { get; set; }
 
         private string _evolutionHeader;
 
@@ -172,6 +167,7 @@ namespace SOPokemonUI.ViewModels
 
         #region Methods
 
+
         public PokemonEvoViewModel(string language, PokemonModel selectedPokemon, BindableCollection<PokemonModel> pokeList)
         {
             _language = language;
@@ -184,7 +180,6 @@ namespace SOPokemonUI.ViewModels
         private async void LoadPokemonEvolutions()
         {
             PokemonSpecies pokemonSpecies = await pokeClient.GetResourceAsync<PokemonSpecies>(SelectedPokemon.Id);
-            Pokemon pokemonInfo = await pokeClient.GetResourceAsync<Pokemon>(SelectedPokemon.Id);
 
             SetEvolutionId(pokemonSpecies);
             LoadPokemonEvoInfos();
@@ -289,7 +284,7 @@ namespace SOPokemonUI.ViewModels
             {
                 StackPanelEvoTwoBg = GenerateRadialColorShape();
             }
-            else
+            else if (SelectedPokemon.PokeName == PokemonEvoTwoName)
             {
                 StackPanelEvoThreeBg = GenerateRadialColorShape();
             }
@@ -317,27 +312,20 @@ namespace SOPokemonUI.ViewModels
             return selectedStackPanel;
         }
 
-        public void SelectBasisPokemon()
+        public async Task SelectBasisPokemon()
         {
-            int idSelection = _pokeList.First(x => x.PokeName == PokemonBasisName).Id;
+            for (int i = 1; i < _pokeList.Count; i++)
+            {
+                if (_pokeList[i].PokeName == PokemonBasisName)
+                {
+                    SelectedPokemon = _pokeList[i];
+                    break;
+                }
+            }
 
-            
-
-            SelectedPokemon.Id = 1;
-            SelectedPokemon.PokeNameOriginal = "bulbasaur";
-            SelectedPokemon.PokeName = "Bulbasaur";
-            SelectedPokemon.PokeUrl = "https://pokeapi.co/api/v2/pokemon/1/";
-            
-            ShellViewModel sVM = new ShellViewModel();
-            //sVM.SelectedPokemon = SelectedPokemon;
-            sVM.PokeList.Select(PokemonModel => 1);
-            sVM.PokemonInfo();
-
-            //LoadPokemonEvolutions();
-            //SelectedPokemon.PokeName = PokemonBasisName;
-            //MessageBox.Show($"Das ist {PokemonBasisName} oder {PokeImageBasis.StreamSource}");
             //NotifyOfPropertyChange(() => SelectedPokemon);
         }
+
 
         #endregion
     }
