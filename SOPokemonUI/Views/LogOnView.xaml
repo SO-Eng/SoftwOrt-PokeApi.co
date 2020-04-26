@@ -26,9 +26,9 @@
                 </StackPanel>
             </StackPanel>
             <StackPanel Orientation="Vertical">
-                <TextBlock x:Name="LoadingDescription" Text="Beim ersten mal kann das Laden der Pokemons etwsa ländger dauern. Bitte habe etwas Geduld!"
-                           TextAlignment="Center" TextWrapping="Wrap" MaxWidth="400" Height="100" Margin="0 40 0 0" />
-                <Button x:Name="LogIn" Width="180" Height="40">Start</Button>
+                <TextBlock x:Name="LoadingDescription" TextAlignment="Center" TextWrapping="Wrap" MaxWidth="400" Height="100" 
+                           Margin="0 40 0 0" Foreground="LightCoral" />
+                <Button x:Name="LogOn" Width="180" Height="40">Start</Button>
             </StackPanel>
         </StackPanel>
     </Grid>

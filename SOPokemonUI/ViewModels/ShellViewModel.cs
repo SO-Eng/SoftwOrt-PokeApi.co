@@ -6,7 +6,7 @@ using SOPokemonUI.Helpers;
 
 namespace SOPokemonUI.ViewModels
 {
-    public class ShellViewModel : Conductor<object>, IHandle<LogOnEvents>
+    public class ShellViewModel : Conductor<object>, IHandle<LogOnEvent>
     {
 
         #region Fields
@@ -35,13 +35,25 @@ namespace SOPokemonUI.ViewModels
 
             // Startup Screen
             ActivateItemAsync(IoC.Get<LogOnViewModel>(), new CancellationToken());
+            //Start();
         }
 
-        public async Task HandleAsync(LogOnEvents message, CancellationToken cancellationToken)
+        // Start App without LogOn Screen
+        private async void Start()
+        {
+            await HandleAsync(new LogOnEvent(), CancellationToken.None);
+        }
+
+        public async Task HandleAsync(LogOnEvent message, CancellationToken cancellationToken)
         {
             Language = message.Language;
 
-            await ActivateItemAsync(IoC.Get<PokemonListViewModel>(), cancellationToken);
+            await ActivateItemAsync(new PokemonListViewModel(Language), cancellationToken);
+        }
+
+        public async Task SelectLanguage()
+        {
+            await ActivateItemAsync(IoC.Get<LogOnViewModel>(), new CancellationToken());
         }
 
         // End Application

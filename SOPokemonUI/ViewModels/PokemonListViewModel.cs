@@ -2,8 +2,10 @@
 using System.Collections.Generic;
 using System.Text;
 using System.Threading;
+using System.Threading.Tasks;
 using Caliburn.Micro;
 using PokeApiNet;
+using SOPokemonUI.EventModels;
 using SOPokemonUI.Helpers;
 using SOPokemonUI.Models;
 
@@ -11,6 +13,8 @@ namespace SOPokemonUI.ViewModels
 {
     class PokemonListViewModel : Conductor<IScreen>.Collection.OneActive
     {
+        private readonly IEventAggregator _events;
+
         #region Fields
 
         // Initiate client
@@ -38,7 +42,7 @@ namespace SOPokemonUI.ViewModels
             }
         }
 
-        private string _language = "de";
+        private string _language;
 
         public string Language
         {
@@ -84,9 +88,9 @@ namespace SOPokemonUI.ViewModels
 
 
         #region Methods
-
-        public PokemonListViewModel()
+        public PokemonListViewModel(string language)
         {
+            Language = language;
             LoadPokemonList();
         }
 
@@ -111,7 +115,6 @@ namespace SOPokemonUI.ViewModels
         // Load PokemonInfoView to ShellView
         public void PokemonInfo()
         {
-            PokemonInfoView = null;
             if (SelectedPokemon != null)
             {
                 PokemonInfoView = new PokemonInfoViewModel(Language, SelectedPokemon);
@@ -122,7 +125,6 @@ namespace SOPokemonUI.ViewModels
         // Load PokemonDescrView to ShellView
         public void PokemonDescription()
         {
-            PokemonDescrView = null;
             if (SelectedPokemon != null)
             {
                 PokemonDescrView = new PokemonDescrViewModel(Language, SelectedPokemon);
@@ -132,7 +134,6 @@ namespace SOPokemonUI.ViewModels
 
         public void PokemonEvolutions()
         {
-            PokemonEvoView = null;
             if (SelectedPokemon != null)
             {
                 PokemonEvoView = new PokemonEvoViewModel(Language, SelectedPokemon, PokeList);
@@ -153,6 +154,7 @@ namespace SOPokemonUI.ViewModels
 
             NotifyOfPropertyChange(() => SelectedPokemon);
         }
+
 
         #endregion
     }

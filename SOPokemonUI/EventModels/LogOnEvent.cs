@@ -4,7 +4,7 @@ using System.Text;
 
 namespace SOPokemonUI.EventModels
 {
-    public class LogOnEvents
+    public class LogOnEvent
     {
         public string Language { get; set; }
     }

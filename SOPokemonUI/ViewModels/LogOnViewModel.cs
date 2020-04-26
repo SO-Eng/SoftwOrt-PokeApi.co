@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using System.Windows.Controls;
 using Caliburn.Micro;
 using SOPokemonUI.EventModels;
+using SOPokemonUI.Helpers;
 
 namespace SOPokemonUI.ViewModels
 {
@@ -18,7 +19,7 @@ namespace SOPokemonUI.ViewModels
 
         private bool selected = false;
 
-        private string _language = "de";
+        private string _language;
 
         public string Language
         {
@@ -27,20 +28,139 @@ namespace SOPokemonUI.ViewModels
         }
 
 
-        private int _selGerman;
+        private bool _selJapanese;
 
-        public int SelGerman
+        public bool SelJapanese
+        {
+            get { return _selJapanese; }
+            set
+            {
+                _selJapanese = value;
+                selected = true;
+                Language = "ja-Hrkt";
+                GetLoadingDescription();
+                NotifyOfPropertyChange(() => Language);
+                NotifyOfPropertyChange(() => LoadingDescription);
+                NotifyOfPropertyChange(() => CanLogOn);
+            }
+        }
+
+        private bool _selFrance;
+
+        public bool SelFrance
+        {
+            get { return _selFrance; }
+            set
+            {
+                _selFrance = value;
+                selected = true;
+                Language = "fr";
+                GetLoadingDescription();
+                NotifyOfPropertyChange(() => Language);
+                NotifyOfPropertyChange(() => LoadingDescription);
+                NotifyOfPropertyChange(() => CanLogOn);
+            }
+        }
+
+        private bool _selSpanish;
+
+        public bool SelSpanish
+        {
+            get { return _selSpanish; }
+            set
+            {
+                _selSpanish = value;
+                selected = true;
+                Language = "es";
+                GetLoadingDescription();
+                NotifyOfPropertyChange(() => Language);
+                NotifyOfPropertyChange(() => LoadingDescription);
+                NotifyOfPropertyChange(() => CanLogOn);
+            }
+        }
+
+        private bool _selEnglish;
+
+        public bool SelEnglish
+        {
+            get { return _selEnglish; }
+            set
+            {
+                _selEnglish = value;
+                selected = true;
+                Language = "en";
+                GetLoadingDescription();
+                NotifyOfPropertyChange(() => Language);
+                NotifyOfPropertyChange(() => LoadingDescription);
+                NotifyOfPropertyChange(() => CanLogOn);
+            }
+        }
+
+        private bool _selKorean;
+
+        public bool SelKorean
+        {
+            get { return _selKorean; }
+            set
+            {
+                _selKorean = value;
+                selected = true;
+                Language = "ko";
+                GetLoadingDescription();
+                NotifyOfPropertyChange(() => Language);
+                NotifyOfPropertyChange(() => LoadingDescription);
+                NotifyOfPropertyChange(() => CanLogOn);
+            }
+        }
+
+        private bool _selGerman;
+
+        public bool SelGerman
         {
             get { return _selGerman; }
             set
             {
                 _selGerman = value;
                 selected = true;
-                NotifyOfPropertyChange(() => CanLogIn);
+                Language = "de";
+                GetLoadingDescription();
+                NotifyOfPropertyChange(() => Language);
+                NotifyOfPropertyChange(() => LoadingDescription);
+                NotifyOfPropertyChange(() => CanLogOn);
             }
         }
 
-        public bool CanLogIn
+        private bool _selItalian;
+
+        public bool SelItalian
+        {
+            get { return _selItalian; }
+            set
+            {
+                _selItalian = value;
+                selected = true;
+                Language = "it";
+                GetLoadingDescription();
+                NotifyOfPropertyChange(() => Language);
+                NotifyOfPropertyChange(() => LoadingDescription);
+                NotifyOfPropertyChange(() => CanLogOn);
+            }
+        }
+
+        private string _loadingDescription;
+
+        public string LoadingDescription
+        {
+            get { return _loadingDescription; }
+            set
+            {
+                _loadingDescription = value;
+                //NotifyOfPropertyChange(() => LoadingDescription);
+            }
+        }
+
+
+        public bool CanLogOn
         {
             get
             {
@@ -67,9 +187,14 @@ namespace SOPokemonUI.ViewModels
         }
 
 
-        public async Task LogIn()
+        public async Task LogOn()
         {
-            await _events.PublishOnUIThreadAsync(new LogOnEvents { Language = Language }, new CancellationToken());
+            await _events.PublishOnUIThreadAsync(new LogOnEvent { Language = Language }, new CancellationToken());
+        }
+
+        public void GetLoadingDescription()
+        {
+            LoadingDescription = LogOnLanguage.GetLoadingText(Language);
         }
         #endregion
     }
