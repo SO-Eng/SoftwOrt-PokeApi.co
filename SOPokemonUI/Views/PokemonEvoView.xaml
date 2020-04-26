@@ -9,22 +9,22 @@
              d:DesignHeight="170" d:DesignWidth="500" BorderBrush="#A0A0A0" BorderThickness="1">
     <Grid>
         <StackPanel Orientation="Vertical">
-            <TextBlock x:Name="EvolutionHeader" Text="Evolutionen" TextAlignment="Center" Margin="0 0 0 5"/>
+            <TextBlock x:Name="EvolutionHeader" Text="Evolutionen" TextAlignment="Center" Margin="0 3 0 5"/>
             <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
                 <StackPanel x:Name="EvoStackPanelOne" Orientation="Vertical" Background="{Binding Path=StackPanelEvoOneBg}" >
-                    <TextBlock x:Name="BasisHeader" Text="Basis Pokemon" MinWidth="150" TextAlignment="Center"/>
+                    <TextBlock x:Name="BasisHeader" Text="Basis Pokemon" MinWidth="150" TextAlignment="Center" FontSize="14"/>
                     <Image x:Name="PokeImageBasis" MinWidth="75" MinHeight="75"  MaxWidth="75" MaxHeight="75" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="0 10"
                            cm:Message.Attach="[Event MouseLeftButtonUp] = [Action SelectBasisPokemon()]" ></Image>
                     <TextBlock x:Name="PokemonBasisName" Text="PokemonName" TextAlignment="Center" Margin="0 0 0 5" Foreground="CadetBlue"
                                cm:Message.Attach="[Event MouseLeftButtonUp] = [Action SelectBasisPokemon()]"  ></TextBlock>
                 </StackPanel>
                 <StackPanel x:Name="EvoStackPanelTwo" Orientation="Vertical" Margin="20 0" Background="{Binding Path=StackPanelEvoTwoBg}" >
-                    <TextBlock x:Name="EvoOneHeader" Text="1. Evulotion" MinWidth="150" TextAlignment="Center"/>
+                    <TextBlock x:Name="EvoOneHeader" Text="1. Evulotion" MinWidth="150" TextAlignment="Center" FontSize="14"/>
                     <Image x:Name="PokeImageEvoOne" MinWidth="75" MinHeight="75"  MaxWidth="75" MaxHeight="75" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="0 10"></Image>
                     <TextBlock x:Name="PokemonEvoOneName" Text="PokemonName" TextAlignment="Center" Margin="0 0 0 5" Foreground="CadetBlue"></TextBlock>
                 </StackPanel>
                 <StackPanel x:Name="EvoStackPanelThree" Orientation="Vertical" Background="{Binding Path=StackPanelEvoThreeBg}">
-                    <TextBlock x:Name="EvoTwoHeader" Text="2. Evulotion" MinWidth="150" TextAlignment="Center"/>
+                    <TextBlock x:Name="EvoTwoHeader" Text="2. Evulotion" MinWidth="150" TextAlignment="Center" FontSize="14"/>
                     <Image x:Name="PokeImageEvoTwo" MinWidth="75" MinHeight="75"  MaxWidth="75" MaxHeight="75" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="0 10"></Image>
                     <TextBlock x:Name="PokemonEvoTwoName" Text="PokemonName" TextAlignment="Center" Margin="0 0 0 5" Foreground="CadetBlue"></TextBlock>
                 </StackPanel>

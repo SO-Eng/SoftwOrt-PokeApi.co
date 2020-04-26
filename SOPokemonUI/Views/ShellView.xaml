@@ -6,11 +6,11 @@
         xmlns:local="clr-namespace:SOPokemonUI.Views"
         xmlns:cm="http://caliburnmicro.com"
         mc:Ignorable="d" FontSize="18" FontFamily="Segeo UI" FontWeight="Light" 
-        Title="SoftwOrt-PokeDex" Height="715" MinHeight="715" Width="830" MinWidth="880" Background="LightCoral">
+        Title="SoftwOrt-PokeDex" Height="747" MinHeight="747" Width="830" MinWidth="880" Background="LightCoral">
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto" />
-            <RowDefinition Height="20" />
+            <RowDefinition Height="50" />
             <RowDefinition Height="Auto" />
             <RowDefinition Height="Auto" />
             <RowDefinition Height="Auto" />
@@ -30,18 +30,20 @@
         </Grid.ColumnDefinitions>
 
         <!--Row 0-->
-        <Menu Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="8">
-            <MenuItem Header="_Datei">
-                <MenuItem Header="_Beenden" x:Name="Exit" />
-            </MenuItem>
-            <MenuItem Header="_Einstellungen">
-                <MenuItem Header="_Test" x:Name="SelectNewPokemon" cm:Message.Attach="[Event MouseLeftButtonUp] = [Action SelectNewPokemon()]" />
-            </MenuItem>
-        </Menu>
+        <DockPanel Grid.ColumnSpan="7">
+            <Menu DockPanel.Dock="Top" >
+                <MenuItem Header="_Datei">
+                    <MenuItem Header="_Beenden" x:Name="Exit" />
+                </MenuItem>
+                <MenuItem Header="_Einstellungen">
+                    <MenuItem Header="_Test" x:Name="SelectNewPokemon" cm:Message.Attach="[Event MouseLeftButtonUp] = [Action SelectNewPokemon()]" />
+                </MenuItem>
+            </Menu>
+        </DockPanel>
 
         <!--Row 1-->
-        <DockPanel Dock="Right" Grid.Row="1" Grid.Column="6" Grid.RowSpan="2">
-            <Ellipse MaxWidth="40" MaxHeight="40">
+        <DockPanel Dock="Right" Grid.Row="1" Grid.Column="6" >
+            <Ellipse MaxWidth="40" MaxHeight="40" Width="40" Height="40" Margin="5">
                 <Ellipse.Stroke>
                     <RadialGradientBrush>
                         <GradientStop Color="White" Offset="0.958"/>
@@ -58,16 +60,18 @@
         </DockPanel>
 
         <!--Row 2-->
-        <TextBox Grid.Row="2" Grid.Column="1" Text="Suche..." Margin="0 0 0 5" />
+        <ContentControl x:Name="ActiveItem" Grid.Row="2" Grid.Column="1" ></ContentControl>
 
-        <!--Row 3-->
+        <!--<TextBox Grid.Row="2" Grid.Column="1" Text="Suche..." Margin="0 0 0 5" />
+
+        --><!--Row 3--><!--
         <ListView x:Name="PokeList" Grid.Row="3" Grid.Column="1" Grid.RowSpan="3" Width="200" MinHeight="400"
                       SelectedItem="{Binding Path=SelectedPokemon, Mode=TwoWay}" DisplayMemberPath="PokeName"
                       MaxHeight="360"></ListView>
         <ContentControl x:Name="PokemonInfoView" Grid.Row="3" Grid.Column="3" Grid.RowSpan="3" Margin="20 0 20 0"></ContentControl>
         <ContentControl x:Name="PokemonDescrView" Grid.Row="3" Grid.Column="4" Grid.RowSpan="3" Margin="0 0 20 0"></ContentControl>
 
-        <!--Row 4-->
-        <ContentControl x:Name="PokemonEvoView" Grid.Row="6" Grid.Column="3" Grid.ColumnSpan="3" Margin="20 20 25 0" HorizontalAlignment="Stretch"></ContentControl>
+        --><!--Row 4--><!--
+        <ContentControl x:Name="PokemonEvoView" Grid.Row="6" Grid.Column="3" Grid.ColumnSpan="3" Margin="20 20 25 0" HorizontalAlignment="Stretch"></ContentControl>-->
     </Grid>
 </Window>

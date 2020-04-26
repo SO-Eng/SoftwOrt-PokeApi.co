@@ -174,6 +174,8 @@ namespace SOPokemonUI.ViewModels
             _pokeList = pokeList;
             SelectedPokemon = selectedPokemon;
 
+            EvolutionHeader = EvolutionLanguage.GetEvolutionHeader(_language);
+
             LoadPokemonEvolutions();
         }
 
@@ -214,6 +216,7 @@ namespace SOPokemonUI.ViewModels
 
             try
             {
+                BasisHeader = EvolutionLanguage.GetBasisHeader(_language);
                 PokemonSpecies pokemonBasis = await pokeClient.GetResourceAsync<PokemonSpecies>(evoChain.Chain.Species.Name);
                 var tempBasis = _pokeList.First(x => x.PokeNameOriginal == pokemonBasis.Name).PokeName;
                 PokemonBasisName = tempBasis;
@@ -227,6 +230,7 @@ namespace SOPokemonUI.ViewModels
 
             try
             {
+                EvoOneHeader = EvolutionLanguage.GetEvoOneHeader(_language);
                 PokemonSpecies pokemonEvoOne = await pokeClient.GetResourceAsync<PokemonSpecies>(evoChain.Chain.EvolvesTo[0].Species.Name);
                 var tempEvoOne = _pokeList.First(x => x.PokeNameOriginal == pokemonEvoOne.Name).PokeName;
                 PokemonEvoOneName = tempEvoOne;
@@ -242,6 +246,7 @@ namespace SOPokemonUI.ViewModels
             {
                 PokemonSpecies pokemonEvoTwo = await pokeClient.GetResourceAsync<PokemonSpecies>(evoChain.Chain.EvolvesTo[0].EvolvesTo[0].Species.Name);
                 var tempEvoTwo = _pokeList.First(x => x.PokeNameOriginal == pokemonEvoTwo.Name).PokeName;
+                EvoTwoHeader = EvolutionLanguage.GetEvoTwoHeader(_language);
                 PokemonEvoTwoName = tempEvoTwo;
                 pokemonInfo = await pokeClient.GetResourceAsync<Pokemon>(pokemonEvoTwo.Id);
                 PokeImageEvoTwo = await LoadPokemonEvoPic(pokemonInfo);
@@ -251,6 +256,9 @@ namespace SOPokemonUI.ViewModels
                 PokemonEvoTwoName = "";
             }
 
+            NotifyOfPropertyChange(() => BasisHeader);
+            NotifyOfPropertyChange(() => EvoOneHeader);
+            NotifyOfPropertyChange(() => EvoTwoHeader);
             NotifyOfPropertyChange(() => PokemonBasisName);
             NotifyOfPropertyChange(() => PokemonEvoOneName);
             NotifyOfPropertyChange(() => PokemonEvoTwoName);
