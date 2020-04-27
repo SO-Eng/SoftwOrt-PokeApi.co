@@ -83,7 +83,7 @@
                     tempLanguage = "_Préférences";
                     break;
                 case "de":
-                    tempLanguage = "_Datei";
+                    tempLanguage = "_Einstellungen";
                     break;
                 case "es":
                     tempLanguage = "_Preferencias";
@@ -92,7 +92,7 @@
                     tempLanguage = "_Preferenze";
                     break;
                 default:
-                    tempLanguage = "_File";
+                    tempLanguage = "_Settings";
                     break;
             }
 
@@ -115,7 +115,7 @@
                     tempLanguage = "_Langue";
                     break;
                 case "de":
-                    tempLanguage = "_Datei";
+                    tempLanguage = "_Sprache";
                     break;
                 case "es":
                     tempLanguage = "_Lenguaje";
@@ -124,7 +124,7 @@
                     tempLanguage = "_Lingua";
                     break;
                 default:
-                    tempLanguage = "_File";
+                    tempLanguage = "_Language";
                     break;
             }
 

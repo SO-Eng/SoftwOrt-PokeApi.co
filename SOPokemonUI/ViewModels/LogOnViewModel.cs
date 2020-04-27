@@ -16,7 +16,6 @@ namespace SOPokemonUI.ViewModels
         #region Fields
 
         private bool start = false;
-        private bool activateRB = false;
 
         private readonly IEventAggregator _events;
 
@@ -209,8 +208,6 @@ namespace SOPokemonUI.ViewModels
                     NotifyOfPropertyChange(() => LoadingDescription);
                     start = true;
                 }
-                //NotifyOfPropertyChange(() => LoadingDescription);
-
             }
         }
 
@@ -272,7 +269,7 @@ namespace SOPokemonUI.ViewModels
         {
             timerHeader.Tick += new EventHandler(TimerEventProcessor);
             timerHeader.Interval = 3000;
-            //timerHeader.Start();
+            timerHeader.Start();
         }
 
         // Timer to change LanguageHeader in intervall

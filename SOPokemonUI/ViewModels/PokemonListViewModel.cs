@@ -1,9 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
+using System.Windows;
 using Caliburn.Micro;
 using PokeApiNet;
 using SOPokemonUI.EventModels;
@@ -26,10 +28,18 @@ namespace SOPokemonUI.ViewModels
         public BindableCollection<PokemonModel> PokeList
         {
             get { return _pokeList; }
+            set { _pokeList = value; }
+        }
+
+        private BindableCollection<PokemonModel> _searchPokeList = new BindableCollection<PokemonModel>();
+
+        public BindableCollection<PokemonModel> SearchPokeList
+        {
+            get { return _searchPokeList; }
             set
             {
-                _pokeList = value;
-                
+                _searchPokeList = value;
+                NotifyOfPropertyChange(() => SearchPokeList);
             }
         }
 
@@ -133,7 +143,14 @@ namespace SOPokemonUI.ViewModels
 
         private void SearchInCollection()
         {
-            var test = PokeList.FirstOrDefault(x => x.PokeName == SearchBox);
+            SearchPokeList.Clear();
+            var tempSearch = PokeList.Where(x => x.PokeName.ToLower().Contains(SearchBox.ToLower()));
+
+            foreach (var pokemon in tempSearch)
+            {
+                SearchPokeList.Add(new PokemonModel{Id = pokemon.Id, PokeName = pokemon.PokeName, PokeNameOriginal = pokemon.PokeNameOriginal, PokeUrl = pokemon.PokeUrl });
+            }
+            NotifyOfPropertyChange(() => SearchPokeList);
         }
 
 
@@ -150,6 +167,7 @@ namespace SOPokemonUI.ViewModels
                     if (pokemonNameLang.Names[j].Language.Name == Language)
                     {
                         PokeList.Add(new PokemonModel { Id = i, PokeNameOriginal = allPokemons.Results[i - 1].Name, PokeName = pokemonNameLang.Names[j].Name, PokeUrl = allPokemons.Results[i - 1].Url });
+                        SearchPokeList.Add(new PokemonModel { Id = i, PokeNameOriginal = allPokemons.Results[i - 1].Name, PokeName = pokemonNameLang.Names[j].Name, PokeUrl = allPokemons.Results[i - 1].Url });
                     }
                 }
             }

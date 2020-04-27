@@ -32,7 +32,7 @@
             <TextBox x:Name="SearchBox"  Width="156" TextAlignment="Left" DockPanel.Dock="Right"/>
         </StackPanel>
         <!--Row 2-->
-        <ListView x:Name="PokeList" Grid.Row="2" Grid.Column="1" Grid.RowSpan="3" Width="200" MinHeight="400"
+        <ListView x:Name="SearchPokeList" Grid.Row="2" Grid.Column="1" Grid.RowSpan="3" Width="200" MinHeight="400"
                   SelectedItem="{Binding Path=SelectedPokemon, Mode=TwoWay}" DisplayMemberPath="PokeName"
                   MaxHeight="360" SelectionMode="Single"></ListView>
         <ContentControl x:Name="PokemonInfoView" Grid.Row="2" Grid.Column="3" Grid.RowSpan="3" Margin="20 0 20 0"></ContentControl>
