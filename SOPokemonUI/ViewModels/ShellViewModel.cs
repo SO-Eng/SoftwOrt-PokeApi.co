@@ -1,8 +1,11 @@
-﻿using Caliburn.Micro;
+﻿using System;
+using System.Collections.Generic;
+using Caliburn.Micro;
 using SOPokemonUI.EventModels;
 using System.Threading;
 using System.Threading.Tasks;
 using SOPokemonUI.Helpers;
+using SOPokemonUI.Models;
 
 namespace SOPokemonUI.ViewModels
 {
@@ -12,14 +15,79 @@ namespace SOPokemonUI.ViewModels
         #region Fields
 
         private readonly IEventAggregator _events;
+        private bool logOn = false;
 
         private string _language;
-
+        
         public string Language
         {
             get { return _language; }
             set { _language = value; }
         }
+
+        private string _file = "_File";
+
+        public string File
+        {
+            get { return _file; }
+            set
+            {
+                _file = value;
+                NotifyOfPropertyChange(() => File);
+            }
+        }
+
+        private string _close = "_Close";
+
+        public string Close
+        {
+            get { return _close; }
+            set
+            {
+                _close = value;
+                NotifyOfPropertyChange(() => Close);
+            }
+        }
+
+        private string _settings = "_Settings";
+
+        public string Settings
+        {
+            get { return _settings; }
+            set
+            {
+                _settings = value;
+                NotifyOfPropertyChange(() => Settings);
+            }
+        }
+
+        private string _languageMenu = "_Language";
+
+        public string LanguageMenu
+        {
+            get { return _languageMenu; }
+            set
+            {
+                _languageMenu = value;
+                NotifyOfPropertyChange(() => LanguageMenu);
+            }
+        }
+
+        public bool CanSelectLanguage
+        {
+            get
+            {
+                bool output = false;
+
+                if (logOn)
+                {
+                    output = true;
+                }
+
+                return output;
+            }
+        }
+
 
         #endregion
 
@@ -30,12 +98,19 @@ namespace SOPokemonUI.ViewModels
         public ShellViewModel(IEventAggregator events)
         {
             _events = events;
-
             _events.SubscribeOnUIThread(this);
 
             // Startup Screen
             ActivateItemAsync(IoC.Get<LogOnViewModel>(), new CancellationToken());
             //Start();
+        }
+
+        private void SetMenuLanguage()
+        {
+            File = MenuLanguage.MenuFile(Language);
+            Close = MenuLanguage.MenuClose(Language);
+            Settings = MenuLanguage.MenuSettings(Language);
+            LanguageMenu = MenuLanguage.MenuLanguageSelect(Language);
         }
 
         // Start App without LogOn Screen
@@ -48,11 +123,18 @@ namespace SOPokemonUI.ViewModels
         {
             Language = message.Language;
 
+            SetMenuLanguage();
+            logOn = true;
+            NotifyOfPropertyChange(() => CanSelectLanguage);
+
             await ActivateItemAsync(new PokemonListViewModel(Language), cancellationToken);
         }
 
         public async Task SelectLanguage()
         {
+            logOn = false;
+            NotifyOfPropertyChange(() => CanSelectLanguage);
+
             await ActivateItemAsync(IoC.Get<LogOnViewModel>(), new CancellationToken());
         }
 

@@ -8,26 +8,26 @@
              d:DesignHeight="450" d:DesignWidth="800" MinWidth="760" MinHeight="590" Background="White" Margin="30 0 0 0">
     <Grid>
 
-        <StackPanel Orientation="Vertical" Margin="20 ">
-            <TextBlock x:Name="SelectLanguageHeader" Text="Wähle Deine Sprache aus" TextAlignment="Center" HorizontalAlignment="Center" Margin="5" />
+        <StackPanel Orientation="Vertical" Margin="40 ">
+            <TextBlock x:Name="SelectLanguageHeader" Text="Select your language" TextAlignment="Center" HorizontalAlignment="Center" Margin="5" FontWeight="Medium" />
             <StackPanel Width="400" Orientation="Vertical">
-                <StackPanel Orientation="Horizontal" Margin="0 30">
-                    <StackPanel Margin="20 0 60 0" Orientation="Vertical">
-                        <RadioButton x:Name="SelJapanese" GroupName="LanguageSelection" Content="日本語 (Japanese)" Margin="0 0 0 15" />
+                <StackPanel Orientation="Horizontal" Margin="0 40">
+                    <StackPanel Margin="70 0 100 0" Orientation="Vertical">
+                        <RadioButton x:Name="SelJapanese" GroupName="LanguageSelection" Content="日本語" Margin="0 0 0 15" />
                         <RadioButton x:Name="SelFrance" GroupName="LanguageSelection" Content="Français" Margin="0 0 0 15" />
                         <RadioButton x:Name="SelSpanish" GroupName="LanguageSelection" Content="Español" Margin="0 0 0 15" />
                         <RadioButton x:Name="SelEnglish" GroupName="LanguageSelection" Content="English" />
                     </StackPanel>
                     <StackPanel>
-                        <RadioButton x:Name="SelKorean" GroupName="LanguageSelection" Content="코란 (Korean)" Margin="0 0 0 15" />
+                        <RadioButton x:Name="SelKorean" GroupName="LanguageSelection" Content="코란" Margin="0 0 0 15" />
                         <RadioButton x:Name="SelGerman" GroupName="LanguageSelection" Content="Deutsch" Margin="0 0 0 15" />
                         <RadioButton x:Name="SelItalian" GroupName="LanguageSelection" Content="Italiano" />
                     </StackPanel>
                 </StackPanel>
             </StackPanel>
             <StackPanel Orientation="Vertical">
-                <TextBlock x:Name="LoadingDescription" TextAlignment="Center" TextWrapping="Wrap" MaxWidth="400" Height="100" 
-                           Margin="0 40 0 0" Foreground="LightCoral" />
+                <TextBlock x:Name="LoadingDescription" TextAlignment="Center" TextWrapping="Wrap" MaxWidth="400" Height="120" 
+                           Margin="0 30 0 20" Foreground="LightCoral" />
                 <Button x:Name="LogOn" Width="180" Height="40">Start</Button>
             </StackPanel>
         </StackPanel>

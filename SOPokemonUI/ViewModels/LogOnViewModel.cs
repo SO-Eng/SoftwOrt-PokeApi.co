@@ -15,11 +15,16 @@ namespace SOPokemonUI.ViewModels
 
         #region Fields
 
+        private bool start = false;
+
         private readonly IEventAggregator _events;
 
         private bool selected = false;
 
         private string _language;
+        private List<string> headerLanguage = new List<string>();
+        private System.Windows.Forms.Timer timerHeader = new System.Windows.Forms.Timer();
+        private int headerCounter = 1;
 
         public string Language
         {
@@ -38,9 +43,9 @@ namespace SOPokemonUI.ViewModels
                 _selJapanese = value;
                 selected = true;
                 Language = "ja-Hrkt";
-                GetLoadingDescription();
                 NotifyOfPropertyChange(() => Language);
                 NotifyOfPropertyChange(() => LoadingDescription);
+                GetLoadingDescription();
                 NotifyOfPropertyChange(() => CanLogOn);
             }
         }
@@ -55,9 +60,9 @@ namespace SOPokemonUI.ViewModels
                 _selFrance = value;
                 selected = true;
                 Language = "fr";
-                GetLoadingDescription();
                 NotifyOfPropertyChange(() => Language);
                 NotifyOfPropertyChange(() => LoadingDescription);
+                GetLoadingDescription();
                 NotifyOfPropertyChange(() => CanLogOn);
             }
         }
@@ -72,9 +77,9 @@ namespace SOPokemonUI.ViewModels
                 _selSpanish = value;
                 selected = true;
                 Language = "es";
-                GetLoadingDescription();
                 NotifyOfPropertyChange(() => Language);
                 NotifyOfPropertyChange(() => LoadingDescription);
+                GetLoadingDescription();
                 NotifyOfPropertyChange(() => CanLogOn);
             }
         }
@@ -89,9 +94,9 @@ namespace SOPokemonUI.ViewModels
                 _selEnglish = value;
                 selected = true;
                 Language = "en";
-                GetLoadingDescription();
                 NotifyOfPropertyChange(() => Language);
                 NotifyOfPropertyChange(() => LoadingDescription);
+                GetLoadingDescription();
                 NotifyOfPropertyChange(() => CanLogOn);
             }
         }
@@ -106,9 +111,9 @@ namespace SOPokemonUI.ViewModels
                 _selKorean = value;
                 selected = true;
                 Language = "ko";
-                GetLoadingDescription();
                 NotifyOfPropertyChange(() => Language);
                 NotifyOfPropertyChange(() => LoadingDescription);
+                GetLoadingDescription();
                 NotifyOfPropertyChange(() => CanLogOn);
             }
         }
@@ -123,9 +128,9 @@ namespace SOPokemonUI.ViewModels
                 _selGerman = value;
                 selected = true;
                 Language = "de";
-                GetLoadingDescription();
                 NotifyOfPropertyChange(() => Language);
                 NotifyOfPropertyChange(() => LoadingDescription);
+                GetLoadingDescription();
                 NotifyOfPropertyChange(() => CanLogOn);
             }
         }
@@ -140,9 +145,9 @@ namespace SOPokemonUI.ViewModels
                 _selItalian = value;
                 selected = true;
                 Language = "it";
-                GetLoadingDescription();
                 NotifyOfPropertyChange(() => Language);
                 NotifyOfPropertyChange(() => LoadingDescription);
+                GetLoadingDescription();
                 NotifyOfPropertyChange(() => CanLogOn);
             }
         }
@@ -155,7 +160,23 @@ namespace SOPokemonUI.ViewModels
             set
             {
                 _loadingDescription = value;
-                //NotifyOfPropertyChange(() => LoadingDescription);
+                if (!start)
+                {
+                    NotifyOfPropertyChange(() => LoadingDescription);
+                    start = true;
+                }
+            }
+        }
+
+        private string _selectLanguageHeader;
+
+        public string SelectLanguageHeader
+        {
+            get { return _selectLanguageHeader; }
+            set
+            {
+                _selectLanguageHeader = value;
+                NotifyOfPropertyChange(() => SelectLanguageHeader);
             }
         }
 
@@ -184,14 +205,52 @@ namespace SOPokemonUI.ViewModels
         public LogOnViewModel(IEventAggregator events)
         {
             _events = events;
+            FillList();
+            SelectLanguageHeader = headerLanguage[0];
+            StartTimer();
         }
 
+        // Load LanguageHeader in a List
+        private void FillList()
+        {
+            var countLanguages = LanguageTotal.GetLanguagesCount();
 
+            for (int i = 0; i < countLanguages; i++)
+            {
+                headerLanguage.Add(LogOnLanguage.SelectLanguageHeader(i));
+            }
+        }
+
+        // Load LanguageHeader in a List
+        private void StartTimer()
+        {
+            timerHeader.Tick += new EventHandler(TimerEventProcessor);
+            timerHeader.Interval = 3000;
+            timerHeader.Start();
+        }
+
+        // Timer to change LanguageHeader in intervall
+        private void TimerEventProcessor(object sender, EventArgs e)
+        {
+            if (headerCounter == LanguageTotal.GetLanguagesCount())
+            {
+                headerCounter = 0;
+            }
+
+            // Go through the List to change HeaderLanguage
+            SelectLanguageHeader = headerLanguage[headerCounter];
+
+            headerCounter += 1;
+        }
+
+        // Switch to ShellViewModel => PokemonListViewModel with selected language
         public async Task LogOn()
         {
+            timerHeader.Stop();
             await _events.PublishOnUIThreadAsync(new LogOnEvent { Language = Language }, new CancellationToken());
         }
 
+        // Method to change loading description when language is selected
         public void GetLoadingDescription()
         {
             LoadingDescription = LogOnLanguage.GetLoadingText(Language);

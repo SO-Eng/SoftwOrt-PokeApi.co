@@ -32,11 +32,11 @@
         <!--Row 0-->
         <DockPanel Grid.ColumnSpan="7">
             <Menu DockPanel.Dock="Top" >
-                <MenuItem Header="_Datei">
-                    <MenuItem Header="_Beenden" x:Name="Exit" />
+                <MenuItem Header="{Binding Path=File, FallbackValue=File}">
+                    <MenuItem Header="{Binding Path=Close, FallbackValue=Close}" x:Name="Exit" />
                 </MenuItem>
-                <MenuItem Header="_Einstellungen">
-                    <MenuItem Header="_Sprache wählen" x:Name="SelectLanguage"/>
+                <MenuItem Header="{Binding Path=Settings, FallbackValue=Settings}">
+                    <MenuItem Header="{Binding Path=LanguageMenu, FallbackValue=Language}" x:Name="SelectLanguage"/>
                 </MenuItem>
             </Menu>
         </DockPanel>
