@@ -12,19 +12,43 @@
             <TextBlock x:Name="EvolutionHeader" Text="Evolutionen" TextAlignment="Center" Margin="0 3 0 5"/>
             <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
                 <StackPanel x:Name="EvoStackPanelOne" Orientation="Vertical" Background="{Binding Path=StackPanelEvoOneBg}" >
-                    <TextBlock x:Name="BasisHeader" Text="Basis Pokemon" MinWidth="150" TextAlignment="Center" FontSize="14"/>
+                    <TextBlock x:Name="BasisHeader" Text="Basis Pokemon" MinWidth="140" TextAlignment="Center" FontSize="14"/>
                     <Image x:Name="PokeImageBasis" MinWidth="75" MinHeight="75"  MaxWidth="75" MaxHeight="75" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="0 10"
                            cm:Message.Attach="[Event MouseLeftButtonUp] = [Action SelectBasisPokemon()]" ></Image>
                     <TextBlock x:Name="PokemonBasisName" Text="PokemonName" TextAlignment="Center" Margin="0 0 0 5" Foreground="CadetBlue"
                                cm:Message.Attach="[Event MouseLeftButtonUp] = [Action SelectBasisPokemon()]"  ></TextBlock>
                 </StackPanel>
-                <StackPanel x:Name="EvoStackPanelTwo" Orientation="Vertical" Margin="20 0" Background="{Binding Path=StackPanelEvoTwoBg}" >
-                    <TextBlock x:Name="EvoOneHeader" Text="1. Evulotion" MinWidth="150" TextAlignment="Center" FontSize="14"/>
+                <StackPanel Width="25"  Margin="0 0 10 0">
+                    <Button x:Name="PreviousButton" Width="25" Height="100" Margin="0 20 0 0"
+                            Visibility="{Binding IsPreviousVisible, Converter={StaticResource BooleanToVisibilityConverter}, FallbackValue=Collapsed}">
+                        <Button.Template>
+                            <ControlTemplate TargetType="Button">
+                                <StackPanel Orientation="Horizontal" Height="100" Background="#FFDDDDDD">
+                                    <Polygon Points= "19,37.5 4,50, 19,62.5" Stroke="LightSlateGray" Fill="Gray" />
+                                </StackPanel>
+                            </ControlTemplate>
+                        </Button.Template>
+                    </Button>
+                </StackPanel>
+                <StackPanel x:Name="EvoStackPanelTwo" Orientation="Vertical" Background="{Binding Path=StackPanelEvoTwoBg}" >
+                    <TextBlock x:Name="EvoOneHeader" Text="1. Evulotion" MinWidth="140" TextAlignment="Center" FontSize="14"/>
                     <Image x:Name="PokeImageEvoOne" MinWidth="75" MinHeight="75"  MaxWidth="75" MaxHeight="75" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="0 10"></Image>
                     <TextBlock x:Name="PokemonEvoOneName" Text="PokemonName" TextAlignment="Center" Margin="0 0 0 5" Foreground="CadetBlue"></TextBlock>
                 </StackPanel>
+                <StackPanel Width="25"  Margin="0 0 10 0">
+                    <Button x:Name="NextButton" Width="25" Height="100" Margin="0 20 0 0" 
+                            Visibility="{Binding IsNextVisible, Converter={StaticResource BooleanToVisibilityConverter}, FallbackValue=Collapsed}">
+                        <Button.Template>
+                            <ControlTemplate TargetType="Button">
+                                <StackPanel Orientation="Horizontal" Height="100" Background="#FFDDDDDD">
+                                    <Polygon Points= "6,37.5 21,50, 6,62.5" Stroke="LightSlateGray" Fill="Gray" />
+                                </StackPanel>
+                            </ControlTemplate>
+                        </Button.Template>
+                    </Button>
+                </StackPanel>
                 <StackPanel x:Name="EvoStackPanelThree" Orientation="Vertical" Background="{Binding Path=StackPanelEvoThreeBg}">
-                    <TextBlock x:Name="EvoTwoHeader" Text="2. Evulotion" MinWidth="150" TextAlignment="Center" FontSize="14"/>
+                    <TextBlock x:Name="EvoTwoHeader" Text="2. Evulotion" MinWidth="140" TextAlignment="Center" FontSize="14"/>
                     <Image x:Name="PokeImageEvoTwo" MinWidth="75" MinHeight="75"  MaxWidth="75" MaxHeight="75" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="0 10"></Image>
                     <TextBlock x:Name="PokemonEvoTwoName" Text="PokemonName" TextAlignment="Center" Margin="0 0 0 5" Foreground="CadetBlue"></TextBlock>
                 </StackPanel>
