@@ -16,6 +16,7 @@ namespace SOPokemonUI.ViewModels
         #region Fields
 
         private bool start = false;
+        private bool activateRB = false;
 
         private readonly IEventAggregator _events;
 
@@ -42,11 +43,17 @@ namespace SOPokemonUI.ViewModels
             {
                 _selJapanese = value;
                 selected = true;
-                Language = "ja-Hrkt";
-                NotifyOfPropertyChange(() => Language);
-                NotifyOfPropertyChange(() => LoadingDescription);
-                GetLoadingDescription();
-                NotifyOfPropertyChange(() => CanLogOn);
+                if (SelJapanese)
+                {
+                    Language = "ja-Hrkt";
+                    NotifyOfPropertyChange(() => Language);
+                    GetLoadingDescription();
+                    NotifyOfPropertyChange(() => CanLogOn);
+                }
+                else
+                {
+                    NotifyOfPropertyChange(() => LoadingDescription);
+                }
             }
         }
 
@@ -59,11 +66,17 @@ namespace SOPokemonUI.ViewModels
             {
                 _selFrance = value;
                 selected = true;
-                Language = "fr";
-                NotifyOfPropertyChange(() => Language);
-                NotifyOfPropertyChange(() => LoadingDescription);
-                GetLoadingDescription();
-                NotifyOfPropertyChange(() => CanLogOn);
+                if (SelFrance)
+                {
+                    Language = "fr";
+                    NotifyOfPropertyChange(() => Language);
+                    GetLoadingDescription();
+                    NotifyOfPropertyChange(() => CanLogOn);
+                }
+                else
+                {
+                    NotifyOfPropertyChange(() => LoadingDescription);
+                }
             }
         }
 
@@ -76,11 +89,17 @@ namespace SOPokemonUI.ViewModels
             {
                 _selSpanish = value;
                 selected = true;
-                Language = "es";
-                NotifyOfPropertyChange(() => Language);
-                NotifyOfPropertyChange(() => LoadingDescription);
-                GetLoadingDescription();
-                NotifyOfPropertyChange(() => CanLogOn);
+                if (SelSpanish)
+                {
+                    Language = "es";
+                    NotifyOfPropertyChange(() => Language);
+                    GetLoadingDescription();
+                    NotifyOfPropertyChange(() => CanLogOn);
+                }
+                else
+                {
+                    NotifyOfPropertyChange(() => LoadingDescription);
+                }
             }
         }
 
@@ -93,11 +112,17 @@ namespace SOPokemonUI.ViewModels
             {
                 _selEnglish = value;
                 selected = true;
-                Language = "en";
-                NotifyOfPropertyChange(() => Language);
-                NotifyOfPropertyChange(() => LoadingDescription);
-                GetLoadingDescription();
-                NotifyOfPropertyChange(() => CanLogOn);
+                if (SelEnglish)
+                {
+                    Language = "en";
+                    NotifyOfPropertyChange(() => Language);
+                    GetLoadingDescription();
+                    NotifyOfPropertyChange(() => CanLogOn);
+                }
+                else
+                {
+                    NotifyOfPropertyChange(() => LoadingDescription);
+                }
             }
         }
 
@@ -110,11 +135,17 @@ namespace SOPokemonUI.ViewModels
             {
                 _selKorean = value;
                 selected = true;
-                Language = "ko";
-                NotifyOfPropertyChange(() => Language);
-                NotifyOfPropertyChange(() => LoadingDescription);
-                GetLoadingDescription();
-                NotifyOfPropertyChange(() => CanLogOn);
+                if (SelKorean)
+                {
+                    Language = "ko";
+                    NotifyOfPropertyChange(() => Language);
+                    GetLoadingDescription();
+                    NotifyOfPropertyChange(() => CanLogOn);
+                }
+                else
+                {
+                    NotifyOfPropertyChange(() => LoadingDescription);
+                }
             }
         }
 
@@ -127,11 +158,17 @@ namespace SOPokemonUI.ViewModels
             {
                 _selGerman = value;
                 selected = true;
-                Language = "de";
-                NotifyOfPropertyChange(() => Language);
-                NotifyOfPropertyChange(() => LoadingDescription);
-                GetLoadingDescription();
-                NotifyOfPropertyChange(() => CanLogOn);
+                if (SelGerman)
+                {
+                    Language = "de";
+                    NotifyOfPropertyChange(() => Language);
+                    GetLoadingDescription();
+                    NotifyOfPropertyChange(() => CanLogOn);
+                }
+                else
+                {
+                    NotifyOfPropertyChange(() => LoadingDescription);
+                }
             }
         }
 
@@ -144,11 +181,18 @@ namespace SOPokemonUI.ViewModels
             {
                 _selItalian = value;
                 selected = true;
-                Language = "it";
-                NotifyOfPropertyChange(() => Language);
-                NotifyOfPropertyChange(() => LoadingDescription);
-                GetLoadingDescription();
-                NotifyOfPropertyChange(() => CanLogOn);
+                if (SelItalian)
+                {
+                    Language = "it";
+                    NotifyOfPropertyChange(() => Language);
+                    GetLoadingDescription();
+                    NotifyOfPropertyChange(() => CanLogOn);
+                }
+                else
+                {
+                    NotifyOfPropertyChange(() => LoadingDescription);
+                }
+
             }
         }
 
@@ -165,6 +209,8 @@ namespace SOPokemonUI.ViewModels
                     NotifyOfPropertyChange(() => LoadingDescription);
                     start = true;
                 }
+                //NotifyOfPropertyChange(() => LoadingDescription);
+
             }
         }
 
@@ -226,7 +272,7 @@ namespace SOPokemonUI.ViewModels
         {
             timerHeader.Tick += new EventHandler(TimerEventProcessor);
             timerHeader.Interval = 3000;
-            timerHeader.Start();
+            //timerHeader.Start();
         }
 
         // Timer to change LanguageHeader in intervall
@@ -247,6 +293,7 @@ namespace SOPokemonUI.ViewModels
         public async Task LogOn()
         {
             timerHeader.Stop();
+
             await _events.PublishOnUIThreadAsync(new LogOnEvent { Language = Language }, new CancellationToken());
         }
 

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
@@ -25,7 +26,11 @@ namespace SOPokemonUI.ViewModels
         public BindableCollection<PokemonModel> PokeList
         {
             get { return _pokeList; }
-            set { _pokeList = value; }
+            set
+            {
+                _pokeList = value;
+                
+            }
         }
 
         private PokemonModel _selectedPokemon;
@@ -49,6 +54,32 @@ namespace SOPokemonUI.ViewModels
             get { return _language; }
             set { _language = value; }
         }
+
+        private string _searchBox;
+
+        public string SearchBox
+        {
+            get { return _searchBox; }
+            set
+            {
+                _searchBox = value;
+                SearchInCollection();
+                NotifyOfPropertyChange(() => SearchBox);
+            }
+        }
+
+        private string _searchHeader;
+
+        public string SearchHeader
+        {
+            get { return _searchHeader; }
+            set
+            {
+                _searchHeader = value;
+                NotifyOfPropertyChange(() => SearchHeader);
+            }
+        }
+
 
         private IScreen _pokemonInfoView;
         public IScreen PokemonInfoView
@@ -91,8 +122,20 @@ namespace SOPokemonUI.ViewModels
         public PokemonListViewModel(string language)
         {
             Language = language;
+            SetSearchLanguage();
             LoadPokemonList();
         }
+
+        private void SetSearchLanguage()
+        {
+            SearchHeader = SearchTextLanguage.GetSearchLanguage(Language);
+        }
+
+        private void SearchInCollection()
+        {
+            var test = PokeList.FirstOrDefault(x => x.PokeName == SearchBox);
+        }
+
 
         // Fill ListView with all Pokemons in selected language and save them in PokemonModel
         public async void LoadPokemonList()
