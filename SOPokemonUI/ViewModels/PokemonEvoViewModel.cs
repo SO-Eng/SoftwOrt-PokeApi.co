@@ -208,6 +208,37 @@ namespace SOPokemonUI.ViewModels
             }
         }
 
+        public bool CanPreviousButton
+        {
+            get
+            {
+                bool output = false;
+
+                if (next != 0)
+                {
+                    output = true;
+                }
+
+                return output;
+            }
+        }
+
+        public bool CanNextButton
+        {
+            get
+            {
+                bool output = false;
+
+                if (next <= EvoOneList?.Count - 2)
+                {
+                    output = true;
+                }
+
+                return output;
+            }
+        }
+
+
         #endregion
 
 
@@ -342,6 +373,8 @@ namespace SOPokemonUI.ViewModels
                 {
                     NotifyOfPropertyChange(() => IsPreviousVisible);
                     NotifyOfPropertyChange(() => IsNextVisible);
+                    NotifyOfPropertyChange(() => CanPreviousButton);
+                    NotifyOfPropertyChange(() => CanNextButton);
                 }
 
             }
@@ -371,6 +404,8 @@ namespace SOPokemonUI.ViewModels
 
             NotifyOfPropertyChange(() => PokemonEvoOneName);
             NotifyOfPropertyChange(() => PokeImageEvoOne);
+            NotifyOfPropertyChange(() => CanPreviousButton);
+            NotifyOfPropertyChange(() => CanNextButton);
         }
 
         public async Task PreviousButton()
@@ -387,9 +422,10 @@ namespace SOPokemonUI.ViewModels
             PokemonEvoOneName = EvoOneList[next].Name;
             PokeImageEvoOne = EvoOneList[next].EvoImage;
 
-
             NotifyOfPropertyChange(() => PokemonEvoOneName);
             NotifyOfPropertyChange(() => PokeImageEvoOne);
+            NotifyOfPropertyChange(() => CanPreviousButton);
+            NotifyOfPropertyChange(() => CanNextButton);
         }
 
 
