@@ -401,6 +401,7 @@ namespace SOPokemonUI.ViewModels
             PokemonEvoOneName = EvoOneList[next].Name;
             PokeImageEvoOne = EvoOneList[next].EvoImage;
 
+            CompareSelectedPokemon();
 
             NotifyOfPropertyChange(() => PokemonEvoOneName);
             NotifyOfPropertyChange(() => PokeImageEvoOne);
@@ -421,6 +422,8 @@ namespace SOPokemonUI.ViewModels
 
             PokemonEvoOneName = EvoOneList[next].Name;
             PokeImageEvoOne = EvoOneList[next].EvoImage;
+
+            CompareSelectedPokemon();
 
             NotifyOfPropertyChange(() => PokemonEvoOneName);
             NotifyOfPropertyChange(() => PokeImageEvoOne);
