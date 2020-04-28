@@ -28,6 +28,8 @@ namespace SOPokemonUI.ViewModels
         private BindableCollection<PokemonModel> _pokeList;
         private readonly IEventAggregator _events;
         private int evoId = 1;
+        private int previous = 1;
+        private int next = 0;
 
         private List<EvolutionModel> _evoOneList = new List<EvolutionModel>();
 
@@ -351,6 +353,45 @@ namespace SOPokemonUI.ViewModels
             NotifyOfPropertyChange(() => PokemonEvoOneName);
             NotifyOfPropertyChange(() => PokeImageEvoOne);
         }
+
+
+        public async Task NextButton()
+        {
+            next += 1;
+
+            if (next >= EvoOneList.Count)
+            {
+                next = EvoOneList.Count - 1;
+                return;
+            }
+
+            PokemonEvoOneName = EvoOneList[next].Name;
+            PokeImageEvoOne = EvoOneList[next].EvoImage;
+
+
+            NotifyOfPropertyChange(() => PokemonEvoOneName);
+            NotifyOfPropertyChange(() => PokeImageEvoOne);
+        }
+
+        public async Task PreviousButton()
+        {
+            next -= 1;
+
+            if (next < 0)
+            {
+                next = 0;
+                return;
+            }
+
+
+            PokemonEvoOneName = EvoOneList[next].Name;
+            PokeImageEvoOne = EvoOneList[next].EvoImage;
+
+
+            NotifyOfPropertyChange(() => PokemonEvoOneName);
+            NotifyOfPropertyChange(() => PokeImageEvoOne);
+        }
+
 
         private async Task<BitmapImage> LoadPokemonEvoPic(Pokemon pokemonInfo)
         {
