@@ -29,6 +29,17 @@ namespace SOPokemonUI.ViewModels
         private readonly IEventAggregator _events;
         private int evoId = 1;
 
+        private List<EvolutionModel> _evoOneList = new List<EvolutionModel>();
+
+        public List<EvolutionModel> EvoOneList
+        {
+            get { return _evoOneList; }
+            set
+            {
+                _evoOneList = value;
+            }
+        }
+
 
         public PokemonModel SelectedPokemon { get; set; }
 
@@ -164,6 +175,37 @@ namespace SOPokemonUI.ViewModels
             set { _stackPanelEvoThreeBg = value; }
         }
 
+        // Make Previous- and NextButton visible
+        public bool IsPreviousVisible
+        {
+            get
+            {
+                bool output = false;
+
+                if (EvoOneList?.Count > 1)
+                {
+                    output = true;
+                }
+
+                return output;
+            }
+        }
+
+        public bool IsNextVisible
+        {
+            get
+            {
+                bool output = false;
+
+                if (EvoOneList?.Count > 1)
+                {
+                    output = true;
+                }
+
+                return output;
+            }
+        }
+
         #endregion
 
 
@@ -212,6 +254,7 @@ namespace SOPokemonUI.ViewModels
         {
             Pokemon pokemonInfo;
             EvolutionChain evoChain = await pokeClient.GetResourceAsync<EvolutionChain>(evoId);
+            EvoOneList.Clear();
 
             PokeImageBasis = null;
             PokeImageEvoOne = null;
@@ -233,18 +276,23 @@ namespace SOPokemonUI.ViewModels
 
             try
             {
+                // Some Pokemons have more then one first evolution!
+                // So we load allways in a List
                 EvoOneHeader = EvolutionLanguage.GetEvoOneHeader(_language);
-                if (evoChain.Chain.EvolvesTo.Count <= 1)
+                for (int i = 0; i < evoChain.Chain.EvolvesTo.Count; i++)
                 {
-                    PokemonSpecies pokemonEvoOne = await pokeClient.GetResourceAsync<PokemonSpecies>(evoChain.Chain.EvolvesTo[0].Species.Name);
+                    PokemonSpecies pokemonEvoOne = await pokeClient.GetResourceAsync<PokemonSpecies>(evoChain.Chain.EvolvesTo[i].Species.Name);
                     var tempEvoOne = _pokeList.First(x => x.PokeNameOriginal == pokemonEvoOne.Name).PokeName;
                     PokemonEvoOneName = tempEvoOne;
                     pokemonInfo = await pokeClient.GetResourceAsync<Pokemon>(pokemonEvoOne.Id);
                     PokeImageEvoOne = await LoadPokemonEvoPic(pokemonInfo);
-                }
-                else
-                {
-                    MessageBox.Show("Da sind mehrere!");
+
+                    EvoOneList.Add(new EvolutionModel
+                        {
+                            Name = PokemonEvoOneName,
+                            EvoImage = PokeImageEvoOne
+                        }
+                    );
                 }
             }
             catch
@@ -267,16 +315,41 @@ namespace SOPokemonUI.ViewModels
             }
 
             NotifyOfPropertyChange(() => BasisHeader);
-            NotifyOfPropertyChange(() => EvoOneHeader);
-            NotifyOfPropertyChange(() => EvoTwoHeader);
             NotifyOfPropertyChange(() => PokemonBasisName);
-            NotifyOfPropertyChange(() => PokemonEvoOneName);
-            NotifyOfPropertyChange(() => PokemonEvoTwoName);
             NotifyOfPropertyChange(() => PokeImageBasis);
-            NotifyOfPropertyChange(() => PokeImageEvoOne);
+
+            NotifyOfPropertyChange(() => EvoOneHeader);
+
+            NotifyOfPropertyChange(() => EvoTwoHeader);
+            NotifyOfPropertyChange(() => PokemonEvoTwoName);
             NotifyOfPropertyChange(() => PokeImageEvoTwo);
 
+            ShowEvoOne();
+
             CompareSelectedPokemon();
+        }
+
+        private void ShowEvoOne()
+        {
+            try
+            {
+                PokemonEvoOneName = EvoOneList[0].Name;
+                PokeImageEvoOne = EvoOneList[0].EvoImage;
+
+                if (EvoOneList.Count > 1)
+                {
+                    NotifyOfPropertyChange(() => IsPreviousVisible);
+                    NotifyOfPropertyChange(() => IsNextVisible);
+                }
+
+            }
+            catch
+            {
+                PokemonEvoOneName = "";
+            }
+
+            NotifyOfPropertyChange(() => PokemonEvoOneName);
+            NotifyOfPropertyChange(() => PokeImageEvoOne);
         }
 
         private async Task<BitmapImage> LoadPokemonEvoPic(Pokemon pokemonInfo)
