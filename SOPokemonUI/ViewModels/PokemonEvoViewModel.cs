@@ -434,7 +434,7 @@ namespace SOPokemonUI.ViewModels
 
         private async Task<BitmapImage> LoadPokemonEvoPic(Pokemon pokemonInfo)
         {
-            getPokemonPic = new LoadPokemonPic(pokemonInfo.Sprites.FrontDefault);
+            getPokemonPic = new LoadPokemonPic(pokemonInfo.Sprites.FrontDefault, _language);
             PokemonImageModel pIM = await getPokemonPic.LoadPokemonImage();
 
             return pIM.PokemonImage;

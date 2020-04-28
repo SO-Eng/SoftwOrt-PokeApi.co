@@ -261,7 +261,7 @@ namespace SOPokemonUI.ViewModels
         // Method to load image of selected pokemon
         private async Task LoadPokemonImage(Pokemon pokemonInfo)
         {
-            getPokemonPic = new LoadPokemonPic(pokemonInfo.Sprites.FrontDefault);
+            getPokemonPic = new LoadPokemonPic(pokemonInfo.Sprites.FrontDefault, _language);
             PokemonImageModel pIM = await getPokemonPic.LoadPokemonImage();
             PokeImage = pIM.PokemonImage;
 

@@ -10,12 +10,14 @@ namespace SOPokemonUI.Helpers
     public class LoadPokemonPic
     {
         private string _httpSprite;
+        private readonly string _language;
 
         public PokemonImageModel SetPokemonImage { get; set; }
 
-        public LoadPokemonPic(string httpSprite)
+        public LoadPokemonPic(string httpSprite, string language)
         {
             _httpSprite = httpSprite;
+            _language = language;
         }
 
         public async Task<PokemonImageModel> LoadPokemonImage()
@@ -43,7 +45,7 @@ namespace SOPokemonUI.Helpers
                 }
                 else
                 {
-                    imageTemp = new BitmapImage(new Uri("https://raw.githubusercontent.com/SO-Eng/SoftwOrt-PokeApi.co/master/SOPokemonUI/Pictures/PicNA_Pokemon.png", UriKind.Absolute));
+                    imageTemp = new BitmapImage(new Uri($"https://raw.githubusercontent.com/SO-Eng/SoftwOrt-PokeApi.co/master/SOPokemonUI/Pictures/PicNA_Pokemon_{ _language }.png", UriKind.Absolute));
                 }
             }
 
