@@ -10,13 +10,13 @@
     <Grid>
         <StackPanel Orientation="Vertical">
             <TextBlock x:Name="EvolutionHeader" Text="Evolutionen" TextAlignment="Center" Margin="0 3 0 5"/>
-            <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
-                <StackPanel x:Name="EvoStackPanelOne" Orientation="Vertical" Background="{Binding Path=StackPanelEvoOneBg}" >
+            <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" >
+                <StackPanel x:Name="EvoStackPanelOne" Orientation="Vertical" Background="{Binding Path=StackPanelEvoOneBg}" 
+                            cm:Message.Attach="[Event MouseLeftButtonUp] = [Action SelectBasisPokemon()]">
                     <TextBlock x:Name="BasisHeader" Text="Basis Pokemon" MinWidth="140" TextAlignment="Center" FontSize="14"/>
-                    <Image x:Name="PokeImageBasis" MinWidth="75" MinHeight="75"  MaxWidth="75" MaxHeight="75" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="0 10"
-                           cm:Message.Attach="[Event MouseLeftButtonUp] = [Action SelectBasisPokemon()]" ></Image>
-                    <TextBlock x:Name="PokemonBasisName" Text="PokemonName" TextAlignment="Center" Margin="0 0 0 5" Foreground="CadetBlue"
-                               cm:Message.Attach="[Event MouseLeftButtonUp] = [Action SelectBasisPokemon()]"  ></TextBlock>
+                    <Image x:Name="PokeImageBasis" MinWidth="75" MinHeight="75"  MaxWidth="75" MaxHeight="75" HorizontalAlignment="Center" 
+                           VerticalAlignment="Center" Margin="0 10" ></Image>
+                    <TextBlock x:Name="PokemonBasisName" Text="PokemonName" TextAlignment="Center" Margin="0 0 0 5" Foreground="CadetBlue"></TextBlock>
                 </StackPanel>
                 <StackPanel Width="25"  Margin="0 0 10 0">
                     <Button x:Name="PreviousButton" Width="25" Height="100" Margin="0 20 0 0"
@@ -30,7 +30,8 @@
                         </Button.Template>
                     </Button>
                 </StackPanel>
-                <StackPanel x:Name="EvoStackPanelTwo" Orientation="Vertical" Background="{Binding Path=StackPanelEvoTwoBg}" >
+                <StackPanel x:Name="EvoStackPanelTwo" Orientation="Vertical" Background="{Binding Path=StackPanelEvoTwoBg}" 
+                            cm:Message.Attach="[Event MouseLeftButtonUp] = [Action SelectEvoOnePokemon()]">
                     <TextBlock x:Name="EvoOneHeader" Text="1. Evulotion" MinWidth="140" TextAlignment="Center" FontSize="14"/>
                     <Image x:Name="PokeImageEvoOne" MinWidth="75" MinHeight="75"  MaxWidth="75" MaxHeight="75" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="0 10"></Image>
                     <TextBlock x:Name="PokemonEvoOneName" Text="PokemonName" TextAlignment="Center" Margin="0 0 0 5" Foreground="CadetBlue"></TextBlock>
@@ -47,7 +48,8 @@
                         </Button.Template>
                     </Button>
                 </StackPanel>
-                <StackPanel x:Name="EvoStackPanelThree" Orientation="Vertical" Background="{Binding Path=StackPanelEvoThreeBg}">
+                <StackPanel x:Name="EvoStackPanelThree" Orientation="Vertical" Background="{Binding Path=StackPanelEvoThreeBg}" 
+                            cm:Message.Attach="[Event MouseLeftButtonUp] = [Action SelectEvoTwoPokemon()]">
                     <TextBlock x:Name="EvoTwoHeader" Text="2. Evulotion" MinWidth="140" TextAlignment="Center" FontSize="14"/>
                     <Image x:Name="PokeImageEvoTwo" MinWidth="75" MinHeight="75"  MaxWidth="75" MaxHeight="75" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="0 10"></Image>
                     <TextBlock x:Name="PokemonEvoTwoName" Text="PokemonName" TextAlignment="Center" Margin="0 0 0 5" Foreground="CadetBlue"></TextBlock>

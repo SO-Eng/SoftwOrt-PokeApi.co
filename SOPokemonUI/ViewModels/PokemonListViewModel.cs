@@ -6,6 +6,7 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
+using System.Windows.Controls;
 using Caliburn.Micro;
 using PokeApiNet;
 using SOPokemonUI.EventModels;
@@ -14,11 +15,11 @@ using SOPokemonUI.Models;
 
 namespace SOPokemonUI.ViewModels
 {
-    class PokemonListViewModel : Conductor<IScreen>.Collection.OneActive
+    class PokemonListViewModel : Conductor<IScreen>.Collection.OneActive, IHandle<EvoPokemonEvent>
     {
-        private readonly IEventAggregator _events;
-
         #region Fields
+
+        private readonly IEventAggregator _events;
 
         // Initiate client
         PokeApiClient pokeClient = new PokeApiClient();
@@ -39,7 +40,6 @@ namespace SOPokemonUI.ViewModels
             set
             {
                 _searchPokeList = value;
-                NotifyOfPropertyChange(() => SearchPokeList);
             }
         }
 
@@ -51,9 +51,23 @@ namespace SOPokemonUI.ViewModels
             set
             {
                 _selectedPokemon = value;
-                PokemonInfo();
-                PokemonDescription();
-                PokemonEvolutions();
+                //PokemonInfo();
+                //PokemonDescription();
+                //PokemonEvolutions();
+                HandleAsync(new EvoPokemonEvent(), CancellationToken.None);
+                NotifyOfPropertyChange(() => SelectedPokemon);
+            }
+        }
+
+        private ListView _pokemonList;
+
+        public ListView PokemonList
+        {
+            get { return _pokemonList; }
+            set
+            {
+                _pokemonList = value;
+                NotifyOfPropertyChange(() => PokemonList);
             }
         }
 
@@ -129,8 +143,10 @@ namespace SOPokemonUI.ViewModels
 
 
         #region Methods
-        public PokemonListViewModel(string language)
+        public PokemonListViewModel(string language, IEventAggregator events)
         {
+            _events = events;
+            _events.SubscribeOnUIThread(this);
             Language = language;
             SetSearchLanguage();
             LoadPokemonList();
@@ -141,23 +157,10 @@ namespace SOPokemonUI.ViewModels
             SearchHeader = SearchTextLanguage.GetSearchLanguage(Language);
         }
 
-        private void SearchInCollection()
-        {
-            SearchPokeList.Clear();
-            var tempSearch = PokeList.Where(x => x.PokeName.ToLower().Contains(SearchBox.ToLower()));
-
-            foreach (var pokemon in tempSearch)
-            {
-                SearchPokeList.Add(new PokemonModel{Id = pokemon.Id, PokeName = pokemon.PokeName, PokeNameOriginal = pokemon.PokeNameOriginal, PokeUrl = pokemon.PokeUrl });
-            }
-            NotifyOfPropertyChange(() => SearchPokeList);
-        }
-
-
         // Fill ListView with all Pokemons in selected language and save them in PokemonModel
         public async void LoadPokemonList()
         {
-            NamedApiResourceList<Pokemon> allPokemons = await pokeClient.GetNamedResourcePageAsync<Pokemon>(34, 0); // MAX limit: 807
+            NamedApiResourceList<Pokemon> allPokemons = await pokeClient.GetNamedResourcePageAsync<Pokemon>(147, 0); // MAX limit: 807
 
             for (int i = 1; i <= allPokemons.Results.Count; i++)
             {
@@ -173,50 +176,58 @@ namespace SOPokemonUI.ViewModels
             }
         }
 
-        // Load PokemonInfoView to ShellView
-        public void PokemonInfo()
+        // Dynamic search in UI ListView
+        private void SearchInCollection()
         {
-            if (SelectedPokemon != null)
+            SearchPokeList.Clear();
+            var tempSearch = PokeList.Where(x => x.PokeName.ToLower().Contains(SearchBox.ToLower()));
+
+            foreach (var pokemon in tempSearch)
             {
-                PokemonInfoView = new PokemonInfoViewModel(Language, SelectedPokemon);
-                ActivateItemAsync(PokemonInfoView, CancellationToken.None);
+                SearchPokeList.Add(new PokemonModel { Id = pokemon.Id, PokeName = pokemon.PokeName, PokeNameOriginal = pokemon.PokeNameOriginal, PokeUrl = pokemon.PokeUrl });
             }
+            NotifyOfPropertyChange(() => SearchPokeList);
         }
 
-        // Load PokemonDescrView to ShellView
-        public void PokemonDescription()
+
+        // Load PokemonInfoView, -DescrView and -EvoView to ShellView
+        public async Task HandleAsync(EvoPokemonEvent message, CancellationToken cancellationToken)
         {
-            if (SelectedPokemon != null)
+            if (SelectedPokemon == null)
             {
-                PokemonDescrView = new PokemonDescrViewModel(Language, SelectedPokemon);
-                ActivateItemAsync(PokemonDescrView, CancellationToken.None);
+                return;
             }
+            if (message.SelectedEvo != null)
+            {
+                int pokeId = message.SelectedEvo.Id;
+                message.SelectedEvo = null;
+                FireEvent(pokeId);
+                return;
+            }
+
+            PokemonInfoView = new PokemonInfoViewModel(Language, SelectedPokemon);
+            await ActivateItemAsync(PokemonInfoView, CancellationToken.None);
+
+            PokemonDescrView = new PokemonDescrViewModel(Language, SelectedPokemon);
+            await ActivateItemAsync(PokemonDescrView, CancellationToken.None);
+
+            PokemonEvoView = new PokemonEvoViewModel(Language, SelectedPokemon, PokeList, _events);
+            await ActivateItemAsync(PokemonDescrView, CancellationToken.None);
         }
 
-        public void PokemonEvolutions()
+        public void FireEvent(int pokeId)
         {
-            if (SelectedPokemon != null)
+            for (int i = 0; i <= PokeList.Count; i++)
             {
-                PokemonEvoView = new PokemonEvoViewModel(Language, SelectedPokemon, PokeList);
-                ActivateItemAsync(PokemonDescrView, CancellationToken.None);
-            }
-        }
-
-        public void SelectNewPokemon(int pokeId)
-        {
-            for (int i = 1; i <= PokeList.Count; i++)
-            {
-                if (PokeList[i].Id == pokeId)
+                if (SearchPokeList[i].Id == pokeId)
                 {
-                    SelectedPokemon = PokeList[i];
+                    SelectedPokemon = SearchPokeList[i];
                     break;
                 }
             }
 
             NotifyOfPropertyChange(() => SelectedPokemon);
         }
-
-
         #endregion
     }
 }

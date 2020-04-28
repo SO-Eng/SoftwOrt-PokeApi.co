@@ -9,6 +9,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using Caliburn.Micro;
 using PokeApiNet;
+using SOPokemonUI.EventModels;
 using SOPokemonUI.Helpers;
 using SOPokemonUI.Models;
 
@@ -25,6 +26,7 @@ namespace SOPokemonUI.ViewModels
         private LoadPokemonPic getPokemonPic;
         private readonly string _language;
         private BindableCollection<PokemonModel> _pokeList;
+        private readonly IEventAggregator _events;
         private int evoId = 1;
 
 
@@ -168,10 +170,11 @@ namespace SOPokemonUI.ViewModels
         #region Methods
 
 
-        public PokemonEvoViewModel(string language, PokemonModel selectedPokemon, BindableCollection<PokemonModel> pokeList)
+        public PokemonEvoViewModel(string language, PokemonModel selectedPokemon, BindableCollection<PokemonModel> pokeList, IEventAggregator events)
         {
             _language = language;
             _pokeList = pokeList;
+            _events = events;
             SelectedPokemon = selectedPokemon;
 
             EvolutionHeader = EvolutionLanguage.GetEvolutionHeader(_language);
@@ -231,11 +234,18 @@ namespace SOPokemonUI.ViewModels
             try
             {
                 EvoOneHeader = EvolutionLanguage.GetEvoOneHeader(_language);
-                PokemonSpecies pokemonEvoOne = await pokeClient.GetResourceAsync<PokemonSpecies>(evoChain.Chain.EvolvesTo[0].Species.Name);
-                var tempEvoOne = _pokeList.First(x => x.PokeNameOriginal == pokemonEvoOne.Name).PokeName;
-                PokemonEvoOneName = tempEvoOne;
-                pokemonInfo = await pokeClient.GetResourceAsync<Pokemon>(pokemonEvoOne.Id);
-                PokeImageEvoOne = await LoadPokemonEvoPic(pokemonInfo);
+                if (evoChain.Chain.EvolvesTo.Count <= 1)
+                {
+                    PokemonSpecies pokemonEvoOne = await pokeClient.GetResourceAsync<PokemonSpecies>(evoChain.Chain.EvolvesTo[0].Species.Name);
+                    var tempEvoOne = _pokeList.First(x => x.PokeNameOriginal == pokemonEvoOne.Name).PokeName;
+                    PokemonEvoOneName = tempEvoOne;
+                    pokemonInfo = await pokeClient.GetResourceAsync<Pokemon>(pokemonEvoOne.Id);
+                    PokeImageEvoOne = await LoadPokemonEvoPic(pokemonInfo);
+                }
+                else
+                {
+                    MessageBox.Show("Da sind mehrere!");
+                }
             }
             catch
             {
@@ -322,18 +332,54 @@ namespace SOPokemonUI.ViewModels
 
         public async Task SelectBasisPokemon()
         {
-            for (int i = 1; i < _pokeList.Count; i++)
+            if (SelectedPokemon.PokeName != PokemonBasisName)
             {
-                if (_pokeList[i].PokeName == PokemonBasisName)
+                for (int i = 1; i < _pokeList.Count; i++)
                 {
-                    SelectedPokemon = _pokeList[i];
-                    break;
+                    if (_pokeList[i].PokeName == PokemonBasisName)
+                    {
+                        SelectedPokemon = _pokeList[i];
+                        break;
+                    }
                 }
-            }
 
-            //NotifyOfPropertyChange(() => SelectedPokemon);
+                await _events.PublishOnUIThreadAsync(new EvoPokemonEvent { SelectedEvo = SelectedPokemon }, CancellationToken.None);
+            }
         }
 
+        public async Task SelectEvoOnePokemon()
+        {
+            if (SelectedPokemon.PokeName != PokemonEvoOneName)
+            {
+                for (int i = 1; i < _pokeList.Count; i++)
+                {
+                    if (_pokeList[i].PokeName == PokemonEvoOneName)
+                    {
+                        SelectedPokemon = _pokeList[i];
+                        break;
+                    }
+                }
+
+                await _events.PublishOnUIThreadAsync(new EvoPokemonEvent { SelectedEvo = SelectedPokemon }, CancellationToken.None);
+            }
+        }
+
+        public async Task SelectEvoTwoPokemon()
+        {
+            if (SelectedPokemon.PokeName != PokemonEvoTwoName && PokemonEvoTwoName != "")
+            {
+                for (int i = 1; i < _pokeList.Count; i++)
+                {
+                    if (_pokeList[i].PokeName == PokemonEvoTwoName)
+                    {
+                        SelectedPokemon = _pokeList[i];
+                        break;
+                    }
+                }
+
+                await _events.PublishOnUIThreadAsync(new EvoPokemonEvent { SelectedEvo = SelectedPokemon }, CancellationToken.None);
+            }
+        }
 
         #endregion
     }

@@ -9,7 +9,7 @@ using SOPokemonUI.Models;
 
 namespace SOPokemonUI.ViewModels
 {
-    public class ShellViewModel : Conductor<object>, IHandle<LogOnEvent>
+    public class ShellViewModel : Conductor<object>.Collection.OneActive, IHandle<LogOnEvent>//, IHandle<EvoPokemonEvent>
     {
 
         #region Fields
@@ -127,7 +127,7 @@ namespace SOPokemonUI.ViewModels
             logOn = true;
             NotifyOfPropertyChange(() => CanSelectLanguage);
 
-            await ActivateItemAsync(new PokemonListViewModel(Language), cancellationToken);
+            await ActivateItemAsync(new PokemonListViewModel(Language, _events), CancellationToken.None);
         }
 
         public async Task SelectLanguage()
@@ -143,6 +143,12 @@ namespace SOPokemonUI.ViewModels
         {
             TryCloseAsync();
         }
+
+        //public async Task HandleAsync(EvoPokemonEvent message, CancellationToken cancellationToken)
+        //{
+        //    await ActivateItemAsync(new PokemonDescrViewModel(Language, message.SelectedEvo));
+        //    await ActivateItemAsync(new PokemonEvoViewModel(Language, message.SelectedEvo, message.EvoPokeList, _events cancellationToken);
+        //}
 
         #endregion
     }
