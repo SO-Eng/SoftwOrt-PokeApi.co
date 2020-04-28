@@ -51,9 +51,6 @@ namespace SOPokemonUI.ViewModels
             set
             {
                 _selectedPokemon = value;
-                //PokemonInfo();
-                //PokemonDescription();
-                //PokemonEvolutions();
                 HandleAsync(new EvoPokemonEvent(), CancellationToken.None);
                 NotifyOfPropertyChange(() => SelectedPokemon);
             }
@@ -193,10 +190,6 @@ namespace SOPokemonUI.ViewModels
         // Load PokemonInfoView, -DescrView and -EvoView to ShellView
         public async Task HandleAsync(EvoPokemonEvent message, CancellationToken cancellationToken)
         {
-            if (SelectedPokemon == null)
-            {
-                return;
-            }
             if (message.SelectedEvo != null)
             {
                 int pokeId = message.SelectedEvo.Id;
@@ -204,6 +197,11 @@ namespace SOPokemonUI.ViewModels
                 FireEvent(pokeId);
                 return;
             }
+            if (SelectedPokemon == null)
+            {
+                return;
+            }
+
 
             PokemonInfoView = new PokemonInfoViewModel(Language, SelectedPokemon);
             await ActivateItemAsync(PokemonInfoView, CancellationToken.None);
@@ -213,11 +211,34 @@ namespace SOPokemonUI.ViewModels
 
             PokemonEvoView = new PokemonEvoViewModel(Language, SelectedPokemon, PokeList, _events);
             await ActivateItemAsync(PokemonDescrView, CancellationToken.None);
+
+            if (SearchBox?.Length > 0)
+            {
+                RestructureList();
+            }
         }
 
+        // Clear SearchBox and Select Pokemon in ListView (jump to item)
+        private void RestructureList()
+        {
+            SearchBox = "";
+
+            for (int i = 0; i <= SearchPokeList.Count; i++)
+            {
+                if (SearchPokeList[i].Id == SelectedPokemon.Id)
+                {
+                    SelectedPokemon = SearchPokeList[i];
+                    break;
+                }
+            }
+        }
+
+        // Jump to item in ListView and clear SearchBox before
         public void FireEvent(int pokeId)
         {
-            for (int i = 0; i <= PokeList.Count; i++)
+            SearchBox = "";
+
+            for (int i = 0; i <= SearchPokeList.Count; i++)
             {
                 if (SearchPokeList[i].Id == pokeId)
                 {
