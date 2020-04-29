@@ -3,7 +3,6 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
-             xmlns:local="clr-namespace:SOPokemonUI.Views"
              mc:Ignorable="d" FontSize="18" FontFamily="Segeo UI" FontWeight="Light"
              d:DesignHeight="400" d:DesignWidth="242" BorderBrush="#A0A0A0" BorderThickness="1">
     <Grid>
