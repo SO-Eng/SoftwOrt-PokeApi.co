@@ -9,7 +9,7 @@ using SOPokemonUI.Models;
 
 namespace SOPokemonUI.ViewModels
 {
-    public class ShellViewModel : Conductor<object>.Collection.OneActive, IHandle<LogOnEvent>//, IHandle<EvoPokemonEvent>
+    public class ShellViewModel : Conductor<object>.Collection.OneActive, IHandle<LogOnEvent>, IHandle<LoadingBarEvent>
     {
 
         #region Fields
@@ -88,6 +88,40 @@ namespace SOPokemonUI.ViewModels
             }
         }
 
+        private int _loadingValue;
+
+        public int LoadingValue
+        {
+            get { return _loadingValue; }
+            set
+            {
+                _loadingValue = value;
+                NotifyOfPropertyChange(() => IsBarVisible);
+            }
+        }
+
+        private string _loadingText;
+
+        public string LoadingText
+        {
+            get { return _loadingText; }
+            set { _loadingText = value; }
+        }
+
+        public bool IsBarVisible
+        {
+            get
+            {
+                bool output = false;
+
+                if (LoadingValue > 0 && LoadingValue < 249)
+                {
+                    output = true;
+                }
+
+                return output;
+            }
+        }
 
         #endregion
 
@@ -99,6 +133,8 @@ namespace SOPokemonUI.ViewModels
         {
             _events = events;
             _events.SubscribeOnUIThread(this);
+
+            LoadingText = "Loading:";
 
             // Startup Screen
             ActivateItemAsync(IoC.Get<LogOnViewModel>(), new CancellationToken());
@@ -142,6 +178,13 @@ namespace SOPokemonUI.ViewModels
         public void Exit()
         {
             TryCloseAsync();
+        }
+
+        public async Task HandleAsync(LoadingBarEvent message, CancellationToken cancellationToken)
+        {
+            LoadingValue = message.LoadingCount;
+
+            NotifyOfPropertyChange(() => LoadingValue);
         }
 
         //public async Task HandleAsync(EvoPokemonEvent message, CancellationToken cancellationToken)

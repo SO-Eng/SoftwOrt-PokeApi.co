@@ -166,10 +166,23 @@ namespace SOPokemonUI.ViewModels
                 {
                     if (pokemonNameLang.Names[j].Language.Name == Language)
                     {
-                        PokeList.Add(new PokemonModel { Id = i, PokeNameOriginal = allPokemons.Results[i - 1].Name, PokeName = pokemonNameLang.Names[j].Name, PokeUrl = allPokemons.Results[i - 1].Url });
-                        SearchPokeList.Add(new PokemonModel { Id = i, PokeNameOriginal = allPokemons.Results[i - 1].Name, PokeName = pokemonNameLang.Names[j].Name, PokeUrl = allPokemons.Results[i - 1].Url });
+                        PokeList.Add(new PokemonModel
+                        {
+                            Id = i, 
+                            PokeNameOriginal = allPokemons.Results[i - 1].Name, 
+                            PokeName = pokemonNameLang.Names[j].Name, 
+                            PokeUrl = allPokemons.Results[i - 1].Url
+                        });
+                        SearchPokeList.Add(new PokemonModel
+                        {
+                            Id = i, 
+                            PokeNameOriginal = allPokemons.Results[i - 1].Name, 
+                            PokeName = pokemonNameLang.Names[j].Name, 
+                            PokeUrl = allPokemons.Results[i - 1].Url
+                        });
                     }
                 }
+                await _events.PublishOnUIThreadAsync(new LoadingBarEvent { LoadingCount = i }, CancellationToken.None);
             }
         }
 
