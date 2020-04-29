@@ -11,6 +11,7 @@ using Caliburn.Micro;
 using PokeApiNet;
 using SOPokemonUI.EventModels;
 using SOPokemonUI.Helpers;
+using SOPokemonUI.LanguagePack;
 using SOPokemonUI.Models;
 
 namespace SOPokemonUI.ViewModels

@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace SOPokemonUI.Helpers
+﻿namespace SOPokemonUI.LanguagePack
 {
     public static class SearchTextLanguage
     {

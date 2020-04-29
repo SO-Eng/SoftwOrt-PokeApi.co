@@ -1,6 +1,6 @@
 ﻿using System.Windows.Media;
 
-namespace SOPokemonUI.Helpers
+namespace SOPokemonUI.ColorSets
 {
     public static class ColorDeclaration
     {

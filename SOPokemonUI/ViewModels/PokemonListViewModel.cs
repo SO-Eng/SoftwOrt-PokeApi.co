@@ -11,6 +11,7 @@ using Caliburn.Micro;
 using PokeApiNet;
 using SOPokemonUI.EventModels;
 using SOPokemonUI.Helpers;
+using SOPokemonUI.LanguagePack;
 using SOPokemonUI.Models;
 
 namespace SOPokemonUI.ViewModels
@@ -157,7 +158,7 @@ namespace SOPokemonUI.ViewModels
         // Fill ListView with all Pokemons in selected language and save them in PokemonModel
         public async void LoadPokemonList()
         {
-            NamedApiResourceList<Pokemon> allPokemons = await pokeClient.GetNamedResourcePageAsync<Pokemon>(250, 0); // MAX limit: 807
+            NamedApiResourceList<Pokemon> allPokemons = await pokeClient.GetNamedResourcePageAsync<Pokemon>(807, 0); // MAX limit: 807
 
             for (int i = 1; i <= allPokemons.Results.Count; i++)
             {

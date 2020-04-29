@@ -1,11 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using Caliburn.Micro;
+﻿using Caliburn.Micro;
 using SOPokemonUI.EventModels;
 using System.Threading;
 using System.Threading.Tasks;
-using SOPokemonUI.Helpers;
-using SOPokemonUI.Models;
+using SOPokemonUI.LanguagePack;
 
 namespace SOPokemonUI.ViewModels
 {
@@ -186,12 +183,6 @@ namespace SOPokemonUI.ViewModels
 
             NotifyOfPropertyChange(() => LoadingValue);
         }
-
-        //public async Task HandleAsync(EvoPokemonEvent message, CancellationToken cancellationToken)
-        //{
-        //    await ActivateItemAsync(new PokemonDescrViewModel(Language, message.SelectedEvo));
-        //    await ActivateItemAsync(new PokemonEvoViewModel(Language, message.SelectedEvo, message.EvoPokeList, _events cancellationToken);
-        //}
 
         #endregion
     }

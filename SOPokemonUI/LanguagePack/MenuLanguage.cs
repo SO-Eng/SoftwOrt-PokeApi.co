@@ -1,4 +1,4 @@
-﻿namespace SOPokemonUI.Helpers
+﻿namespace SOPokemonUI.LanguagePack
 {
     public static class MenuLanguage
     {
