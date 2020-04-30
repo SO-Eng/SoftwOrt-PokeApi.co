@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Dynamic;
 using Caliburn.Micro;
 using SOPokemonUI.EventModels;
 using System.Threading;
@@ -15,6 +16,8 @@ namespace SOPokemonUI.ViewModels
         #region Fields
 
         private readonly IEventAggregator _events;
+        private readonly IWindowManager _window;
+        private readonly AboutViewModel _about;
         private bool logOn = false;
 
         private string _language;
@@ -73,6 +76,18 @@ namespace SOPokemonUI.ViewModels
             {
                 _languageMenu = value;
                 NotifyOfPropertyChange(() => LanguageMenu);
+            }
+        }
+
+        private string _aboutMenu = "_About";
+
+        public string AboutMenu
+        {
+            get { return _aboutMenu; }
+            set
+            {
+                _aboutMenu = value;
+                NotifyOfPropertyChange(() => AboutMenu);
             }
         }
 
@@ -136,9 +151,11 @@ namespace SOPokemonUI.ViewModels
 
         #region Methods
 
-        public ShellViewModel(IEventAggregator events)
+        public ShellViewModel(IEventAggregator events, IWindowManager window, AboutViewModel about)
         {
             _events = events;
+            _window = window;
+            _about = about;
             _events.SubscribeOnUIThread(this);
 
             StartUpCheck();
@@ -220,8 +237,16 @@ namespace SOPokemonUI.ViewModels
             TryCloseAsync();
         }
 
-        private void SaveSettings()
+        public async Task About()
         {
+            dynamic settings = new ExpandoObject();
+            settings.WindowStartupLocation = WindowStartupLocation.CenterOwner;
+            settings.ResizeMode = ResizeMode.NoResize;
+            // TODO: bind to language file here
+            settings.Title = "About";
+
+            _about.GetLanguage(Language);
+            await _window.ShowDialogAsync(_about, null, settings);
         }
 
         #endregion
