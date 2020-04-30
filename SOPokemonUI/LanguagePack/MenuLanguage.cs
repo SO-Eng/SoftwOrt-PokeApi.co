@@ -131,6 +131,70 @@
             return tempLanguage;
         }
 
+        public static string MenuHelp(string language)
+        {
+            string tempLanguage = "";
+
+            switch (language)
+            {
+                case "ja-Hrkt":
+                    tempLanguage = "助けて";
+                    break;
+                case "ko":
+                    tempLanguage = "도움";
+                    break;
+                case "fr":
+                    tempLanguage = "Aide";
+                    break;
+                case "de":
+                    tempLanguage = "Hilfe";
+                    break;
+                case "es":
+                    tempLanguage = "Ayuda";
+                    break;
+                case "it":
+                    tempLanguage = "Aiuto";
+                    break;
+                default:
+                    tempLanguage = "Help";
+                    break;
+            }
+
+            return tempLanguage;
+        }
+
+        public static string MenuInfo(string language)
+        {
+            string tempLanguage = "";
+
+            switch (language)
+            {
+                case "ja-Hrkt":
+                    tempLanguage = "情報";
+                    break;
+                case "ko":
+                    tempLanguage = "정보";
+                    break;
+                case "fr":
+                    tempLanguage = "Info";
+                    break;
+                case "de":
+                    tempLanguage = "Info";
+                    break;
+                case "es":
+                    tempLanguage = "Información";
+                    break;
+                case "it":
+                    tempLanguage = "Info";
+                    break;
+                default:
+                    tempLanguage = "Info";
+                    break;
+            }
+
+            return tempLanguage;
+        }
+
         public static string LoadingBarSelect(string language)
         {
             string tempLanguage = "";

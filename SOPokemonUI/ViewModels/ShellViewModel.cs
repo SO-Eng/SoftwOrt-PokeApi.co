@@ -79,15 +79,27 @@ namespace SOPokemonUI.ViewModels
             }
         }
 
-        private string _aboutMenu = "_About";
+        private string _helpMenu = "_Help";
 
-        public string AboutMenu
+        public string HelpMenu
         {
-            get { return _aboutMenu; }
+            get { return _helpMenu; }
             set
             {
-                _aboutMenu = value;
-                NotifyOfPropertyChange(() => AboutMenu);
+                _helpMenu = value;
+                NotifyOfPropertyChange(() => HelpMenu);
+            }
+        }
+
+        private string _infoMenu;
+
+        public string InfoMenu
+        {
+            get { return _infoMenu; }
+            set
+            {
+                _infoMenu = value;
+                NotifyOfPropertyChange(() => InfoMenu);
             }
         }
 
@@ -185,6 +197,8 @@ namespace SOPokemonUI.ViewModels
             Settings = MenuLanguage.MenuSettings(Language);
             LanguageMenu = MenuLanguage.MenuLanguageSelect(Language);
             LoadingText = MenuLanguage.LoadingBarSelect(Language);
+            HelpMenu = MenuLanguage.MenuHelp(Language);
+            InfoMenu = MenuLanguage.MenuInfo(Language);
         }
 
         public async Task HandleAsync(LogOnEvent message, CancellationToken cancellationToken)

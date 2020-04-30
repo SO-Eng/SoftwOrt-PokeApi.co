@@ -4,20 +4,65 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:SOPokemonUI.Views"
+             xmlns:helpers="clr-namespace:SOPokemonUI.Helpers"
+             xmlns:cm="http://caliburnmicro.com"
              mc:Ignorable="d"  FontSize="18" FontFamily="Segeo UI" FontWeight="Light"
-             d:DesignHeight="400" d:DesignWidth="500" Background="AliceBlue" >
+             d:DesignHeight="400" d:DesignWidth="500" Background="AliceBlue" MaxWidth="500" MaxHeight="400">
     <Grid>
-        <StackPanel Orientation="Horizontal" Height="70" HorizontalAlignment="Center" VerticalAlignment="Top">
-            <Image x:Name="SoLogo" Source="{Binding Path=SoLogo}" Width="40" Height="40" />
-            <StackPanel Orientation="Vertical" VerticalAlignment="Center" Margin="60 0 60 0">
-                <TextBlock VerticalAlignment="Bottom"  HorizontalAlignment="Center"  Text="SoftwOrt-PokeDex" Height="25" Margin="0 0 0 5"/>
-                <TextBlock VerticalAlignment="Top" Text="Creator: Markus Sczeburek-Ort" Height="25"/>
+        <StackPanel Height="70" HorizontalAlignment="Stretch" VerticalAlignment="Top" Background="LightCoral" >
+            <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Height="70">
+                <Image x:Name="SoLogo"  Width="40" Height="40" />
+                <StackPanel Orientation="Vertical" VerticalAlignment="Center" Margin="60 0 60 0">
+                    <TextBlock VerticalAlignment="Bottom"  HorizontalAlignment="Center"  Text="SoftwOrt-PokeDex" Height="25" Margin="0 0 0 5"/>
+                    <TextBlock VerticalAlignment="Top" Text="Creator: Markus Sczeburek-Ort" Height="25"/>
+                </StackPanel>
+                <Image x:Name="PokeLogo" Width="40" Height="40" />
             </StackPanel>
-            <Image x:Name="PokeLogo" Source="../Logo/SOPokedex.ico" Width="40" Height="40" />
         </StackPanel>
         <ScrollViewer Margin="0 70 0 0">
-            <StackPanel Orientation="Vertical" Margin="20 20 3 0">
-                <TextBlock></TextBlock>
+            <StackPanel Orientation="Vertical" Margin="20 20 15 0">
+                <TextBlock x:Name="TextOne" TextWrapping="Wrap" TextAlignment="Justify" />
+
+                <TextBlock x:Name="TextTwo" TextWrapping="Wrap" TextAlignment="Justify" Margin="0 20 0 0"/>
+                <!--Hyperlink-->
+                <TextBlock Text="PokeApi.Co" Foreground="Blue" Cursor="Hand" Width="100" HorizontalAlignment="Left"
+                           cm:Message.Attach="[Event MouseLeftButtonUp] = [Action PokeApiLink()]">
+                    <TextBlock.TextDecorations>
+                        <TextDecoration/>
+                    </TextBlock.TextDecorations>
+                </TextBlock>
+
+                <TextBlock x:Name="TextThree" TextWrapping="Wrap" TextAlignment="Justify" Margin="0 20 0 0"/>
+
+                <TextBlock x:Name="TextFour" TextWrapping="Wrap" TextAlignment="Justify" Margin="0 20 0 0"/>
+                <!--Hyperlink-->
+                <TextBlock Text="Caliburn Micro" Foreground="Blue" Cursor="Hand" Width="120" HorizontalAlignment="Left"
+                           cm:Message.Attach="[Event MouseLeftButtonUp] = [Action CaliburnMicroLink()]" >
+                    <TextBlock.TextDecorations>
+                        <TextDecoration/>
+                    </TextBlock.TextDecorations>
+                </TextBlock>
+
+                <TextBlock x:Name="TextFive" TextWrapping="Wrap" TextAlignment="Justify" Margin="0 20 0 0"/>
+                <!--Hyperlink-->
+                <TextBlock Text="PoroCYon" Foreground="Blue" Cursor="Hand" Width="80" HorizontalAlignment="Left"
+                           cm:Message.Attach="[Event MouseLeftButtonUp] = [Action PoroCYonLink()]">
+                    <TextBlock.TextDecorations>
+                        <TextDecoration/>
+                    </TextBlock.TextDecorations>
+                </TextBlock>
+
+                <TextBlock x:Name="TextSix" TextWrapping="Wrap" TextAlignment="Justify" Margin="0 20 0 0"/>
+                <!--Hyperlink-->
+                <TextBlock Text="GitHub" Foreground="Blue" Cursor="Hand" Width="60" HorizontalAlignment="Left"
+                           cm:Message.Attach="[Event MouseLeftButtonUp] = [Action SoPokeApiLink()]">
+                    <TextBlock.TextDecorations>
+                        <TextDecoration/>
+                    </TextBlock.TextDecorations>
+                </TextBlock>
+
+                <TextBlock x:Name="TextSeven" TextWrapping="Wrap" TextAlignment="Justify" Margin="0 20 0 20"/>
+
             </StackPanel>
         </ScrollViewer>
     </Grid>

@@ -250,8 +250,11 @@ namespace SOPokemonUI.ViewModels
             PokemonWeightLanguage = AbilitiesLanguage.GetWeightLanguage(_language);
             PokemonHeightLanguage = AbilitiesLanguage.GetHeightLanguage(_language);
             PokemonAbilityLanguage = AbilitiesLanguage.GetAbilityLanguage(_language);
-            PokemonWeight = (pokemonInfo.Weight / 10).ToString("#0.## 'Kg'");
-            PokemonHeight = (pokemonInfo.Height / 10).ToString("#0.### 'm'");
+            double tempWeight = (double)pokemonInfo.Weight / 10;
+            double tempHeight = (double)pokemonInfo.Height / 10;
+
+            PokemonWeight = tempWeight.ToString("#0.## 'Kg'");
+            PokemonHeight = tempHeight.ToString("#0.### 'm'");
 
             NotifyOfPropertyChange(() => PokemonWeightLanguage);
             NotifyOfPropertyChange(() => PokemonHeightLanguage);

@@ -38,8 +38,8 @@
                 <MenuItem Header="{Binding Path=Settings, FallbackValue=Settings}">
                     <MenuItem Header="{Binding Path=LanguageMenu, FallbackValue=Language}" x:Name="SelectLanguage"/>
                 </MenuItem>
-                <MenuItem Header="{Binding Path=Help, FallbackValue=Help}">
-                    <MenuItem Header="{Binding Path=AboutMenu, FallbackValue=About}" x:Name="About"/>
+                <MenuItem Header="{Binding Path=HelpMenu, FallbackValue=Help}">
+                    <MenuItem Header="{Binding Path=InfoMenu, FallbackValue=About}" x:Name="About"/>
                 </MenuItem>
             </Menu>
         </DockPanel>
