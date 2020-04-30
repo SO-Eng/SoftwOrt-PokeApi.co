@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using System.Windows.Controls;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using Caliburn.Micro;
@@ -226,6 +227,7 @@ namespace SOPokemonUI.ViewModels
                 }
             }
 
+            //await LoadPokemonImage(pokemonInfo);
             await LoadPokemonImage(pokemonInfo);
 
             LoadPokemonType(pokemonInfo);
