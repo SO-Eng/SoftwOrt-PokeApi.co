@@ -1,8 +1,11 @@
-﻿using Caliburn.Micro;
+﻿using System;
+using Caliburn.Micro;
 using SOPokemonUI.EventModels;
 using System.Threading;
 using System.Threading.Tasks;
+using System.Windows;
 using SOPokemonUI.LanguagePack;
+using Microsoft.Win32;
 
 namespace SOPokemonUI.ViewModels
 {
@@ -15,7 +18,10 @@ namespace SOPokemonUI.ViewModels
         private bool logOn = false;
 
         private string _language;
-        
+        public string regPath = @"Software\SoftwOrt\SO-PokeApi";
+        private string subFolder;
+        private string csvPath;
+
         public string Language
         {
             get { return _language; }
@@ -76,7 +82,7 @@ namespace SOPokemonUI.ViewModels
             {
                 bool output = false;
 
-                if (logOn)
+                if (logOn && LoadingValue >= 807)
                 {
                     output = true;
                 }
@@ -102,7 +108,11 @@ namespace SOPokemonUI.ViewModels
         public string LoadingText
         {
             get { return _loadingText; }
-            set { _loadingText = value; }
+            set
+            {
+                _loadingText = value;
+                NotifyOfPropertyChange(() => LoadingText);
+            }
         }
 
         public bool IsBarVisible
@@ -111,7 +121,7 @@ namespace SOPokemonUI.ViewModels
             {
                 bool output = false;
 
-                if (LoadingValue > 0 && LoadingValue < 249)
+                if (LoadingValue > 0 && LoadingValue < 807)
                 {
                     output = true;
                 }
@@ -131,11 +141,24 @@ namespace SOPokemonUI.ViewModels
             _events = events;
             _events.SubscribeOnUIThread(this);
 
-            LoadingText = "Loading:";
+            StartUpCheck();
+        }
 
-            // Startup Screen
-            ActivateItemAsync(IoC.Get<LogOnViewModel>(), new CancellationToken());
-            //Start();
+        private async Task StartUpCheck()
+        {
+            using (RegistryKey regkey = Registry.CurrentUser.OpenSubKey(regPath))
+            {
+                if (regkey != null)
+                {
+                    // Get last language selection
+                    Language = regkey.GetValue("Language").ToString();
+                    await HandleAsync(new LogOnEvent(), CancellationToken.None);
+                }
+                else
+                {
+                    await ActivateItemAsync(IoC.Get<LogOnViewModel>(), new CancellationToken());
+                }
+            }
         }
 
         private void SetMenuLanguage()
@@ -144,24 +167,43 @@ namespace SOPokemonUI.ViewModels
             Close = MenuLanguage.MenuClose(Language);
             Settings = MenuLanguage.MenuSettings(Language);
             LanguageMenu = MenuLanguage.MenuLanguageSelect(Language);
-        }
-
-        // Start App without LogOn Screen
-        private async void Start()
-        {
-            await HandleAsync(new LogOnEvent(), CancellationToken.None);
+            LoadingText = MenuLanguage.LoadingBarSelect(Language);
         }
 
         public async Task HandleAsync(LogOnEvent message, CancellationToken cancellationToken)
         {
-            Language = message.Language;
+            if (message.Language != null)
+            {
+                Language = message.Language;
 
+                // Save to registry for next startup
+                using (RegistryKey regKey = Registry.CurrentUser.CreateSubKey(regPath))
+                {
+                    regKey.SetValue("Language", Language);
+                }
+            }
+
+            // Create saveFile depending on selected Language in PokemonListViewModel.cs
+            subFolder = $@"PokemonList\List_{ Language }.csv";
+            csvPath = AppDomain.CurrentDomain.BaseDirectory + subFolder;
+
+            LoadingValue = 0;
+            NotifyOfPropertyChange(() => LoadingValue);
             SetMenuLanguage();
             logOn = true;
             NotifyOfPropertyChange(() => CanSelectLanguage);
 
-            await ActivateItemAsync(new PokemonListViewModel(Language, _events), CancellationToken.None);
+            await ActivateItemAsync(new PokemonListViewModel(Language, _events, csvPath), CancellationToken.None);
         }
+
+        public async Task HandleAsync(LoadingBarEvent message, CancellationToken cancellationToken)
+        {
+            LoadingValue = message.LoadingCount;
+
+            NotifyOfPropertyChange(() => LoadingValue);
+            NotifyOfPropertyChange(() => CanSelectLanguage);
+        }
+
 
         public async Task SelectLanguage()
         {
@@ -174,14 +216,12 @@ namespace SOPokemonUI.ViewModels
         // End Application
         public void Exit()
         {
+            //SaveSettings();
             TryCloseAsync();
         }
 
-        public async Task HandleAsync(LoadingBarEvent message, CancellationToken cancellationToken)
+        private void SaveSettings()
         {
-            LoadingValue = message.LoadingCount;
-
-            NotifyOfPropertyChange(() => LoadingValue);
         }
 
         #endregion

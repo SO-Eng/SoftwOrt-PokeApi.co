@@ -131,6 +131,38 @@
             return tempLanguage;
         }
 
+        public static string LoadingBarSelect(string language)
+        {
+            string tempLanguage = "";
+
+            switch (language)
+            {
+                case "ja-Hrkt":
+                    tempLanguage = "読み込み中:";
+                    break;
+                case "ko":
+                    tempLanguage = "로딩:";
+                    break;
+                case "fr":
+                    tempLanguage = "Chargement:";
+                    break;
+                case "de":
+                    tempLanguage = "Lädt:";
+                    break;
+                case "es":
+                    tempLanguage = "Cargando:";
+                    break;
+                case "it":
+                    tempLanguage = "Caricamento:";
+                    break;
+                default:
+                    tempLanguage = "Loading:";
+                    break;
+            }
+
+            return tempLanguage;
+        }
+
 
     }
 }

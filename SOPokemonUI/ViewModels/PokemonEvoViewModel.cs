@@ -312,7 +312,6 @@ namespace SOPokemonUI.ViewModels
             {
                 // Some Pokemons have more then one first evolution!
                 // So we load allways in a List
-                EvoOneHeader = EvolutionLanguage.GetEvoOneHeader(_language);
                 for (int i = 0; i < evoChain.Chain.EvolvesTo.Count; i++)
                 {
                     PokemonSpecies pokemonEvoOne = await pokeClient.GetResourceAsync<PokemonSpecies>(evoChain.Chain.EvolvesTo[i].Species.Name);
@@ -327,6 +326,11 @@ namespace SOPokemonUI.ViewModels
                             EvoImage = PokeImageEvoOne
                         }
                     );
+                }
+
+                if (EvoOneList.Count > 0)
+                {
+                    EvoOneHeader = EvolutionLanguage.GetEvoOneHeader(_language);
                 }
             }
             catch

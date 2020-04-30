@@ -21,6 +21,8 @@ namespace SOPokemonUI.ViewModels
         #region Fields
 
         private readonly IEventAggregator _events;
+        private readonly string _csvPath;
+        int q = 0;
 
         // Initiate client
         PokeApiClient pokeClient = new PokeApiClient();
@@ -141,9 +143,10 @@ namespace SOPokemonUI.ViewModels
 
 
         #region Methods
-        public PokemonListViewModel(string language, IEventAggregator events)
+        public PokemonListViewModel(string language, IEventAggregator events, string csvPath)
         {
             _events = events;
+            _csvPath = csvPath;
             _events.SubscribeOnUIThread(this);
             Language = language;
             SetSearchLanguage();
@@ -158,7 +161,56 @@ namespace SOPokemonUI.ViewModels
         // Fill ListView with all Pokemons in selected language and save them in PokemonModel
         public async void LoadPokemonList()
         {
-            NamedApiResourceList<Pokemon> allPokemons = await pokeClient.GetNamedResourcePageAsync<Pokemon>(807, 0); // MAX limit: 807
+            var loadPokemonsCsv = FileProcessor.FileProcessor.LoadFromCsvFile<PokemonModel>(_csvPath);
+            if (loadPokemonsCsv != null)
+            {
+                if (loadPokemonsCsv.Count < 807)
+                {
+                    await LoadFromApi();
+                    // Save to CSV file
+                    FileProcessor.FileProcessor.SaveToCsvFile(PokeList, _csvPath);
+                }
+                else
+                {
+                    await LoadFromDisk(loadPokemonsCsv);
+                }
+            }
+            else
+            {
+                await LoadFromApi();
+                // Save to CSV file
+                FileProcessor.FileProcessor.SaveToCsvFile(PokeList, _csvPath);
+            }
+        }
+
+        private async Task LoadFromDisk(BindableCollection<PokemonModel> loadPokemonsCsv)
+        {
+            foreach (var pokemon in loadPokemonsCsv)
+            {
+                PokeList.Add(new PokemonModel
+                {
+                    Id = pokemon.Id,
+                    PokeNameOriginal = pokemon.PokeNameOriginal,
+                    PokeName = pokemon.PokeName,
+                    PokeUrl = pokemon.PokeUrl
+                });
+                SearchPokeList.Add(new PokemonModel
+                {
+                    Id = pokemon.Id,
+                    PokeNameOriginal = pokemon.PokeNameOriginal,
+                    PokeName = pokemon.PokeName,
+                    PokeUrl = pokemon.PokeUrl
+                });
+            }
+            await _events.PublishOnUIThreadAsync(new LoadingBarEvent { LoadingCount = loadPokemonsCsv.Count }, CancellationToken.None);
+        }
+
+        private async Task LoadFromApi()
+        {
+            // MAX limit currently: 807
+            int maxPokemons = 807;
+
+            NamedApiResourceList<Pokemon> allPokemons = await pokeClient.GetNamedResourcePageAsync<Pokemon>(maxPokemons, 0);
 
             for (int i = 1; i <= allPokemons.Results.Count; i++)
             {
@@ -169,23 +221,25 @@ namespace SOPokemonUI.ViewModels
                     {
                         PokeList.Add(new PokemonModel
                         {
-                            Id = i, 
-                            PokeNameOriginal = allPokemons.Results[i - 1].Name, 
-                            PokeName = pokemonNameLang.Names[j].Name, 
+                            Id = i,
+                            PokeNameOriginal = allPokemons.Results[i - 1].Name,
+                            PokeName = pokemonNameLang.Names[j].Name,
                             PokeUrl = allPokemons.Results[i - 1].Url
                         });
                         SearchPokeList.Add(new PokemonModel
                         {
-                            Id = i, 
-                            PokeNameOriginal = allPokemons.Results[i - 1].Name, 
-                            PokeName = pokemonNameLang.Names[j].Name, 
+                            Id = i,
+                            PokeNameOriginal = allPokemons.Results[i - 1].Name,
+                            PokeName = pokemonNameLang.Names[j].Name,
                             PokeUrl = allPokemons.Results[i - 1].Url
                         });
                     }
                 }
+                // Brings loading status to front-end in ProgressBar
                 await _events.PublishOnUIThreadAsync(new LoadingBarEvent { LoadingCount = i }, CancellationToken.None);
             }
         }
+
 
         // Dynamic search in UI ListView
         private void SearchInCollection()

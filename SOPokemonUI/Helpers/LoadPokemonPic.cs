@@ -26,30 +26,36 @@ namespace SOPokemonUI.Helpers
             BitmapImage imageTemp;
             var httpClient = new HttpClient();
 
-            using (var response = await httpClient.GetAsync(_httpSprite))
+            try
             {
-                if (response.IsSuccessStatusCode)
+                using (var response = await httpClient.GetAsync(_httpSprite))
                 {
-                    using (var uri = new MemoryStream())
+                    if (response.IsSuccessStatusCode)
                     {
-                        await response.Content.CopyToAsync(uri);
-                        uri.Seek(0, SeekOrigin.Begin);
+                        using (var uri = new MemoryStream())
+                        {
+                            await response.Content.CopyToAsync(uri);
+                            uri.Seek(0, SeekOrigin.Begin);
 
-                        imageTemp = new BitmapImage();
-                        imageTemp.BeginInit();
-                        imageTemp.CacheOption = BitmapCacheOption.OnLoad;
-                        imageTemp.StreamSource = uri;
-                        imageTemp.EndInit();
-                        imageTemp.Freeze();
+                            imageTemp = new BitmapImage();
+                            imageTemp.BeginInit();
+                            imageTemp.CacheOption = BitmapCacheOption.OnLoad;
+                            imageTemp.StreamSource = uri;
+                            imageTemp.EndInit();
+                            imageTemp.Freeze();
+                        }
+                        SetPokemonImage.PokemonImage = imageTemp;
+
                     }
                 }
-                else
-                {
-                    imageTemp = new BitmapImage(new Uri($"https://raw.githubusercontent.com/SO-Eng/SoftwOrt-PokeApi.co/master/SOPokemonUI/Pictures/PicNA_Pokemon_{ _language }.png", UriKind.Absolute));
-                }
+            }
+            catch
+            {
+                imageTemp = new BitmapImage(new Uri($"https://raw.githubusercontent.com/SO-Eng/SoftwOrt-PokeApi.co/master/SOPokemonUI/LanguagePack/Pictures/PicNA_Pokemon_{ _language }.png", UriKind.Absolute));
+                SetPokemonImage.PokemonImage = imageTemp;
             }
 
-            SetPokemonImage.PokemonImage = imageTemp;
+
             return SetPokemonImage;
         }
 
