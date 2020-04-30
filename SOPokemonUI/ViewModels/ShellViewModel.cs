@@ -17,7 +17,7 @@ namespace SOPokemonUI.ViewModels
 
         private readonly IEventAggregator _events;
         private readonly IWindowManager _window;
-        private readonly AboutViewModel _about;
+        private readonly InfoViewModel _info;
         private bool logOn = false;
 
         private string _language;
@@ -163,11 +163,11 @@ namespace SOPokemonUI.ViewModels
 
         #region Methods
 
-        public ShellViewModel(IEventAggregator events, IWindowManager window, AboutViewModel about)
+        public ShellViewModel(IEventAggregator events, IWindowManager window, InfoViewModel info)
         {
             _events = events;
             _window = window;
-            _about = about;
+            _info = info;
             _events.SubscribeOnUIThread(this);
 
             StartUpCheck();
@@ -256,11 +256,10 @@ namespace SOPokemonUI.ViewModels
             dynamic settings = new ExpandoObject();
             settings.WindowStartupLocation = WindowStartupLocation.CenterOwner;
             settings.ResizeMode = ResizeMode.NoResize;
-            // TODO: bind to language file here
-            settings.Title = "About";
+            settings.Title = MenuLanguage.MenuInfo(Language);
 
-            _about.GetLanguage(Language);
-            await _window.ShowDialogAsync(_about, null, settings);
+            _info.GetLanguage(Language);
+            await _window.ShowDialogAsync(_info, null, settings);
         }
 
         #endregion

@@ -8,7 +8,7 @@ using SOPokemonUI.Models;
 
 namespace SOPokemonUI.ViewModels
 {
-    public class AboutViewModel : Screen
+    public class InfoViewModel : Screen
     {
         #region Fields
 
@@ -122,7 +122,7 @@ namespace SOPokemonUI.ViewModels
 
         #region Methods
 
-        public AboutViewModel()
+        public InfoViewModel()
         {
             LoadPictures();
         }
@@ -154,13 +154,13 @@ namespace SOPokemonUI.ViewModels
         // Load Textes depending to selected language
         private void LoadTextes()
         {
-            TextOne = AboutLanguages.TextOne(Language);
-            TextTwo = AboutLanguages.TextTwo(Language);
-            TextThree = AboutLanguages.TextThree(Language);
-            TextFour = AboutLanguages.TextFour(Language);
-            TextFive = AboutLanguages.TextFive(Language);
-            TextSix = AboutLanguages.TextSix(Language);
-            TextSeven = AboutLanguages.TextSeven(Language);
+            TextOne = InfoLanguages.TextOne(Language);
+            TextTwo = InfoLanguages.TextTwo(Language);
+            TextThree = InfoLanguages.TextThree(Language);
+            TextFour = InfoLanguages.TextFour(Language);
+            TextFive = InfoLanguages.TextFive(Language);
+            TextSix = InfoLanguages.TextSix(Language);
+            TextSeven = InfoLanguages.TextSeven(Language);
         }
 
         // Methods for Hyperlinks in .Net Core 3

@@ -4,7 +4,7 @@ using System.Text;
 
 namespace SOPokemonUI.LanguagePack
 {
-    public static class AboutLanguages
+    public static class InfoLanguages
     {
         public static string TextOne(string language)
         {
@@ -13,19 +13,19 @@ namespace SOPokemonUI.LanguagePack
             switch (language)
             {
                 case "fr":
-                    tempLanguage = "Cette application est basée sur une idée de mon fils aîné et moi-même. Nous avons conçu l'application ensemble.";
+                    tempLanguage = "Cette application est basée sur une idée de mon fils et moi. Nous avons conçu l'application ensemble.";
                     break;
                 case "de":
-                    tempLanguage = "Diese App basiert auf einer Idee von meinem älteren Sohn und mir selbst. Wir haben die App zusammen entworfen.";
+                    tempLanguage = "Diese App basiert auf einer Idee von meinem Sohn und mir. Wir haben die App zusammen entworfen.";
                     break;
                 case "es":
-                    tempLanguage = "Esta aplicación está basada en una idea de mi hijo mayor y mía. Diseñamos la aplicación juntos.";
+                    tempLanguage = "Esta aplicación está basada en una idea de mi hijo y mía. Diseñamos la aplicación juntos.";
                     break;
                 case "it":
-                    tempLanguage = "Questa app si basa su un'idea di me e di mio figlio maggiore. Abbiamo progettato l'app insieme.";
+                    tempLanguage = "Questa app si basa su un'idea di me e mio figlio. Abbiamo progettato l'app insieme.";
                     break;
                 default:
-                    tempLanguage = "This app is based on an idea from my older son and myself. We designed the app together.";
+                    tempLanguage = "This app is based on an idea from my son and me. We designed the app together.";
                     break;
             }
 

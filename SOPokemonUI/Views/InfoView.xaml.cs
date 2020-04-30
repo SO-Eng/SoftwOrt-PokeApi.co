@@ -16,9 +16,9 @@ namespace SOPokemonUI.Views
     /// <summary>
     /// Interaction logic for AboutView.xaml
     /// </summary>
-    public partial class AboutView : UserControl
+    public partial class InfoView : UserControl
     {
-        public AboutView()
+        public InfoView()
         {
             InitializeComponent();
         }

@@ -245,12 +245,33 @@ namespace SOPokemonUI.ViewModels
         private void SearchInCollection()
         {
             SearchPokeList.Clear();
-            var tempSearch = PokeList.Where(x => x.PokeName.ToLower().Contains(SearchBox.ToLower()));
+            var tempSearchString = PokeList.Where(x => x.PokeName.ToLower().Contains(SearchBox.ToLower()));
 
-            foreach (var pokemon in tempSearch)
+            // Try to search for numbers if Searchbox contains digits
+            try
             {
-                SearchPokeList.Add(new PokemonModel { Id = pokemon.Id, PokeName = pokemon.PokeName, PokeNameOriginal = pokemon.PokeNameOriginal, PokeUrl = pokemon.PokeUrl });
+                var tempSearchId = PokeList.Where(x => x.Id.Equals(Convert.ToInt32(SearchBox)));
+
+                foreach (var pokemon in tempSearchId)
+                {
+                    SearchPokeList.Add(new PokemonModel { Id = pokemon.Id, PokeName = pokemon.PokeName, PokeNameOriginal = pokemon.PokeNameOriginal, PokeUrl = pokemon.PokeUrl });
+                }
+
             }
+            catch
+            {
+                // Search for string
+                foreach (var pokemon in tempSearchString)
+                {
+                    SearchPokeList.Add(new PokemonModel { Id = pokemon.Id, PokeName = pokemon.PokeName, PokeNameOriginal = pokemon.PokeNameOriginal, PokeUrl = pokemon.PokeUrl });
+                }
+
+            }
+
+            //foreach (var pokemon in tempSearchString)
+            //{
+            //    SearchPokeList.Add(new PokemonModel { Id = pokemon.Id, PokeName = pokemon.PokeName, PokeNameOriginal = pokemon.PokeNameOriginal, PokeUrl = pokemon.PokeUrl });
+            //}
             NotifyOfPropertyChange(() => SearchPokeList);
         }
 
