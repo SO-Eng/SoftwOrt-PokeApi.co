@@ -23,6 +23,7 @@ namespace SOPokemonUI.ViewModels
         private readonly IEventAggregator _events;
         private readonly string _csvPath;
         int q = 0;
+        private char cSearch;
 
         // Initiate client
         PokeApiClient pokeClient = new PokeApiClient();
@@ -246,32 +247,33 @@ namespace SOPokemonUI.ViewModels
         {
             SearchPokeList.Clear();
             var tempSearchString = PokeList.Where(x => x.PokeName.ToLower().Contains(SearchBox.ToLower()));
+            var tempSearchId = PokeList.Where(x => x.Id.ToString().Contains(SearchBox));
 
             // Try to search for numbers if Searchbox contains digits
             try
             {
-                var tempSearchId = PokeList.Where(x => x.Id.Equals(Convert.ToInt32(SearchBox)));
+                cSearch = SearchBox.ToCharArray()[0];
+            }
+            catch
+            {
+                //
+            }
 
+            if (cSearch >= '0' && cSearch <= '9')
+            {
                 foreach (var pokemon in tempSearchId)
                 {
                     SearchPokeList.Add(new PokemonModel { Id = pokemon.Id, PokeName = pokemon.PokeName, PokeNameOriginal = pokemon.PokeNameOriginal, PokeUrl = pokemon.PokeUrl });
                 }
-
             }
-            catch
+            else // Search for string
             {
-                // Search for string
                 foreach (var pokemon in tempSearchString)
                 {
                     SearchPokeList.Add(new PokemonModel { Id = pokemon.Id, PokeName = pokemon.PokeName, PokeNameOriginal = pokemon.PokeNameOriginal, PokeUrl = pokemon.PokeUrl });
                 }
-
             }
 
-            //foreach (var pokemon in tempSearchString)
-            //{
-            //    SearchPokeList.Add(new PokemonModel { Id = pokemon.Id, PokeName = pokemon.PokeName, PokeNameOriginal = pokemon.PokeNameOriginal, PokeUrl = pokemon.PokeUrl });
-            //}
             NotifyOfPropertyChange(() => SearchPokeList);
         }
 
