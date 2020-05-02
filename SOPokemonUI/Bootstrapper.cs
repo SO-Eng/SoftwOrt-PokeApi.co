@@ -2,9 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Windows;
-using Microsoft.Win32;
 using SOPokemonUI.ViewModels;
 
 namespace SOPokemonUI
@@ -16,6 +14,7 @@ namespace SOPokemonUI
         private SimpleContainer _container = new SimpleContainer();
 
         #endregion
+
 
         #region Methods
 

@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using System.Windows;
 using SOPokemonUI.LanguagePack;
 using Microsoft.Win32;
+using SOPokemonUI.Helpers;
 
 namespace SOPokemonUI.ViewModels
 {
@@ -20,11 +21,12 @@ namespace SOPokemonUI.ViewModels
         private readonly InfoViewModel _info;
         private bool logOn = false;
 
-        private string _language;
+        // Set path in registry
         public string regPath = @"Software\SoftwOrt\SO-PokeApi";
         private string subFolder;
         private string csvPath;
 
+        private string _language;
         public string Language
         {
             get { return _language; }
@@ -216,7 +218,9 @@ namespace SOPokemonUI.ViewModels
 
             // Create saveFile depending on selected Language in PokemonListViewModel.cs
             subFolder = $@"PokemonList\List_{ Language }.csv";
-            csvPath = AppDomain.CurrentDomain.BaseDirectory + subFolder;
+
+            // Create Path in %USERPROFILE%\AppData\Local\...
+            csvPath = LoadSavePath.SetFilePath(subFolder);
 
             LoadingValue = 0;
             NotifyOfPropertyChange(() => LoadingValue);
@@ -244,13 +248,6 @@ namespace SOPokemonUI.ViewModels
             await ActivateItemAsync(IoC.Get<LogOnViewModel>(), new CancellationToken());
         }
 
-        // End Application
-        public void Exit()
-        {
-            //SaveSettings();
-            TryCloseAsync();
-        }
-
         public async Task About()
         {
             dynamic settings = new ExpandoObject();
@@ -261,6 +258,13 @@ namespace SOPokemonUI.ViewModels
             _info.GetLanguage(Language);
             await _window.ShowDialogAsync(_info, null, settings);
         }
+
+        // End Application
+        public void Exit()
+        {
+            TryCloseAsync();
+        }
+
 
         #endregion
     }

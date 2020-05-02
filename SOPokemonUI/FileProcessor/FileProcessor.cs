@@ -78,9 +78,13 @@ namespace SOPokemonUI.FileProcessor
         // To save Pokemon-list
         public static void SaveToCsvFile<T>(BindableCollection<T> data, string filePath) where T : class
         {
-            if (!System.IO.File.Exists(AppDomain.CurrentDomain.BaseDirectory + @"PokemonList\"))
+            // Get only Path
+            string path = System.IO.Path.GetDirectoryName(filePath);
+
+            // Create Folder if doesn't exists
+            if (!System.IO.Directory.Exists(System.IO.Path.GetFullPath(path)))
             {
-                System.IO.Directory.CreateDirectory(AppDomain.CurrentDomain.BaseDirectory + @"\PokemonList\");
+                System.IO.Directory.CreateDirectory(System.IO.Path.GetFullPath(path));
             }
 
             BindableCollection<string> lines = new BindableCollection<string>();

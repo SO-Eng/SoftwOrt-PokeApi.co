@@ -157,7 +157,6 @@ namespace SOPokemonUI.ViewModels
 
 
         private List<AbilityModel> _pokemonAbilityList = new List<AbilityModel>();
-
         public List<AbilityModel> PokemonAbilityList
         {
             get { return _pokemonAbilityList; }

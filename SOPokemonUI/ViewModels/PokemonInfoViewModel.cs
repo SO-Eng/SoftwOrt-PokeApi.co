@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using System.Windows.Controls;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using Caliburn.Micro;
@@ -107,8 +106,8 @@ namespace SOPokemonUI.ViewModels
             }
         }
 
-        private string _typeOne;
 
+        private string _typeOne;
         public string TypeOne
         {
             get { return _typeOne; }
@@ -263,7 +262,7 @@ namespace SOPokemonUI.ViewModels
             NotifyOfPropertyChange(() => PokemonHeight);
         }
 
-        // Method to load image of selected pokemon
+        // Method to load image of selected pokemon from API
         private async Task LoadPokemonImage(Pokemon pokemonInfo)
         {
             getPokemonPic = new LoadPokemonPic(pokemonInfo.Sprites.FrontDefault, _language);

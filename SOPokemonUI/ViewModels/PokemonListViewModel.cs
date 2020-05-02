@@ -1,16 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using System.Linq;
-using System.Text;
+﻿using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
-using System.Windows;
 using System.Windows.Controls;
 using Caliburn.Micro;
 using PokeApiNet;
 using SOPokemonUI.EventModels;
-using SOPokemonUI.Helpers;
 using SOPokemonUI.LanguagePack;
 using SOPokemonUI.Models;
 
@@ -22,7 +16,7 @@ namespace SOPokemonUI.ViewModels
 
         private readonly IEventAggregator _events;
         private readonly string _csvPath;
-        int q = 0;
+        // Save first char from SearchBox string
         private char cSearch;
 
         // Initiate client
@@ -184,6 +178,7 @@ namespace SOPokemonUI.ViewModels
             }
         }
 
+        // Method to load PokemonList from local disk
         private async Task LoadFromDisk(BindableCollection<PokemonModel> loadPokemonsCsv)
         {
             foreach (var pokemon in loadPokemonsCsv)
@@ -206,6 +201,7 @@ namespace SOPokemonUI.ViewModels
             await _events.PublishOnUIThreadAsync(new LoadingBarEvent { LoadingCount = loadPokemonsCsv.Count }, CancellationToken.None);
         }
 
+        // method to load PokemonList from the internet over API
         private async Task LoadFromApi()
         {
             // MAX limit currently: 807
@@ -219,7 +215,7 @@ namespace SOPokemonUI.ViewModels
                 for (int j = 0; j < pokemonNameLang.Names.Count; j++)
                 {
                     if (pokemonNameLang.Names[j].Language.Name == Language)
-                    {
+                    { 
                         PokeList.Add(new PokemonModel
                         {
                             Id = i,
@@ -309,7 +305,8 @@ namespace SOPokemonUI.ViewModels
             }
         }
 
-        // Clear SearchBox and Select Pokemon in ListView (jump to item)
+        // Clear SearchBox and Select Pokemon in ListView (jump to item), 
+        // when Item was selected from ListView
         private void RestructureList()
         {
             SearchBox = "";
@@ -324,7 +321,8 @@ namespace SOPokemonUI.ViewModels
             }
         }
 
-        // Jump to item in ListView and clear SearchBox before
+        // Jump to item in ListView and clear SearchBox before,
+        // when Pokemon was selected from PokemonEvoView
         public void FireEvent(int pokeId)
         {
             SearchBox = "";
