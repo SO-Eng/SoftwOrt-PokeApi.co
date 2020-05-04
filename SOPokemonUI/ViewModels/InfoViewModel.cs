@@ -200,11 +200,11 @@ namespace SOPokemonUI.ViewModels
             }
         }
 
-        public void PoroCYonLink()
+        public void JJBandaLink()
         {
             try
             {
-                string url = "https://gitlab.com/PoroCYon/PokeApi.NET";
+                string url = "https://github.com/mtrdp642/PokeApiNet";
                 var psi = new ProcessStartInfo
                 {
                     FileName = url,

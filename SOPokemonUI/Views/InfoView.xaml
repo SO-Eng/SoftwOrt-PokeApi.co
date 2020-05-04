@@ -43,8 +43,8 @@
 
                 <TextBlock x:Name="TextFive" TextWrapping="Wrap" TextAlignment="Justify" Margin="0 20 0 0"/>
                 <!--Hyperlink-->
-                <TextBlock Text="PoroCYon" Foreground="Blue" Cursor="Hand" Width="80" HorizontalAlignment="Left"
-                           cm:Message.Attach="[Event MouseLeftButtonUp] = [Action PoroCYonLink()]">
+                <TextBlock Text="JJ Banda" Foreground="Blue" Cursor="Hand" Width="70" HorizontalAlignment="Left"
+                           cm:Message.Attach="[Event MouseLeftButtonUp] = [Action JJBandaLink()]">
                     <TextBlock.TextDecorations>
                         <TextDecoration/>
                     </TextBlock.TextDecorations>

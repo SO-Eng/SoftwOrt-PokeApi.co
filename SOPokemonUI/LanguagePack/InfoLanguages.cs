@@ -117,19 +117,19 @@ namespace SOPokemonUI.LanguagePack
             switch (language)
             {
                 case "fr":
-                    tempLanguage = "- Le backend pour le contrôle de l'API provient de PoroCYon ";
+                    tempLanguage = "- Le backend pour le contrôle de l'API provient de ";
                     break;
                 case "de":
-                    tempLanguage = "- Das Backend für die API Ansteuerung ist ist von PoroCYon ";
+                    tempLanguage = "- Das Backend für die API Ansteuerung ist ist von ";
                     break;
                 case "es":
-                    tempLanguage = "- El backend para el control de la API es de PoroCYon ";
+                    tempLanguage = "- El backend para el control de la API es de ";
                     break;
                 case "it":
-                    tempLanguage = "- Il backend per il controllo API è di PoroCYon ";
+                    tempLanguage = "- Il backend per il controllo API è di ";
                     break;
                 default:
-                    tempLanguage = "- The backend for the API control is from PoroCYon ";
+                    tempLanguage = "- The backend for the API control is from ";
                     break;
             }
 
